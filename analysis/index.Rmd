@@ -3,9 +3,94 @@ title: "Home"
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
-    toc: false
+    toc: true
 editor_options:
   chunk_output_type: console
 ---
 
-Welcome to my research website.
+## Scheduling Project
+
+[Preregistration Document](prereg.html)
+
+# Overview of Method
+
+_Data Analysis_:
+
+The first analysis will focus on the order in which tasks are selected by participants. 
+
+```{r data_load, echo=TRUE, warning=FALSE, message=FALSE, results="hide"}
+rm(list=ls())
+library(tidyverse)
+library(workflowr)
+#library(Rankcluster)
+#library(rankdist) # Crashes rStudio
+#library(Kendall)
+library(DescTools) # ConDisPairs looks useful
+library(gtools) 
+
+#define working directories
+inputdir <- "data"
+
+# Reading data and variable names 
+colfile      <- read.csv(paste(inputdir,"data_dictionary.csv",sep="/"))
+datafn       <- paste(inputdir,"test_data.csv",sep="/") 
+data         <- read.csv(datafn, header = FALSE, col.names = colfile$Column) # Add column labels to data
+
+# Extract task selection trials and discard practice
+sdata = data[data$trial_event == "select_rdk" & data$trial_number != 0, ]
+```
+
+The task set presented to each subject will have an optimal solution (ordered from easiest to most difficult). The first analysis will compute something like Kendall's Tau, rank-order distance. What we want is the distance of the selected options from the optimal solutions, which is Kendall's Tau. However, because a participant may run out of time, there may be missing values. To handle these values, for each trial, we find the orders which partially match the selected order and compute: (1) the maximum distance of those possible orders and the optimal solution and (2) the average distance of those possible orders and the optimal solution. 
+
+```{r distcomp, echo=TRUE, warning=FALSE, message=FALSE, results="hide"}
+# Extract patch coherence
+coherence = c(sdata$patch_0[1], sdata$patch_1[1], sdata$patch_2[1], sdata$patch_3[1]) # will vary by subject
+optimal_order = sort(coherence, decreasing = TRUE, index.return=TRUE) # e.g., ocoh$ix = [4 3 1 2] optimal order, will vary by subject
+
+# Organize trial x selection
+trials = unique(sdata$trial_number)
+ntrials = length(trials)
+n = length(coherence)
+
+# Distance parameters
+maxdistance = (n * (n-1))/2
+missing_penalty = maxdistance/n
+allperms = permutations(n=4, r=4, v=1:4, repeats.allowed=FALSE)
+nperms = nrow(allperms)
+
+# Compute distance from optimal for all perms
+pdist <- rep(NA, nperms)
+for (i in 1:nperms){
+  distObj = ConDisPairs(table(allperms[i, ], optimal_order$ix))
+  pdist[i] = distObj$D  
+}
+
+
+# Compute distance from optimal
+selmat <- matrix(data=NA, nrow=ntrials, ncol=n)
+max_distances <- rep(NA, n)
+avg_distances <- rep(NA, n)
+penalties <- rep(NA, n)
+for (i in 1:ntrials){
+    csel = sdata[sdata$trial_number == i, ]$button_pressed
+    
+    selmat[i, 1:length(csel)] = csel # NULL is coded as option 5
+    selmat[i, selmat[i,] == 5] = NA  # Replace NULL with NA
+    
+    # Find permutation partial matches
+    if (!all(is.na(selmat[i,]))){
+      partial_perms = allperms[apply(do.call("rbind", rep(list(selmat[i,1:sum(!is.na(selmat[i,]))]), nperms)) == allperms[, !is.na(selmat[i,])], 1, function(x)all(x)), ]
+    
+      partial_distances = pdist[apply(do.call("rbind", rep(list(selmat[i,1:sum(!is.na(selmat[i,]))]), nperms)) == allperms[, !is.na(selmat[i,])], 1, function(x)all(x))]
+    } else {
+      partial_distances = pdist
+    }
+    
+    max_distances[i] = max(partial_distances)
+    avg_distances[i] = mean(partial_distances)
+}
+
+
+```
+
+
