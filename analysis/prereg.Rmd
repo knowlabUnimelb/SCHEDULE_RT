@@ -48,11 +48,16 @@ We know that switching between tasks leads to context shift costs (Monsell, 2003
 
 For many types of goals, such as minimizing the number of tasks completed after a deadline or completing as many tasks as possible in a given length of time, an optimal schedule can be determined (Chretienne et al., 1995). In the present study, we are focused on the scheduling of tasks that vary in difficulty where the goal is to complete as many tasks as possible prior to the deadline. In this case, it is optimal to complete subtasks in order of shortest to longest completion time.
 
-Future experiments will additionaly vary the utility/reward of each subtask, the overall goal, and whether or not the difficulty needs to be learned or is described. 
+Future experiments will additionally vary the utility/reward of each subtask, the overall goal, and whether or not the difficulty needs to be learned or is described. 
 
-In this study, each subtask is a Random Dot Kinematogram (RDK). In an RDK, dots are moving across an aperture on the screen in a pseudo-random fashion. The participant must to determine whether more dots are moving coherently to the right or to the left. Multiple RDK patches will be presented on the selection screen. Participants will click on the RDK they want to complete, indicate the direction of motion in that patch, and then return to the main screen to select the next RDK. The RDK's will vary in coherence and consequently, difficulty, and average completion time (Ludwig & Evens, 2017).
+In this study, each subtask is a Random Dot Kinematogram (RDK). In an RDK, dots are moving across an aperture on the screen in a pseudo-random fashion. The participant must to determine whether more dots are moving coherently to the right or to the left. Multiple RDK patches will be presented on the selection screen. Participants will click on the RDK they want to complete, indicate the direction of motion in that patch, and then return to the main screen to select the next RDK. The RDK's will vary in coherence and consequently, difficulty, and average completion time (Ludwig & Evens, 2017). 
 
-RDK difficulty will be constant across trials and labelled as Easy, Medium, Hard, or Very Hard. RDKs will be presented in onscreen at the four compass points (North, South, East, West). Location of each difficulty level will be averaged across participants. 
+RDK difficulty will be constant across trials and labelled as Easy, Medium, Hard, or Very Hard. RDKs will be presented in onscreen at the four compass points (North, South, East, West). Location of each difficulty level will be averaged across participants. Future experiments will require difficulty to be learned.
+
+In our first experiment, the RDK's will be covered so that difficulty is only available through the label. In our second experiment, the RDK's will be moving on the selection screen so that perceptual difficutly information can be ascertained prior to selecting which RDK to complete. In Experiments 3 and 4, the design will be the same but we will use a static stimulus decision, are the number of coloured pixels in a grid different than 50%. Ease of judgement (and therefore completino time) will be manipulated increasing the absolute difference from 50%. Both covered and uncovered versions will be tested, respectively. Experiments 5-8 will replicate Experiments 1-4 but with difficulty learned rather than labelled. 
+
+This document describes Experiment 1.
+
 ### 4.	Hypotheses
 
 <!-- 
@@ -60,7 +65,8 @@ List specific, concise, and testable hypotheses. Please state if the hypotheses 
 Example: If taste affects preference, then mean preference indices will be higher with higher concentrations of sugar. 
 -->
 
-1. The optimal policy to minimize the time on any task is to complete shortest subtask first. We will determine whether participants converge to this optimal schedule. 
+The optimal policy to minimize the time on any task is to complete shortest subtask first. We will determine whether participants converge to this optimal schedule. We expect greater optimality when participants have to complete the RDK task under a deadline.
+
 
  
 ## Design Plan
@@ -70,6 +76,8 @@ In this section, you will be asked to describe the overall design of your study.
 -->
 
 In this experiment, participants will complete multiple trials for selecting and completing random dot kinematogram (RDK) tasks. On each trial, participants will be shown a set of four RDKs labelled Easy, Medium, Hard, and Very Hard. The labels correspond to the difficulty of the RDK. Participants will select and complete one RDK at a time, in any order, completing as many as possible before a deadline. 
+
+Before completing the deadline task, participants will complete 10 trials with no deadline. This will help participants learn the task, explore strategies, and allow us to compare the optimality of responding between a no deadline and a deadline condition.
 
 ### 5.	Study Type 
 
@@ -122,7 +130,7 @@ Example: We have a between subjects design with 1 factor (sugar by mass) with 4 
 More info: This question has a variety of possible answers. The key is for a researcher to be as detailed as is necessary given the specifics of their design. Be careful to determine if every parameter has been specified in the description of the study design. There may be some overlap between this question and the following questions. That is OK, as long as sufficient detail is given in one of the areas to provide all of the requested information. For example, if the study design describes a complete factorial, 2 X 3 design and the treatments and levels are specified previously, you do not have to repeat that information. 
 -->
 
-Difficulty location will be randomized across subjects. Four coherence levels will be used to manipulate difficulty (proportions of 0.8, 0.5, 0.1, and 0.0). A single deadline of 6 seconds will be tested.
+Difficulty location will be randomized across subjects. Four coherence levels will be used to manipulate difficulty (proportions of 0.8, 0.5, 0.1, and 0.0). A single deadline of 6 seconds will be tested and compared to a no deadline condition (i.e., a long trial length of 30 seconds).
 
 ### 9.	Randomization
 
@@ -191,7 +199,7 @@ More information: For some studies, this will simply be the number of samples or
 
 We will recruit 50 participants.
 
-Each participant will complete 30 scheduling trials via a web browser.
+Each participant will complete 10 no deadline scheduling trials and 30 deadline scheduling trials via a web browser.
 
 
 ### 14. Sample size rationale 
@@ -230,7 +238,7 @@ Example: We manipulated the percentage of sugar by mass added to brownies. The f
 More information: For any experimental manipulation, you should give a precise definition of each manipulated variable. This must include a precise description of the levels at which each variable will be set, or a specific definition for each categorical treatment. For example, “loud or quiet,” should instead give either a precise decibel level or a means of recreating each level. 'Presence/absence' or 'positive/negative' is an acceptable description if the variable is precisely described.
 -->
 
-We manipulated the coherence and direction of four RDK tasks and the deadline available for selection and completion of the four tasks on each trial.
+We manipulated the coherence and direction of four RDK tasks and the deadline available for selection and completion of the four tasks on each trial. We additionally manipulated whether there was a deadline or not.
 
 ### 17. Measured variables 
 
@@ -240,9 +248,7 @@ Example: The single outcome variable will be the perceived tastiness of the sing
 More information: Observational studies and meta-analyses will include only measured variables. As with the previous questions, the answers here must be precise. For example, 'intelligence,' 'accuracy,' 'aggression,' and 'color' are too vague. Acceptable alternatives could be 'IQ as measured by Wechsler Adult Intelligence Scale' 'percent correct,' 'number of threat displays,' and 'percent reflectance at 400 nm.'
 -->
 
-The main variable is the order in which subtasks are collected.
-
-Secondary variables are the accuracy and completion time of the RDK subtasks. 
+The main variable is the order in which subtasks are completed. Secondary variables are the accuracy and completion time of the RDK subtasks. 
 
 ### 18. Indices 
 
@@ -279,6 +285,8 @@ We will perform a similar analysis using the proportion of first-optimal respons
 
 For completeness, we will additionally analyse the completion time and accuracy of the RDK task to ensure that coherence mapped to difficulty and average completion time the expected manner.
 
+We will compare the optimality of the first 10 untimed trials against the first 10 deadline trials and the last 10 deadline trials using a Bayesian one-way ANOVA and a hierarchical Bayesian model described below.
+
 ### 20. Transformations 
 
 <!-- 
@@ -297,7 +305,7 @@ Example: We will use the standard p<.05 criteria for determining if the ANOVA an
 More information: P-values, confidence intervals, and effect sizes are standard means for making an inference, and any level is acceptable, though some criteria must be specified in this or previous fields. Bayesian analyses should specify a Bayes factor or a credible interval. If you are selecting models, then how will you determine the relative quality of each? In regards to multiple comparisons, this is a question with few “wrong” answers. In other words, transparency is more important than any specific method of controlling the false discovery rate or false error rate. One may state an intention to report all tests conducted or one may conduct a specific correction procedure; either strategy is acceptable.
 -->
 
-Posterior parameter estimation will be used for inference.
+Posterior parameter estimation will be used for inference. Optimality (measured using normalised Kendall's Tau adjusted for missing data as described above) will be given a uniform Beta(1,1) prior in each condition. We will compare two models, one in which the hyperpriors are free to vary across the untimed, deadline (first 10), and deadline (last 10) conditions, and one in which the hyperpriors are fixed. Posterior parameter estimation and DIC will be used to examine whether there is a credible difference in optimality between deadline conditions.
 
 ### 22. Data exclusion 
 
