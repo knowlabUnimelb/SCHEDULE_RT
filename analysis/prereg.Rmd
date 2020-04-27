@@ -19,7 +19,7 @@ Example: Effect of sugar on brownie tastiness.
 More info: The title should be a specific and informative description of a project. Vague titles such as 'Fruit fly preregistration plan' are not appropriate.
 -->
 
-Human scheduling of random dot motion tasks
+Human scheduling of perceptual tasks
 
 ### 2.	Authorship
 
@@ -28,8 +28,9 @@ List authors and affiliations as applicable. Placing a number or letter in upwar
 --> 
 
 Daniel R. Little^1^ 
-Deborah J. Lin^1^
 Ami Eidels^2^
+Deborah J. Lin^1^
+
 
 ^1^ The University of Melbourne
 ^2^ The University of Newcastle
@@ -56,7 +57,7 @@ RDK difficulty will be constant across trials and labelled as Easy, Medium, Hard
 
 In our first experiment, the RDK's will be covered so that difficulty is only available through the label. In our second experiment, the RDK's will be moving on the selection screen so that perceptual difficutly information can be ascertained prior to selecting which RDK to complete. In Experiments 3 and 4, the design will be the same but we will use a static stimulus decision, are the number of coloured pixels in a grid different than 50%. Ease of judgement (and therefore completino time) will be manipulated increasing the absolute difference from 50%. Both covered and uncovered versions will be tested, respectively. Experiments 5-8 will replicate Experiments 1-4 but with difficulty learned rather than labelled. 
 
-This document describes Experiment 1.
+This document describes Experiment 1. In this experiment, in one condition, the location of each difficulty level will be held constant but randomly varied across subjects. In a second experiment, location will be randomized on a trial-by-trial basis. 
 
 ### 4.	Hypotheses
 
@@ -65,17 +66,15 @@ List specific, concise, and testable hypotheses. Please state if the hypotheses 
 Example: If taste affects preference, then mean preference indices will be higher with higher concentrations of sugar. 
 -->
 
-The optimal policy to minimize the time on any task is to complete shortest subtask first. We will determine whether participants converge to this optimal schedule. We expect greater optimality when participants have to complete the RDK task under a deadline.
+The optimal policy to minimize the nubmer of tasks completed after the deadline (or i.e., to maximize the number of tasks completed before the deadline) is to complete shortest subtask first. We will determine whether participants converge to this optimal schedule. We will compare scheduling both with and without a deadline and expect greater optimality when participants have to complete the RDK task under a deadline. We additionally expect greater optimality when difficulty location is held constant compared to when it is varied from trial to trial. 
 
-
- 
 ## Design Plan
 
 <!-- 
 In this section, you will be asked to describe the overall design of your study. Remember that this research plan is designed to register a single study, so if you have multiple experimental designs, please complete a separate preregistration. 
 -->
 
-In this experiment, participants will complete multiple trials for selecting and completing random dot kinematogram (RDK) tasks. On each trial, participants will be shown a set of four RDKs labelled Easy, Medium, Hard, and Very Hard. The labels correspond to the difficulty of the RDK. Participants will select and complete one RDK at a time, in any order, completing as many as possible before a deadline. 
+In this experiment, participants will complete multiple trials for selecting and completing random dot kinematogram (RDK) tasks. On each trial, participants will be shown a set of four RDKs labelled Easy, Medium, Hard, and Very Hard. The labels correspond to the difficulty of the RDK instantiated by the proportion of dots moving in a coherent direction. Participants will select and complete one RDK at a time, in any order, completing as many as possible before a deadline. 
 
 Before completing the deadline task, participants will complete 10 trials with no deadline. This will help participants learn the task, explore strategies, and allow us to compare the optimality of responding between a no deadline and a deadline condition.
 
@@ -282,6 +281,8 @@ For each participant, the optimal order of each location will be determined (i.e
 We will examine the distribution of distances across participants to determine how much they deviate from optimal. Bayesian analysis will be used to characterise the posterior uncertainty in distance across trials.
 
 We will perform a similar analysis using the proportion of first-optimal responses (i.e., the proportion of responses in which the first chosen option is the easiest).
+
+We will additionally create "spatial-order" strategies (e.g., clockwise strategy, anti-clockwise strategy) and compute the partial-matching Kendall's Tau measure of the response to these spatial orders. These strategies may be non-optimal, depending on the random distribution of difficulties; nonetheless, participants may adopt these strategies.
 
 For completeness, we will additionally analyse the completion time and accuracy of the RDK task to ensure that coherence mapped to difficulty and average completion time the expected manner.
 
