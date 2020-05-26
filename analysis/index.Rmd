@@ -18,7 +18,7 @@ _Data Analysis_:
 
 The first analysis will focus on the order in which tasks are selected by participants. 
 
-```{r data_load, echo=TRUE, warning=FALSE, message=FALSE, results="hide"}
+```{r data_load, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
 rm(list=ls())
 library(tidyverse)
 library(workflowr)
@@ -27,30 +27,170 @@ library(workflowr)
 #library(Kendall)
 library(DescTools) # ConDisPairs looks useful
 library(gtools) 
+library(english)
+library(ggplot2)
+library(dplyr)
+library(hrbrthemes)
 
 #define working directories
 inputdir <- "data"
 
 # Reading data and variable names 
-colfile      <- read.csv(paste(inputdir,"data_dictionary.csv",sep="/"))
-datafn       <- paste(inputdir,"test_data.csv",sep="/") 
-data         <- read.csv(datafn, header = FALSE, col.names = colfile$Column) # Add column labels to data
+fixed_datafilename = "200511_fixed_rdk_data.csv"
+random_datafilename = "200525_random_rdk_data.csv"
 
-# Extract task selection trials and discard practice
-sdata = data[data$trial_event == "select_rdk" & data$trial_number != 0, ]
+colfile       <- read.csv(paste(inputdir,"data_dictionary.csv",sep="/"))
+fixed_datafn  <- paste(inputdir,fixed_datafilename,sep="/") 
+random_datafn <- paste(inputdir,random_datafilename,sep="/") 
+fixd_rawdata     <- read.csv(fixed_datafn, header = FALSE, col.names = colfile$Column) # Add column labels to data
+rand_rawdata     <- read.csv(random_datafn, header = FALSE, col.names = colfile$Column) # Add column labels to data
+
+# Summary data
+fixedLoggedSubjects  = unique(fixd_rawdata$uniqueid)  # Unique subject numbers
+nFixedLoggedSubjects = length(fixedLoggedSubjects) # Number of subjects who logged into the website using the link
+
+randomLoggedSubjects  = unique(rand_rawdata$uniqueid)   # Unique subject numbers
+nRandomLoggedSubjects = length(randomLoggedSubjects) # Number of subjects who logged into the website using the link
+
 ```
 
-The task set presented to each subject will have an optimal solution (ordered from easiest to most difficult). The first analysis will compute something like Kendall's Tau, rank-order distance. What we want is the distance of the selected options from the optimal solutions, which is Kendall's Tau. However, because a participant may run out of time, there may be missing values. To handle these values, for each trial, we find the orders which partially match the selected order and compute: (1) the maximum distance of those possible orders and the optimal solution and (2) the average distance of those possible orders and the optimal solution. 
+# Data cleaning
 
-```{r distcomp, echo=TRUE, warning=FALSE, message=FALSE, results="hide"}
-# Extract patch coherence
-coherence = c(sdata$patch_0[1], sdata$patch_1[1], sdata$patch_2[1], sdata$patch_3[1]) # will vary by subject
-optimal_order = sort(coherence, decreasing = TRUE, index.return=TRUE) # e.g., ocoh$ix = [4 3 1 2] optimal order, will vary by subject
+Two experiments were completed online: one using fixed task locations on each trial and one using random task locations on each trial. Subjects completed the experiment by clicking a link with the uniquely generated id code. Subjects were able to use the link multiple times; further, subjects were able to exit the experiment at any time. Consequently, the datafile contains partially completed data for some subjects which needs to be identified and removed. 
 
-# Organize trial x selection
-trials = unique(sdata$trial_number)
-ntrials = length(trials)
-n = length(coherence)
+```{r data_cleaning, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
+# A full data set has 10 practice trials (0 to 9) and 30 deadline trials (0 to 29)
+# A full data set will have a max trial number of 29 
+nTotalTrials = 29
+cleanUpData = function(rawdata, nTotalTrials){
+  
+  completeSubjects = unique(rawdata$subject[rawdata$trial_number == nTotalTrials]) # Unique subject ids
+  nCompleteSubjects = length(completeSubjects) # Nubmer of complete data files
+
+  cleandata = rawdata[rawdata$subject %in% completeSubjects, ] # keep only complete data files
+  # some subjects may have completed the experiment twice, keep only first completion
+  subids = distinct(as.data.frame(cbind(cleandata$subject, cleandata$uniqueid)))
+  names(subids) = c("subject", "uniqueid")
+  
+  # repeated uniqueids indicate duplicate completion
+  nRepeats = sum(duplicated(subids$uniqueid))
+  nonrepeatedsubs = subids$subject[which(!duplicated(subids$uniqueid))]
+  
+  # keep only nonrepeated subs
+  data = cleandata[cleandata$subject %in% nonrepeatedsubs, ]
+  
+  # Summary data
+  subjects = unique(data$uniqueid)           # Unique subject numbers
+  nSubjects = length(unique(data$uniqueid))  # Number of subjects
+  
+  return(list("data"=data, "subjects"=subjects, "nSubjects"=nSubjects, "nRepeats"=nRepeats))
+}
+
+fd = cleanUpData(fixd_rawdata, nTotalTrials)
+rd = cleanUpData(rand_rawdata, nTotalTrials)
+
+```
+
+```{r add_phase, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
+
+
+# Add in phase column which indicates whether current trials are practice or experiment
+add_phase_col = function(data){
+  data$data$phase = rep(NA, nrow(data$data))
+  for (i in 1:data$nSubjects){
+    
+    # Find point at which trial_index = 0 later in the trial
+    tidx = which(data$data$trial_number[data$data$uniqueid == data$subjects[i]] == 0)
+    idx = tidx[which(diff(tidx) > 1) + 1]
+    
+    dsize = nrow(data$data[data$data$uniqueid == data$subjects[i], ])
+    data$data$phase[data$data$uniqueid == data$subjects[i]] = c(NA, rep(0, idx-2), rep(1,length(idx:(dsize-1))), NA)
+  }
+
+  return(data)
+}
+
+fd = add_phase_col(fd)
+rd = add_phase_col(rd)
+
+```
+
+
+```{r emails, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
+# Need to extract emails for sending results from all datasets
+# trial_event = email
+
+data = rbind(fd$data, rd$data)
+
+demographics = data$responses[data$trial_event == "demographics"]
+emails = as.character(demographics[grep("Email", demographics)])
+colon_loc = gregexpr(pattern = ":", emails)
+
+nSubjects = fd$nSubjects+rd$nSubjects
+full_email_list = rep(NA, nSubjects)
+for (i in 1:nSubjects){
+  if (!is.na(emails[i])){
+    full_email_list[i] = substr(emails[i], colon_loc[[i]][1]+2, nchar(emails[i])-2)
+  }
+}
+email_list = str_sort(full_email_list[full_email_list != "" & !is.na(full_email_list)])
+
+```
+
+```{r demographics, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
+# Demographics
+# trial_event = sex_age
+# responses --> Gender and Age
+processDemographics = function(data, nSubjects){
+
+  demographics = data$responses[data$trial_event == "demographics"]
+  sexage = as.character(demographics[grep("Gender", demographics)])
+  
+  colon_loc = gregexpr(pattern = ":", sexage)
+  comma_loc = gregexpr(pattern = ",", sexage)
+  
+  sex = rep(NA, nSubjects)
+  age = rep(NA, nSubjects)
+  for (i in 1:nSubjects){
+    sex[i] = toupper(substr(sexage[i], colon_loc[[i]][1]+2, comma_loc[[i]][1]-2))
+    
+    x = substr(sexage[i], colon_loc[[i]][2]+2, nchar(sexage[i])-2)
+    if (nchar(x) == 2){
+      age[i] = as.numeric(x)
+    } else {
+      age[i] = as.numeric(substr(sexage[i], colon_loc[[i]][2]+2, colon_loc[[i]][2]+4))    
+    }
+  }
+  
+  nFemales = sum(sex == "FEMALE" | sex == "WOMEN")
+  nMales = sum(sex == "MALE")
+  nOther = sum(sex != "FEMALE" & sex != "MALE" & sex != "WOMEN")
+  
+  meanAge = mean(age, na.rm = TRUE)
+  stdAge  = sd(age, na.rm = TRUE)
+  
+  return(list(nFemales, nMales, nOther, meanAge, stdAge, age))
+}
+
+fixedDemo = processDemographics(fd$data, fd$nSubjects)
+names(fixedDemo) = c("nFemales", "nMales", "nOthers", "meanAge", "stdAge", "ages")
+randDemo = processDemographics(rd$data, rd$nSubjects)
+names(randDemo) = c("nFemales", "nMales", "nOthers", "meanAge", "stdAge", "ages")
+
+```
+# Participants
+
+## Random Location Condition
+
+We tested `r fd$nSubjects + rd$nSubjects` participants (`r fixedDemo$nFemales+randDemo$nFemales` F, `r fixedDemo$nMales+randDemo$nMales` M, `r fixedDemo$nOthers+randDemo$nOthers` Undeclared). Participants were recruited through the Melbourne School of Psychological Sciences Research Experience Pool (Mean age = `r mean(c(fixedDemo$ages, randDemo$ages), na.rm=TRUE) ` (range = `r min(c(fixedDemo$ages, randDemo$ages), na.rm=TRUE) ` - `r max(c(fixedDemo$ages, randDemo$ages), na.rm=TRUE)`)). Participants were reimbursed with credit toward completion of a first year psychology subject. One datasets from `r fd$nRepeats + rd$nRepeats` subjects were excluded for completing the experiment twice; i.e., only the first of the datasets was retained.
+
+
+# Data Analysis
+
+The task set presented to each subject will have an optimal solution (ordered from easiest to most difficult). The first analysis will compute something like Kendall's Tau, rank-order distance. What we want is the distance of the selected options from the optimal solutions, which is Kendall's Tau. However, because a participant may run out of time, there may be missing values. To handle these values, for each trial, we find the orders which partially match the selected order and compute: (1) the maximum distance of those possible orders and the optimal solution (max_distance) and (2) the average distance of those possible orders and the optimal solution (avg_distance). 
+
+```{r distcomp, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
+n = 4 # Number of tasks
 
 # Distance parameters
 maxdistance = (n * (n-1))/2
@@ -58,39 +198,212 @@ missing_penalty = maxdistance/n
 allperms = permutations(n=4, r=4, v=1:4, repeats.allowed=FALSE)
 nperms = nrow(allperms)
 
+# Processing functions
+splitData = function(data){
+  pracdata = data[data$trial_event == "practice_rdk", ]
+  exp_data = data[data$trial_event == "select_rdk", ]
+  return(list("practice" = pracdata, "experiment" = exp_data))
+}
+
+getOptimalOrder = function(data){
+  # Extract patch coherence
+  coherence = cbind(data$patch_0, data$patch_1, data$patch_2, data$patch_3) # will vary by subject
+  # optimal_order = sort(ecoherence, decreasing = TRUE, index.return=TRUE) # e.g., ocoh$ix = [4 3 1 2] optimal order, will vary by subject
+  optimal_order = apply(coherence, 1, function(x) sort(x, decreasing=TRUE, index.return=TRUE))
+  # Organize trial x selection
+  trials = unique(data$trial_number)
+  ntrials = length(trials)
+  
+  return(list("coherence" = coherence, "optimal_order" = optimal_order, "trials" = trials, "ntrials" = ntrials))
+}
+
 # Compute distance from optimal for all perms
-pdist <- rep(NA, nperms)
-for (i in 1:nperms){
-  distObj = ConDisPairs(table(allperms[i, ], optimal_order$ix))
-  pdist[i] = distObj$D  
+opt_order_set = function(trial_optimal_order, nperms=nperms, allperms=allperms){
+  pdist <- rep(NA, nperms)
+  for (i in 1:nperms){
+    distObj = ConDisPairs(table(allperms[i, ], trial_optimal_order$ix))
+    pdist[i] = distObj$D  
+  }
+  return(pdist)
 }
+# Usage: opt_order_set(poptimal_order[[1]], nperms, allperms)
 
+# Compute distance from optimal for each trial during practice
+get_trial_scores = function(sdata, order_to_compare, ntrials, n, nperms, allperms, nSubjects, subjects){
 
-# Compute distance from optimal
-selmat <- matrix(data=NA, nrow=ntrials, ncol=n)
-max_distances <- rep(NA, n)
-avg_distances <- rep(NA, n)
-penalties <- rep(NA, n)
-for (i in 1:ntrials){
-    csel = sdata[sdata$trial_number == i, ]$button_pressed
-    
-    selmat[i, 1:length(csel)] = csel # NULL is coded as option 5
-    selmat[i, selmat[i,] == 5] = NA  # Replace NULL with NA
-    
-    # Find permutation partial matches
-    if (!all(is.na(selmat[i,]))){
-      partial_perms = allperms[apply(do.call("rbind", rep(list(selmat[i,1:sum(!is.na(selmat[i,]))]), nperms)) == allperms[, !is.na(selmat[i,])], 1, function(x)all(x)), ]
-    
-      partial_distances = pdist[apply(do.call("rbind", rep(list(selmat[i,1:sum(!is.na(selmat[i,]))]), nperms)) == allperms[, !is.na(selmat[i,])], 1, function(x)all(x))]
-    } else {
-      partial_distances = pdist
+  # preallocate variables for output
+  max_distances <- matrix(data=NA, nrow=nSubjects, ncol=ntrials)
+  avg_distances <- matrix(data=NA, nrow=nSubjects, ncol=ntrials)
+  
+  for (j in 1:nSubjects){
+        # select out data for subject j
+        tdata = sdata[sdata$uniqueid == subjects[j], ]
+        
+        # preallocated subject specific task selection matrix
+        selmat <- matrix(data=NA, nrow=ntrials, ncol=n)
+    for (i in 1:ntrials){
+        
+        # compute distances of all permutations to indicated order
+        pdist = opt_order_set(order_to_compare[[i]], nperms, allperms)
+      
+        # Get the task selection order for the current trial (may be incomplete if timed out)
+        csel = tdata[tdata$trial_number == i-1, ]$button_pressed
+        selmat[i, 1:length(csel)] = csel # NULL is coded as option 5
+        selmat[i, selmat[i,] == 5] = NA  # Replace NULL with NA
+        
+        # Find permutation partial matches
+        if (!all(is.na(selmat[i,]))){
+          partial_perms = allperms[apply(do.call("rbind", rep(list(selmat[i,1:sum(!is.na(selmat[i,]))]), nperms)) == allperms[, !is.na(selmat[i,])], 1, function(x)all(x)), ]
+        
+          # Find distances consistent with partial matches
+          partial_distances = pdist[apply(do.call("rbind", rep(list(selmat[i,1:sum(!is.na(selmat[i,]))]), nperms)) == allperms[, !is.na(selmat[i,])], 1, function(x)all(x))]
+        } else {
+          partial_distances = pdist
+        }
+        
+        # Outputs
+        max_distances[j,i] = max(partial_distances)  # Maximum distance of partial matches
+        avg_distances[j,i] = mean(partial_distances) # Average distance of partial matches
     }
-    
-    max_distances[i] = max(partial_distances)
-    avg_distances[i] = mean(partial_distances)
+  }
+  return(list("max_distances" = max_distances, "avg_distances" = avg_distances))
 }
+
+fp = getOptimalOrder(splitData(fd$data)$practice)
+fe = getOptimalOrder(splitData(fd$data)$experiment)
+rp = getOptimalOrder(splitData(rd$data)$practice)
+re = getOptimalOrder(splitData(rd$data)$experiment)
+
+# Compute distances for condition x practice/experiment
+scores = list("fixed" = list("practice" = get_trial_scores(splitData(fd$data)$practice, fp$optimal_order, fp$ntrials, 
+                                                           n, nperms, allperms, fd$nSubjects, fd$subjects), 
+                             "experiment" = get_trial_scores(splitData(fd$data)$experiment, fe$optimal_order, fe$ntrials, 
+                                                           n, nperms, allperms, fd$nSubjects, fd$subjects)), 
+              "random" = list("practice" = get_trial_scores(splitData(rd$data)$practice, rp$optimal_order, rp$ntrials, 
+                                                           n, nperms, allperms, rd$nSubjects, rd$subjects), 
+                              "experiment" = get_trial_scores(splitData(rd$data)$experiment, re$optimal_order, re$ntrials, 
+                                                           n, nperms, allperms, rd$nSubjects, rd$subjects)))
 
 
 ```
 
 
+```{r buildComparison, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
+fcon = data.frame(condition = as.factor(rep(1, fd$nSubjects*10)), 
+                  subjects = rep(1:fd$nSubjects + 100, each=10), 
+                  trials = rep(1:10, fd$nSubjects), 
+                  max_practice = matrix(t(scores$fixed$practice$max_distances), 10*nrow(scores$fixed$practice$max_distances), byrow= FALSE), 
+                  max_expFirst10 = matrix(t(scores$fixed$experiment$max_distances[, 1:10]), 10*nrow(scores$fixed$experiment$max_distances), byrow= FALSE), 
+                  max_expLast10 = matrix(t(scores$fixed$experiment$max_distances[, 21:30]), 10*nrow(scores$fixed$experiment$max_distances), byrow= FALSE), 
+                  avg_practice = matrix(t(scores$fixed$practice$avg_distances), 10*nrow(scores$fixed$practice$avg_distances), byrow= FALSE), 
+                  avg_expFirst10 = matrix(t(scores$fixed$experiment$avg_distances[, 1:10]), 10*nrow(scores$fixed$experiment$max_distances), byrow= FALSE), 
+                  avg_expLast10  = matrix(t(scores$fixed$experiment$avg_distances[, 21:30]), 10*nrow(scores$fixed$experiment$max_distances), byrow= FALSE))
+
+rcon = data.frame(condition = as.factor(rep(2, rd$nSubjects*10)), 
+                  subjects = rep(1:rd$nSubjects + 200, each=10), 
+                  trials = rep(1:10, rd$nSubjects), 
+                  max_practice = matrix(t(scores$random$practice$max_distances), 10*nrow(scores$random$practice$max_distances), byrow= FALSE), 
+                  max_expFirst10 = matrix(t(scores$random$experiment$max_distances[, 1:10]), 10*nrow(scores$random$experiment$max_distances), byrow= FALSE), 
+                  max_expLast10 = matrix(t(scores$random$experiment$max_distances[, 21:30]), 10*nrow(scores$random$experiment$max_distances), byrow= FALSE), 
+                  avg_practice = matrix(t(scores$random$practice$avg_distances), 10*nrow(scores$random$practice$avg_distances), byrow= FALSE), 
+                  avg_expFirst10 = matrix(t(scores$random$experiment$avg_distances[, 1:10]), 10*nrow(scores$random$experiment$max_distances), byrow= FALSE), 
+                  avg_expLast10  = matrix(t(scores$random$experiment$avg_distances[, 21:30]), 10*nrow(scores$random$experiment$max_distances), byrow= FALSE))
+
+expdata = rbind(fcon, rcon)
+
+# Set up summary data dataframe: maximum partial completion efficiency
+max_a = setNames(aggregate(expdata$max_practice, by=list(expdata$condition, expdata$subject), mean), c("condition", "subject", "avg"))
+max_b = setNames(aggregate(expdata$max_expFirst10, by=list(expdata$condition, expdata$subject), mean), c("condition", "subject", "avg"))
+max_c = setNames(aggregate(expdata$max_expLast10, by=list(expdata$condition, expdata$subject), mean), c("condition", "subject", "avg"))
+
+avg_maxdata = rbind(cbind(max_a, phase=rep("untimed practice", nrow(max_a))), 
+                    cbind(max_b, phase=rep("deadline early", nrow(max_b))), 
+                    cbind(max_c, phase=rep("deadline late", nrow(max_c))))
+avg_maxdata$phase = as.factor(avg_maxdata$phase)         # Convert phase to factor
+levels(avg_maxdata$condition) = c("fixed", "random") # Replace condition names
+
+
+# Set up summary data dataframe: avg partial completion efficiency
+avg_a = setNames(aggregate(expdata$avg_practice, by=list(expdata$condition, expdata$subject), mean), c("condition", "subject", "avg"))
+avg_b = setNames(aggregate(expdata$avg_expFirst10, by=list(expdata$condition, expdata$subject), mean), c("condition", "subject", "avg"))
+avg_c = setNames(aggregate(expdata$avg_expLast10, by=list(expdata$condition, expdata$subject), mean), c("condition", "subject", "avg"))
+
+avg_avgdata = rbind(cbind(avg_a, phase=rep("untimed practice", nrow(avg_a))), 
+                    cbind(avg_b, phase=rep("deadline early", nrow(avg_b))), 
+                    cbind(avg_c, phase=rep("deadline late", nrow(avg_c))))
+avg_avgdata$phase = as.factor(avg_avgdata$phase)         # Convert phase to factor
+levels(avg_avgdata$condition) = c("fixed", "random") # Replace condition names
+
+
+```
+
+# Summary performance
+
+* What is the average completion time and accuracy of the easy, medium, hard, and very hard tasks?
+
+```{r analyse_RDK_difficulty, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
+rdk = data[data$trial_event == "rdk", ]
+rdk$correct = as.numeric(rdk$correct)
+rdk$correct = rdk$correct - 1
+#rdk$correct[is.na(rdk$correct)] = 0
+#rdk$correct[rdk$correct == 2] = 1
+
+# Remove timeouts
+rdk = rdk[rdk$rt != -1, ]
+rdk$rt = as.numeric(as.character(rdk$rt))
+
+nlongrts = sum(rdk$rt > 3000)
+rdk = rdk[rdk$rt <3000, ]
+
+rdk$phase = as.factor(rdk$phase)
+
+# Fix missing 0's in data$correct[data$trial_event == "rdk"] column
+difficulty = aggregate(list("accuracy" = rdk$correct, "rt" = rdk$rt), by = list("coherence" = rdk$dot_coherence, "phase" = rdk$phase), FUN = function(x) mean(x, na.rm = TRUE))
+ncounts = rdk %>% count(phase, dot_coherence)
+difficulty$n = ncounts$n
+
+# Difficulty plot
+levels(rdk$dot_coherence) = c("very hard", "hard", "medium", "easy", "NULL")
+levels(rdk$phase) = c("no deadline", "deadline")
+diff_plot <- rdk %>% ggplot(aes(x=dot_coherence, y=rt, fill=dot_coherence)) + geom_violin(adjust = 1.5, trim = TRUE) + facet_wrap(~phase)
+diff_plot
+
+```
+
+* How many tasks are completed on average?
+
+```{r task_completion, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
+tcdata = aggregate(rdk$trial_event[rdk$correct == 1], by=list("trial" = rdk$trial_number[rdk$correct == 1], "phase" = rdk$phase[rdk$correct == 1], "subject" = rdk$uniqueid[rdk$correct == 1]), FUN=length)
+
+avgCompletions = aggregate(tcdata$x, by=list("phase"=tcdata$phase), FUN=mean)
+
+```
+On average, participants completed `r avgCompletions$x[avgCompletions$phase == 0]` tasks during the untimed practice phase and `r avgCompletions$x[avgCompletions$phase == 1]` tasks during the deadline phase. 
+
+<!- Test significance -> 
+
+* What is the proportion of easy-task-first choices?
+
+
+
+# Optimality in each condition
+
+The following figures compare max_distance and avg_distance between the fixed difficulty and random difficulty conditions as a function of deadline condition and phase. 
+
+```{r plotData, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
+max_plot <- avg_maxdata %>% ggplot(aes(x=avg, fill=phase)) + geom_histogram(color="white", alpha=0.6, bins = 10, position="identity") + facet_wrap(~condition)
+
+avg_plot <- avg_avgdata %>% ggplot(aes(x=avg, fill=phase)) + geom_histogram(color="white", alpha=1, bins = 10) + facet_wrap(~condition)
+
+```
+
+# Notes
+
+* Optimality is computed with regard to an easy --> very ordering and is a number between 0 and the max distance of the worst ordering. Should I normalise this variable to range between 0 and 1?
+
+* Some strategies involve selecting tasks based on spatial position. I can compute the distance to a clockwise or anti-clockwise strategy by computing the distance to each of the following: 
++ Clockwise: W-N-E-S (1, 2, 3, 4), N-E-S-W (2, 3, 4, 1), E-S-W-N (3, 4, 1, 2), S-W-N-E (4, 1, 2, 3)
++ Anti-clockwise: S-E-N-W (4, 3, 2, 1), E-N-W-S (3, 2, 1, 4), N-W-S-E (2, 1, 4, 3), W-S-E-N (1, 4, 3, 2)
++ The key then is consistency across trials; if a participant regularly uses a circular strategy, then they should be classified as such. 
++ Some other questions arise:
+- What should be done with fixed location participants in which the optimal solution is also a circular strategy? Analyse the data again but removing trials in which difficulty is mapped in a circular manner?
