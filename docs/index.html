@@ -409,7 +409,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-04-27
+<strong>Last updated:</strong> 2020-05-26
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -500,16 +500,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomknowlabUnimelbSCHEDULERTtree57ed33530b80ad5dd85d4e97103cb0d5076b91fbtargetblank57ed335a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/knowlabUnimelb/SCHEDULE_RT/tree/57ed33530b80ad5dd85d4e97103cb0d5076b91fb" target="_blank">57ed335</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomknowlabUnimelbSCHEDULERTtree98777c96d8f6169dfd2825c39d0af87c4b79d560targetblank98777c9a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/knowlabUnimelb/SCHEDULE_RT/tree/98777c96d8f6169dfd2825c39d0af87c4b79d560" target="_blank">98777c9</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomknowlabUnimelbSCHEDULERTtree57ed33530b80ad5dd85d4e97103cb0d5076b91fbtargetblank57ed335a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomknowlabUnimelbSCHEDULERTtree98777c96d8f6169dfd2825c39d0af87c4b79d560targetblank98777c9a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/knowlabUnimelb/SCHEDULE_RT/tree/57ed33530b80ad5dd85d4e97103cb0d5076b91fb" target="_blank">57ed335</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/knowlabUnimelb/SCHEDULE_RT/tree/98777c96d8f6169dfd2825c39d0af87c4b79d560" target="_blank">98777c9</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -518,11 +518,11 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    analysis/site_libs/
 
 Untracked files:
     Untracked:  analysis/prereg.pdf
     Untracked:  analysis/prereg.tex
+    Untracked:  data/create_database.sql
 
 </code></pre>
 <p>
@@ -561,6 +561,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/knowlabUnimelb/SCHEDULE_RT/blob/98777c96d8f6169dfd2825c39d0af87c4b79d560/analysis/index.Rmd" target="_blank">98777c9</a>
+</td>
+<td>
+knowlabUnimelb
+</td>
+<td>
+2020-05-26
+</td>
+<td>
+Update analysis and data
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/knowlabUnimelb/SCHEDULE_RT/4d0e42a0cfa467f489ed2afdbafcc2a95dc01c81/docs/index.html" target="_blank">4d0e42a</a>
+</td>
+<td>
+knowlabUnimelb
+</td>
+<td>
+2020-04-27
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -678,72 +712,52 @@ Start workflowr project.
 <h1>Overview of Method</h1>
 <p><em>Data Analysis</em>:</p>
 <p>The first analysis will focus on the order in which tasks are selected by participants.</p>
-<pre class="r"><code>rm(list=ls())
-library(tidyverse)
-library(workflowr)
-#library(Rankcluster)
-#library(rankdist) # Crashes rStudio
-#library(Kendall)
-library(DescTools) # ConDisPairs looks useful
-library(gtools) 
-
-#define working directories
-inputdir &lt;- &quot;data&quot;
-
-# Reading data and variable names 
-colfile      &lt;- read.csv(paste(inputdir,&quot;data_dictionary.csv&quot;,sep=&quot;/&quot;))
-datafn       &lt;- paste(inputdir,&quot;test_data.csv&quot;,sep=&quot;/&quot;) 
-data         &lt;- read.csv(datafn, header = FALSE, col.names = colfile$Column) # Add column labels to data
-
-# Extract task selection trials and discard practice
-sdata = data[data$trial_event == &quot;select_rdk&quot; &amp; data$trial_number != 0, ]</code></pre>
-<p>The task set presented to each subject will have an optimal solution (ordered from easiest to most difficult). The first analysis will compute something like Kendall’s Tau, rank-order distance. What we want is the distance of the selected options from the optimal solutions, which is Kendall’s Tau. However, because a participant may run out of time, there may be missing values. To handle these values, for each trial, we find the orders which partially match the selected order and compute: (1) the maximum distance of those possible orders and the optimal solution and (2) the average distance of those possible orders and the optimal solution.</p>
-<pre class="r"><code># Extract patch coherence
-coherence = c(sdata$patch_0[1], sdata$patch_1[1], sdata$patch_2[1], sdata$patch_3[1]) # will vary by subject
-optimal_order = sort(coherence, decreasing = TRUE, index.return=TRUE) # e.g., ocoh$ix = [4 3 1 2] optimal order, will vary by subject
-
-# Organize trial x selection
-trials = unique(sdata$trial_number)
-ntrials = length(trials)
-n = length(coherence)
-
-# Distance parameters
-maxdistance = (n * (n-1))/2
-missing_penalty = maxdistance/n
-allperms = permutations(n=4, r=4, v=1:4, repeats.allowed=FALSE)
-nperms = nrow(allperms)
-
-# Compute distance from optimal for all perms
-pdist &lt;- rep(NA, nperms)
-for (i in 1:nperms){
-  distObj = ConDisPairs(table(allperms[i, ], optimal_order$ix))
-  pdist[i] = distObj$D  
-}
-
-
-# Compute distance from optimal
-selmat &lt;- matrix(data=NA, nrow=ntrials, ncol=n)
-max_distances &lt;- rep(NA, n)
-avg_distances &lt;- rep(NA, n)
-penalties &lt;- rep(NA, n)
-for (i in 1:ntrials){
-    csel = sdata[sdata$trial_number == i, ]$button_pressed
-    
-    selmat[i, 1:length(csel)] = csel # NULL is coded as option 5
-    selmat[i, selmat[i,] == 5] = NA  # Replace NULL with NA
-    
-    # Find permutation partial matches
-    if (!all(is.na(selmat[i,]))){
-      partial_perms = allperms[apply(do.call(&quot;rbind&quot;, rep(list(selmat[i,1:sum(!is.na(selmat[i,]))]), nperms)) == allperms[, !is.na(selmat[i,])], 1, function(x)all(x)), ]
-    
-      partial_distances = pdist[apply(do.call(&quot;rbind&quot;, rep(list(selmat[i,1:sum(!is.na(selmat[i,]))]), nperms)) == allperms[, !is.na(selmat[i,])], 1, function(x)all(x))]
-    } else {
-      partial_distances = pdist
-    }
-    
-    max_distances[i] = max(partial_distances)
-    avg_distances[i] = mean(partial_distances)
-}</code></pre>
+</div>
+<div id="data-cleaning" class="section level1">
+<h1>Data cleaning</h1>
+<p>Two experiments were completed online: one using fixed task locations on each trial and one using random task locations on each trial. Subjects completed the experiment by clicking a link with the uniquely generated id code. Subjects were able to use the link multiple times; further, subjects were able to exit the experiment at any time. Consequently, the datafile contains partially completed data for some subjects which needs to be identified and removed.</p>
+</div>
+<div id="participants" class="section level1">
+<h1>Participants</h1>
+<div id="random-location-condition" class="section level2">
+<h2>Random Location Condition</h2>
+<p>We tested 93 participants (65 F, 23 M, 5 Undeclared). Participants were recruited through the Melbourne School of Psychological Sciences Research Experience Pool (Mean age = 19.6153846 (range = 17 - 49)). Participants were reimbursed with credit toward completion of a first year psychology subject. One datasets from 3 subjects were excluded for completing the experiment twice; i.e., only the first of the datasets was retained.</p>
+</div>
+</div>
+<div id="data-analysis" class="section level1">
+<h1>Data Analysis</h1>
+<p>The task set presented to each subject will have an optimal solution (ordered from easiest to most difficult). The first analysis will compute something like Kendall’s Tau, rank-order distance. What we want is the distance of the selected options from the optimal solutions, which is Kendall’s Tau. However, because a participant may run out of time, there may be missing values. To handle these values, for each trial, we find the orders which partially match the selected order and compute: (1) the maximum distance of those possible orders and the optimal solution (max_distance) and (2) the average distance of those possible orders and the optimal solution (avg_distance).</p>
+</div>
+<div id="summary-performance" class="section level1">
+<h1>Summary performance</h1>
+<ul>
+<li>What is the average completion time and accuracy of the easy, medium, hard, and very hard tasks?</li>
+</ul>
+<p><img src="figure/index.Rmd/analyse_RDK_difficulty-1.png" width="672" style="display: block; margin: auto;" /></p>
+<ul>
+<li>How many tasks are completed on average?</li>
+</ul>
+<p>On average, participants completed tasks during the untimed practice phase and tasks during the deadline phase.</p>
+<p>&lt;!- Test significance -&gt;</p>
+<ul>
+<li>What is the proportion of easy-task-first choices?</li>
+</ul>
+</div>
+<div id="optimality-in-each-condition" class="section level1">
+<h1>Optimality in each condition</h1>
+<p>The following figures compare max_distance and avg_distance between the fixed difficulty and random difficulty conditions as a function of deadline condition and phase.</p>
+</div>
+<div id="notes" class="section level1">
+<h1>Notes</h1>
+<ul>
+<li><p>Optimality is computed with regard to an easy –&gt; very ordering and is a number between 0 and the max distance of the worst ordering. Should I normalise this variable to range between 0 and 1?</p></li>
+<li><p>Some strategies involve selecting tasks based on spatial position. I can compute the distance to a clockwise or anti-clockwise strategy by computing the distance to each of the following:</p></li>
+<li><p>Clockwise: W-N-E-S (1, 2, 3, 4), N-E-S-W (2, 3, 4, 1), E-S-W-N (3, 4, 1, 2), S-W-N-E (4, 1, 2, 3)</p></li>
+<li><p>Anti-clockwise: S-E-N-W (4, 3, 2, 1), E-N-W-S (3, 2, 1, 4), N-W-S-E (2, 1, 4, 3), W-S-E-N (1, 4, 3, 2)</p></li>
+<li><p>The key then is consistency across trials; if a participant regularly uses a circular strategy, then they should be classified as such.</p></li>
+<li><p>Some other questions arise:</p></li>
+<li><p>What should be done with fixed location participants in which the optimal solution is also a circular strategy? Analyse the data again but removing trials in which difficulty is mapped in a circular manner?</p></li>
+</ul>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -767,27 +781,30 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] gtools_3.8.2      DescTools_0.99.34 forcats_0.5.0     stringr_1.4.0    
- [5] dplyr_0.8.5       purrr_0.3.3       readr_1.3.1       tidyr_1.0.2      
- [9] tibble_3.0.0      ggplot2_3.3.0     tidyverse_1.3.0   workflowr_1.6.1  
+ [1] hrbrthemes_0.8.0  english_1.2-5     gtools_3.8.2      DescTools_0.99.34
+ [5] forcats_0.5.0     stringr_1.4.0     dplyr_0.8.5       purrr_0.3.3      
+ [9] readr_1.3.1       tidyr_1.0.2       tibble_3.0.0      ggplot2_3.3.0    
+[13] tidyverse_1.3.0   workflowr_1.6.1  
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.4       lubridate_1.7.4  mvtnorm_1.1-0    lattice_0.20-38 
- [5] assertthat_0.2.1 rprojroot_1.3-2  digest_0.6.25    R6_2.4.1        
- [9] cellranger_1.1.0 backports_1.1.5  reprex_0.3.0     evaluate_0.14   
-[13] httr_1.4.1       pillar_1.4.3     rlang_0.4.5      readxl_1.3.1    
-[17] rstudioapi_0.11  whisker_0.4      Matrix_1.2-18    rmarkdown_2.1   
-[21] munsell_0.5.0    broom_0.5.5      compiler_3.6.3   httpuv_1.5.2    
-[25] modelr_0.1.6     xfun_0.12        pkgconfig_2.0.3  htmltools_0.4.0 
-[29] tidyselect_1.0.0 expm_0.999-4     fansi_0.4.1      crayon_1.3.4    
-[33] dbplyr_1.4.2     withr_2.1.2      later_1.0.0      MASS_7.3-51.5   
-[37] grid_3.6.3       nlme_3.1-144     jsonlite_1.6.1   gtable_0.3.0    
-[41] lifecycle_0.2.0  DBI_1.1.0        git2r_0.26.1     magrittr_1.5    
-[45] scales_1.1.0     cli_2.0.2        stringi_1.4.6    fs_1.4.1        
-[49] promises_1.1.0   xml2_1.3.0       ellipsis_0.3.0   generics_0.0.2  
-[53] vctrs_0.2.4      boot_1.3-24      tools_3.6.3      glue_1.4.0      
-[57] hms_0.5.3        yaml_2.2.1       colorspace_1.4-1 rvest_0.3.5     
-[61] knitr_1.28       haven_2.2.0     </code></pre>
+ [1] httr_1.4.1        jsonlite_1.6.1    modelr_0.1.6      assertthat_0.2.1 
+ [5] expm_0.999-4      cellranger_1.1.0  yaml_2.2.1        gdtools_0.2.2    
+ [9] Rttf2pt1_1.3.8    pillar_1.4.3      backports_1.1.5   lattice_0.20-38  
+[13] glue_1.4.0        extrafontdb_1.0   digest_0.6.25     promises_1.1.0   
+[17] rvest_0.3.5       colorspace_1.4-1  htmltools_0.4.0   httpuv_1.5.2     
+[21] Matrix_1.2-18     pkgconfig_2.0.3   broom_0.5.5       haven_2.2.0      
+[25] mvtnorm_1.1-0     scales_1.1.0      whisker_0.4       later_1.0.0      
+[29] git2r_0.26.1      farver_2.0.3      generics_0.0.2    ellipsis_0.3.0   
+[33] withr_2.1.2       cli_2.0.2         magrittr_1.5      crayon_1.3.4     
+[37] readxl_1.3.1      evaluate_0.14     fs_1.4.1          fansi_0.4.1      
+[41] nlme_3.1-144      MASS_7.3-51.5     xml2_1.3.0        tools_3.6.3      
+[45] hms_0.5.3         lifecycle_0.2.0   munsell_0.5.0     reprex_0.3.0     
+[49] compiler_3.6.3    systemfonts_0.2.2 rlang_0.4.5       grid_3.6.3       
+[53] rstudioapi_0.11   labeling_0.3      rmarkdown_2.1     boot_1.3-24      
+[57] gtable_0.3.0      DBI_1.1.0         R6_2.4.1          lubridate_1.7.4  
+[61] knitr_1.28        extrafont_0.17    rprojroot_1.3-2   stringi_1.4.6    
+[65] Rcpp_1.0.4        vctrs_0.2.4       dbplyr_1.4.2      tidyselect_1.0.0 
+[69] xfun_0.12        </code></pre>
 </div>
 </div>
 
