@@ -30,6 +30,7 @@ library(english)
 library(ggplot2)
 library(dplyr)
 library(hrbrthemes)
+library(knitr)
 
 #define working directories
 inputdir <- "data"
@@ -200,7 +201,7 @@ Participants first completed 10 trials with a long (60 sec) deadline to help par
 
 # Data Analysis
 
-```{r analyse_RDK_difficulty, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
+```{r analyse_RDK_difficulty, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
 rdk = data[data$trial_event == "rdk", ]
 rdk$correct = as.numeric(rdk$correct)
 rdk$correct = rdk$correct - 1
@@ -217,9 +218,15 @@ rdk = rdk[rdk$rt <3000, ]
 rdk$phase = as.factor(rdk$phase)
 
 # Fix missing 0's in data$correct[data$trial_event == "rdk"] column
-difficulty = aggregate(list("accuracy" = rdk$correct, "rt" = rdk$rt), by = list("coherence" = rdk$dot_coherence, "phase" = rdk$phase), FUN = function(x) mean(x, na.rm = TRUE))
+difficulty = aggregate(list("accuracy" = rdk$correct, "rt" = rdk$rt), by = list("difficulty" = rdk$dot_coherence, "phase" = rdk$phase), FUN = function(x) mean(x, na.rm = TRUE))
 ncounts = rdk %>% count(phase, dot_coherence)
 difficulty$n = ncounts$n
+
+levels(difficulty$difficulty) = c("Very Hard", "Hard", "Medium", "Easy", "NULL")
+levels(difficulty$phase) = c("no deadline", "deadline")
+
+# Create the table
+kable(difficulty, caption="Mean accuracy and RT for each difficulty and each phase")
 
 ```
 
@@ -227,12 +234,14 @@ difficulty$n = ncounts$n
 tcdata = aggregate(rdk$trial_event[rdk$correct == 1], by=list("trial" = rdk$trial_number[rdk$correct == 1], "phase" = rdk$phase[rdk$correct == 1], "subject" = rdk$uniqueid[rdk$correct == 1]), FUN=length)
 
 avgCompletions = aggregate(tcdata$x, by=list("phase"=tcdata$phase), FUN=mean)
+levels(avgCompletions$phase) = c("no deadline", "deadline")
 
 ```
 
 We first summarize performance by answering the following: 
 
 * How many tasks are completed on average?
+
 On average, across both conditions, participants completed `r avgCompletions$x[avgCompletions$phase == "no deadline"]` tasks during the `r as.character(avgCompletions$phase[1])` phase and `r avgCompletions$x[avgCompletions$phase == "deadline"]` tasks during the `r as.character(avgCompletions$phase[2])` phase. 
 
 * TODO: What is the average time taken to complete the RDK's?
@@ -246,6 +255,8 @@ On average, across both conditions, participants completed `r avgCompletions$x[a
 levels(rdk$dot_coherence) = c("very hard", "hard", "medium", "easy", "NULL")
 levels(rdk$phase) = c("no deadline", "deadline")
 diff_plot <- rdk %>% ggplot(aes(x=dot_coherence, y=rt, fill=dot_coherence)) + geom_violin(adjust = 1.5, trim = TRUE) + facet_wrap(~phase)
+
+diff_plot
 ```
 
 * TODO: What is the proportion of easy-task-first choices?
