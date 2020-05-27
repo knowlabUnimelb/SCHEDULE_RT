@@ -254,9 +254,9 @@ On average, across both conditions, participants completed `r avgCompletions$x[a
 # Difficulty plot
 levels(rdk$dot_coherence) = c("very hard", "hard", "medium", "easy", "NULL")
 levels(rdk$phase) = c("no deadline", "deadline")
-diff_plot <- rdk %>% ggplot(aes(x=dot_coherence, y=rt, fill=dot_coherence)) + geom_violin(adjust = 1.5, trim = TRUE) + facet_wrap(~phase)
+diff_plot <- rdk %>% ggplot(aes(x=dot_coherence, y=rt, fill=dot_coherence)) + geom_violin(adjust = 1.5, trim = TRUE) + facet_wrap(~phase) + labs(y="RT (msec)", x = "Difficulty")
 
-diff_plot
+print(diff_plot + ggtitle("Response times as a function of difficulty"))
 ```
 
 * TODO: What is the proportion of easy-task-first choices?
@@ -442,15 +442,15 @@ levels(avg_avgdata$condition) = c("fixed", "random") # Replace condition names
 The following figures compare max_distance, min_distance, and avg_distance between the fixed difficulty and random difficulty conditions as a function of deadline condition and phase. 
 
 ```{r plotData, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
-max_plot <- avg_maxdata %>% ggplot(aes(x=avg, fill=phase)) + geom_histogram(color="white", alpha=0.6, bins = 10, position="identity") + facet_wrap(~condition+phase)
+max_plot <- avg_maxdata %>% ggplot(aes(x=avg, fill=phase)) + geom_histogram(color="white", alpha=0.6, bins = 10, position="identity") + facet_wrap(~condition+phase) + labs(y="Frequency", x = "Max Distance")
 
-min_plot <- avg_mindata %>% ggplot(aes(x=avg, fill=phase)) + geom_histogram(color="white", alpha=0.6, bins = 10, position="identity") + facet_wrap(~condition+phase)
+min_plot <- avg_mindata %>% ggplot(aes(x=avg, fill=phase)) + geom_histogram(color="white", alpha=0.6, bins = 10, position="identity") + facet_wrap(~condition+phase) + labs(y="Frequency", x = "Min Distance")
 
-avg_plot <- avg_avgdata %>% ggplot(aes(x=avg, fill=phase)) + geom_histogram(color="white", alpha=0.6, bins = 10, position="identity") + facet_wrap(~condition+phase)
+avg_plot <- avg_avgdata %>% ggplot(aes(x=avg, fill=phase)) + geom_histogram(color="white", alpha=0.6, bins = 10, position="identity") + facet_wrap(~condition+phase) + labs(y="Frequency", x = "Avg Distance")
 
-max_plot
-min_plot
-avg_plot
+print(max_plot + ggtitle("Max Distance"))
+print(min_plot + ggtitle("Min Distance"))
+print(avg_plot + ggtitle("Avg Distance"))
 
 ```
 
@@ -566,11 +566,11 @@ The following plot shows the distribution of distribution of participant's spati
 In the random difficulty condition, participants tend not to use a spatial strategy except later in the task where there is a deadline.
 
 ```{r plotSpatialData, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
-spatial_choice_plot <- avg_scdata %>% ggplot(aes(x=avg, fill=phase)) + geom_histogram(color="white", alpha=0.6, bins = 10, position="identity") + facet_wrap(~condition+phase)
+spatial_choice_plot <- avg_scdata %>% ggplot(aes(x=avg, fill=phase)) + geom_histogram(color="white", alpha=0.6, bins = 10, position="identity") + facet_wrap(~condition+phase) + labs(y="Frequency", x = "Proportion of Spatially Consistent Responses") + ggtitle("Spatial Strategy Analysis")
 
 #avg_plot <- avg_avgdata %>% ggplot(aes(x=avg, fill=phase+phase)) + geom_histogram(color="white", alpha=1, bins = 10) + facet_wrap(~condition+phase)
 
-spatial_choice_plot
+print(spatial_choice_plot)
 
 ```
 
