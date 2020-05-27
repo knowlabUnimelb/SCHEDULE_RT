@@ -500,16 +500,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomknowlabUnimelbSCHEDULERTtreedbcb22b0864ba8361c2f3c149c3e5d93c20a286etargetblankdbcb22ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/knowlabUnimelb/SCHEDULE_RT/tree/dbcb22b0864ba8361c2f3c149c3e5d93c20a286e" target="_blank">dbcb22b</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomknowlabUnimelbSCHEDULERTtreeadc3da5f6362e785cd72f59bb36916acdf16f607targetblankadc3da5a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/knowlabUnimelb/SCHEDULE_RT/tree/adc3da5f6362e785cd72f59bb36916acdf16f607" target="_blank">adc3da5</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomknowlabUnimelbSCHEDULERTtreedbcb22b0864ba8361c2f3c149c3e5d93c20a286etargetblankdbcb22ba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomknowlabUnimelbSCHEDULERTtreeadc3da5f6362e785cd72f59bb36916acdf16f607targetblankadc3da5a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/knowlabUnimelb/SCHEDULE_RT/tree/dbcb22b0864ba8361c2f3c149c3e5d93c20a286e" target="_blank">dbcb22b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/knowlabUnimelb/SCHEDULE_RT/tree/adc3da5f6362e785cd72f59bb36916acdf16f607" target="_blank">adc3da5</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -562,6 +562,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/knowlabUnimelb/SCHEDULE_RT/blob/adc3da5f6362e785cd72f59bb36916acdf16f607/analysis/index.Rmd" target="_blank">adc3da5</a>
+</td>
+<td>
+knowlabUnimelb
+</td>
+<td>
+2020-05-27
+</td>
+<td>
+Update analysis
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/knowlabUnimelb/SCHEDULE_RT/c0e7aa849a0d2915a3716bde0c9f716ffadec853/docs/index.html" target="_blank">c0e7aa8</a>
+</td>
+<td>
+knowlabUnimelb
+</td>
+<td>
+2020-05-27
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -767,13 +801,89 @@ Start workflowr project.
 </div>
 <div id="data-analysis" class="section level1">
 <h1>Data Analysis</h1>
+<table>
+<caption>Mean accuracy and RT for each difficulty and each phase</caption>
+<thead>
+<tr class="header">
+<th align="left">difficulty</th>
+<th align="left">phase</th>
+<th align="right">accuracy</th>
+<th align="right">rt</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Very Hard</td>
+<td align="left">no deadline</td>
+<td align="right">0.5265455</td>
+<td align="right">1208.7992</td>
+<td align="right">1375</td>
+</tr>
+<tr class="even">
+<td align="left">Hard</td>
+<td align="left">no deadline</td>
+<td align="right">0.6799323</td>
+<td align="right">1069.1024</td>
+<td align="right">1181</td>
+</tr>
+<tr class="odd">
+<td align="left">Medium</td>
+<td align="left">no deadline</td>
+<td align="right">0.6027496</td>
+<td align="right">875.2608</td>
+<td align="right">1382</td>
+</tr>
+<tr class="even">
+<td align="left">Easy</td>
+<td align="left">no deadline</td>
+<td align="right">0.4029779</td>
+<td align="right">820.6081</td>
+<td align="right">2082</td>
+</tr>
+<tr class="odd">
+<td align="left">Very Hard</td>
+<td align="left">deadline</td>
+<td align="right">0.5933425</td>
+<td align="right">544.1209</td>
+<td align="right">2914</td>
+</tr>
+<tr class="even">
+<td align="left">Hard</td>
+<td align="left">deadline</td>
+<td align="right">0.6850292</td>
+<td align="right">536.2937</td>
+<td align="right">3086</td>
+</tr>
+<tr class="odd">
+<td align="left">Medium</td>
+<td align="left">deadline</td>
+<td align="right">0.7386472</td>
+<td align="right">504.3568</td>
+<td align="right">3149</td>
+</tr>
+<tr class="even">
+<td align="left">Easy</td>
+<td align="left">deadline</td>
+<td align="right">0.6795596</td>
+<td align="right">500.9538</td>
+<td align="right">3542</td>
+</tr>
+</tbody>
+</table>
 <p>We first summarize performance by answering the following:</p>
 <ul>
-<li><p>How many tasks are completed on average? On average, across both conditions, participants completed tasks during the 0 phase and tasks during the 1 phase.</p></li>
+<li>How many tasks are completed on average?</li>
+</ul>
+<p>On average, across both conditions, participants completed 3.6065389 tasks during the no deadline phase and 3.2374481 tasks during the deadline phase.</p>
+<ul>
 <li><p>TODO: What is the average time taken to complete the RDK’s?</p></li>
 <li><p>TODO: Did this differ between the fixed and random location conditions?</p></li>
 <li><p>What is the average completion time and accuracy of the easy, medium, hard, and very hard tasks? The results indicated that the RTs became faster as the difficulty if the RDK became easier.</p></li>
-<li><p>TODO: What is the proportion of easy-task-first choices?</p></li>
+</ul>
+<p><img src="figure/index.Rmd/difficulty_plot-1.png" width="672" style="display: block; margin: auto;" /></p>
+<ul>
+<li>TODO: What is the proportion of easy-task-first choices?</li>
 </ul>
 </div>
 <div id="optimality-in-each-condition" class="section level1">
@@ -821,28 +931,28 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] hrbrthemes_0.8.0  english_1.2-5     gtools_3.8.2      DescTools_0.99.34
- [5] forcats_0.5.0     stringr_1.4.0     dplyr_0.8.5       purrr_0.3.3      
- [9] readr_1.3.1       tidyr_1.0.2       tibble_3.0.0      ggplot2_3.3.0    
-[13] tidyverse_1.3.0   workflowr_1.6.1  
+ [1] knitr_1.28        hrbrthemes_0.8.0  english_1.2-5     gtools_3.8.2     
+ [5] DescTools_0.99.34 forcats_0.5.0     stringr_1.4.0     dplyr_0.8.5      
+ [9] purrr_0.3.3       readr_1.3.1       tidyr_1.0.2       tibble_3.0.0     
+[13] ggplot2_3.3.0     tidyverse_1.3.0   workflowr_1.6.1  
 
 loaded via a namespace (and not attached):
  [1] httr_1.4.1        jsonlite_1.6.1    modelr_0.1.6      assertthat_0.2.1 
- [5] expm_0.999-4      cellranger_1.1.0  yaml_2.2.1        gdtools_0.2.2    
- [9] Rttf2pt1_1.3.8    pillar_1.4.3      backports_1.1.5   lattice_0.20-38  
-[13] glue_1.4.0        extrafontdb_1.0   digest_0.6.25     promises_1.1.0   
-[17] rvest_0.3.5       colorspace_1.4-1  htmltools_0.4.0   httpuv_1.5.2     
-[21] Matrix_1.2-18     pkgconfig_2.0.3   broom_0.5.5       haven_2.2.0      
-[25] mvtnorm_1.1-0     scales_1.1.0      whisker_0.4       later_1.0.0      
-[29] git2r_0.26.1      farver_2.0.3      generics_0.0.2    ellipsis_0.3.0   
-[33] withr_2.1.2       cli_2.0.2         magrittr_1.5      crayon_1.3.4     
-[37] readxl_1.3.1      evaluate_0.14     fs_1.4.1          fansi_0.4.1      
-[41] nlme_3.1-144      MASS_7.3-51.5     xml2_1.3.0        tools_3.6.3      
-[45] hms_0.5.3         lifecycle_0.2.0   munsell_0.5.0     reprex_0.3.0     
-[49] compiler_3.6.3    systemfonts_0.2.2 rlang_0.4.5       grid_3.6.3       
-[53] rstudioapi_0.11   labeling_0.3      rmarkdown_2.1     boot_1.3-24      
-[57] gtable_0.3.0      DBI_1.1.0         R6_2.4.1          lubridate_1.7.4  
-[61] knitr_1.28        extrafont_0.17    rprojroot_1.3-2   stringi_1.4.6    
+ [5] expm_0.999-4      highr_0.8         cellranger_1.1.0  yaml_2.2.1       
+ [9] gdtools_0.2.2     Rttf2pt1_1.3.8    pillar_1.4.3      backports_1.1.5  
+[13] lattice_0.20-38   glue_1.4.0        extrafontdb_1.0   digest_0.6.25    
+[17] promises_1.1.0    rvest_0.3.5       colorspace_1.4-1  htmltools_0.4.0  
+[21] httpuv_1.5.2      Matrix_1.2-18     pkgconfig_2.0.3   broom_0.5.5      
+[25] haven_2.2.0       mvtnorm_1.1-0     scales_1.1.0      whisker_0.4      
+[29] later_1.0.0       git2r_0.26.1      farver_2.0.3      generics_0.0.2   
+[33] ellipsis_0.3.0    withr_2.1.2       cli_2.0.2         magrittr_1.5     
+[37] crayon_1.3.4      readxl_1.3.1      evaluate_0.14     fs_1.4.1         
+[41] fansi_0.4.1       nlme_3.1-144      MASS_7.3-51.5     xml2_1.3.0       
+[45] tools_3.6.3       hms_0.5.3         lifecycle_0.2.0   munsell_0.5.0    
+[49] reprex_0.3.0      compiler_3.6.3    systemfonts_0.2.2 rlang_0.4.5      
+[53] grid_3.6.3        rstudioapi_0.11   labeling_0.3      rmarkdown_2.1    
+[57] boot_1.3-24       gtable_0.3.0      DBI_1.1.0         R6_2.4.1         
+[61] lubridate_1.7.4   extrafont_0.17    rprojroot_1.3-2   stringi_1.4.6    
 [65] Rcpp_1.0.4        vctrs_0.2.4       dbplyr_1.4.2      tidyselect_1.0.0 
 [69] xfun_0.12        </code></pre>
 </div>
