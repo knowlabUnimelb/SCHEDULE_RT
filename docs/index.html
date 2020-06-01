@@ -409,7 +409,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-05-27
+<strong>Last updated:</strong> 2020-06-01
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -500,16 +500,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomknowlabUnimelbSCHEDULERTtree4c06a56032c84718f72a06dc81b3570849d08c93targetblank4c06a56a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/knowlabUnimelb/SCHEDULE_RT/tree/4c06a56032c84718f72a06dc81b3570849d08c93" target="_blank">4c06a56</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomknowlabUnimelbSCHEDULERTtree33ea1a40cc5f04a7904ee65b7bd0225bedd8906ctargetblank33ea1a4a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/knowlabUnimelb/SCHEDULE_RT/tree/33ea1a40cc5f04a7904ee65b7bd0225bedd8906c" target="_blank">33ea1a4</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomknowlabUnimelbSCHEDULERTtree4c06a56032c84718f72a06dc81b3570849d08c93targetblank4c06a56a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomknowlabUnimelbSCHEDULERTtree33ea1a40cc5f04a7904ee65b7bd0225bedd8906ctargetblank33ea1a4a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/knowlabUnimelb/SCHEDULE_RT/tree/4c06a56032c84718f72a06dc81b3570849d08c93" target="_blank">4c06a56</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/knowlabUnimelb/SCHEDULE_RT/tree/33ea1a40cc5f04a7904ee65b7bd0225bedd8906c" target="_blank">33ea1a4</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -518,8 +518,10 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/site_libs/
 
 Untracked files:
+    Untracked:  analysis/license.utf8.md
     Untracked:  analysis/prereg.pdf
     Untracked:  analysis/prereg.tex
     Untracked:  data/create_database.sql
@@ -561,6 +563,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/knowlabUnimelb/SCHEDULE_RT/blob/33ea1a40cc5f04a7904ee65b7bd0225bedd8906c/analysis/index.Rmd" target="_blank">33ea1a4</a>
+</td>
+<td>
+knowlabUnimelb
+</td>
+<td>
+2020-06-01
+</td>
+<td>
+Update analysis and fix bug in optimality analysis
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/knowlabUnimelb/SCHEDULE_RT/bcbc5442cce7b76db15234d136c0a5afad844541/docs/index.html" target="_blank">bcbc544</a>
+</td>
+<td>
+knowlabUnimelb
+</td>
+<td>
+2020-05-27
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -814,20 +850,21 @@ Start workflowr project.
 </div>
 <div id="data-preprocessing" class="section level1">
 <h1>Data Preprocessing</h1>
-<p><em>Data Cleaning</em>:</p>
+<p><em>Data Cleaning</em></p>
 <p>Two experiments were completed online: one using fixed task locations on each trial and one using random task locations on each trial. Subjects completed the experiment by clicking a link with the uniquely generated id code. Subjects were able to use the link multiple times; further, subjects were able to exit the experiment at any time. Consequently, the datafile contains partially completed data for some subjects which needs to be identified and removed.</p>
 </div>
 <div id="method" class="section level1">
 <h1>Method</h1>
 <div id="participants" class="section level2">
 <h2>Participants</h2>
-<p>We tested 93 participants (65 F, 23 M, 5 Undeclared). Participants were recruited through the Melbourne School of Psychological Sciences Research Experience Pool (Mean age = 19.6153846, range = 17 - 49). Participants were reimbursed with credit toward completion of a first year psychology subject. Datasets from 3 subjects were excluded for completing the experiment twice; i.e., only the first of the datasets for these subjects was retained.</p>
-<p>49 were assigned to the <em>Fixed Difficulty</em> condition. In this condition, the location of easy, medium, hard, and very hard random dot kinematograms (RDK’s) was held constant across trials.</p>
-<p>44 were assigned to the <em>Random Difficulty</em> condition. In this condition, the location of easy, medium, hard, and very hard random dot kinematograms (RDK’s) were randomized from trial to trial. The Fixed Difficulty condition was completed before the Random Difficulty condition. Participants only completed one of these conditions.</p>
+<p>We tested 93 participants (65 F, 23 M, 5 Undeclared). Participants were recruited through the Melbourne School of Psychological Sciences Research Experience Pool (Mean age = 19.62, range = 17 - 49). Participants were reimbursed with credit toward completion of a first year psychology subject. Datasets from 3 subjects were excluded for completing the experiment twice; i.e., only the first of the datasets for these subjects was retained.</p>
+<p>Forty-nine were assigned to the <em>Fixed Difficulty</em> condition. In this condition, the location of easy, medium, hard, and very hard random dot kinematograms (RDK’s) was held constant across trials.</p>
+<p>Forty-four were assigned to the <em>Random Difficulty</em> condition. In this condition, the location of easy, medium, hard, and very hard random dot kinematograms (RDK’s) were randomized from trial to trial.</p>
+<p>The Fixed Difficulty experiment was completed before the Random Difficulty experiment. Participants only completed one of these.</p>
 </div>
 <div id="design" class="section level2">
 <h2>Design</h2>
-<p>In each condition, participants completed multiple trials in which they selected and completed RDK tasks. On each trial, participants were shown a set of four RDKs labelled Easy, Medium, Hard, and Very Hard. The labels corresponded to the difficulty of the RDK. The proportion of dots moving in a coherent direction was set to .8, .5, .2, and .0 for the Easy, Medium, Hard, and Very Hard locations, respectively.</p>
+<p>In each condition, participants completed multiple trials in which they selected and completed RDK tasks. On each trial, participants were shown a set of four RDKs labelled Easy, Medium, Hard, and Very Hard. The labels corresponded to the difficulty of the RDK. The proportion of dots moving in a coherent direction was set to 0.8, 0.5, 0.2, and 0.0 for the Easy, Medium, Hard, and Very Hard locations, respectively.</p>
 <p>From the set of four, participants selected and completed one RDK at a time in any order. The goal of each trial was to complete as many as possible before a deadline.</p>
 <p>Participants first completed 10 trials with a long (60 sec) deadline to help participants learn the task, explore strategies, and allow for comparison to a short-deadline condition. We term this the <em>no deadline</em> condition since the provided time is well beyond what is necessary to complete all four RDK’s. Next, participants completed 30 trials with a 6 second deadline.</p>
 </div>
@@ -840,6 +877,7 @@ Start workflowr project.
 <tr class="header">
 <th align="left">difficulty</th>
 <th align="left">phase</th>
+<th align="left">condition</th>
 <th align="right">accuracy</th>
 <th align="right">rt</th>
 <th align="right">n</th>
@@ -849,57 +887,129 @@ Start workflowr project.
 <tr class="odd">
 <td align="left">Very Hard</td>
 <td align="left">no deadline</td>
-<td align="right">0.5265455</td>
-<td align="right">1208.7992</td>
+<td align="left">fixed_location</td>
+<td align="right">0.55</td>
+<td align="right">1294.34</td>
 <td align="right">1375</td>
 </tr>
 <tr class="even">
 <td align="left">Hard</td>
 <td align="left">no deadline</td>
-<td align="right">0.6799323</td>
-<td align="right">1069.1024</td>
+<td align="left">fixed_location</td>
+<td align="right">0.68</td>
+<td align="right">1121.78</td>
 <td align="right">1181</td>
 </tr>
 <tr class="odd">
 <td align="left">Medium</td>
 <td align="left">no deadline</td>
-<td align="right">0.6027496</td>
-<td align="right">875.2608</td>
+<td align="left">fixed_location</td>
+<td align="right">0.60</td>
+<td align="right">895.33</td>
 <td align="right">1382</td>
 </tr>
 <tr class="even">
 <td align="left">Easy</td>
 <td align="left">no deadline</td>
-<td align="right">0.4029779</td>
-<td align="right">820.6081</td>
+<td align="left">fixed_location</td>
+<td align="right">0.46</td>
+<td align="right">855.13</td>
 <td align="right">2082</td>
 </tr>
 <tr class="odd">
 <td align="left">Very Hard</td>
 <td align="left">deadline</td>
-<td align="right">0.5933425</td>
-<td align="right">544.1209</td>
+<td align="left">fixed_location</td>
+<td align="right">0.61</td>
+<td align="right">588.70</td>
 <td align="right">2914</td>
 </tr>
 <tr class="even">
 <td align="left">Hard</td>
 <td align="left">deadline</td>
-<td align="right">0.6850292</td>
-<td align="right">536.2937</td>
+<td align="left">fixed_location</td>
+<td align="right">0.73</td>
+<td align="right">591.70</td>
 <td align="right">3086</td>
 </tr>
 <tr class="odd">
 <td align="left">Medium</td>
 <td align="left">deadline</td>
-<td align="right">0.7386472</td>
-<td align="right">504.3568</td>
+<td align="left">fixed_location</td>
+<td align="right">0.78</td>
+<td align="right">533.98</td>
 <td align="right">3149</td>
 </tr>
 <tr class="even">
 <td align="left">Easy</td>
 <td align="left">deadline</td>
-<td align="right">0.6795596</td>
-<td align="right">500.9538</td>
+<td align="left">fixed_location</td>
+<td align="right">0.78</td>
+<td align="right">525.20</td>
+<td align="right">3542</td>
+</tr>
+<tr class="odd">
+<td align="left">Very Hard</td>
+<td align="left">no deadline</td>
+<td align="left">random_location</td>
+<td align="right">0.50</td>
+<td align="right">1128.44</td>
+<td align="right">1375</td>
+</tr>
+<tr class="even">
+<td align="left">Hard</td>
+<td align="left">no deadline</td>
+<td align="left">random_location</td>
+<td align="right">0.67</td>
+<td align="right">1011.09</td>
+<td align="right">1181</td>
+</tr>
+<tr class="odd">
+<td align="left">Medium</td>
+<td align="left">no deadline</td>
+<td align="left">random_location</td>
+<td align="right">0.61</td>
+<td align="right">852.85</td>
+<td align="right">1382</td>
+</tr>
+<tr class="even">
+<td align="left">Easy</td>
+<td align="left">no deadline</td>
+<td align="left">random_location</td>
+<td align="right">0.36</td>
+<td align="right">790.95</td>
+<td align="right">2082</td>
+</tr>
+<tr class="odd">
+<td align="left">Very Hard</td>
+<td align="left">deadline</td>
+<td align="left">random_location</td>
+<td align="right">0.57</td>
+<td align="right">499.18</td>
+<td align="right">2914</td>
+</tr>
+<tr class="even">
+<td align="left">Hard</td>
+<td align="left">deadline</td>
+<td align="left">random_location</td>
+<td align="right">0.64</td>
+<td align="right">477.94</td>
+<td align="right">3086</td>
+</tr>
+<tr class="odd">
+<td align="left">Medium</td>
+<td align="left">deadline</td>
+<td align="left">random_location</td>
+<td align="right">0.70</td>
+<td align="right">471.92</td>
+<td align="right">3149</td>
+</tr>
+<tr class="even">
+<td align="left">Easy</td>
+<td align="left">deadline</td>
+<td align="left">random_location</td>
+<td align="right">0.60</td>
+<td align="right">479.59</td>
 <td align="right">3542</td>
 </tr>
 </tbody>
@@ -908,23 +1018,70 @@ Start workflowr project.
 <ul>
 <li>How many tasks are completed on average?</li>
 </ul>
-<p>On average, across both conditions, participants completed 3.6065389 tasks during the no deadline phase and 3.2374481 tasks during the deadline phase.</p>
+<p>On average, across both conditions, participants completed 3.61 tasks during the no deadline phase and 3.24 tasks during the deadline phase.</p>
 <ul>
 <li><p>TODO: What is the average time taken to complete the RDK’s?</p></li>
 <li><p>TODO: Did this differ between the fixed and random location conditions?</p></li>
 <li><p>What is the average completion time and accuracy of the easy, medium, hard, and very hard tasks? The results indicated that the RTs became faster as the difficulty if the RDK became easier.</p></li>
 </ul>
 <p><img src="figure/index.Rmd/difficulty_plot-1.png" width="672" style="display: block; margin: auto;" /></p>
-<ul>
-<li>TODO: What is the proportion of easy-task-first choices?</li>
-</ul>
 </div>
 <div id="optimality-in-each-condition" class="section level1">
 <h1>Optimality in each condition</h1>
-<p>The task set presented to each subject will have an optimal solution (ordered from easiest to most difficult). The first analysis will compute something like Kendall’s Tau, rank-order distance, which ranges between 0 (perfect match) and 6 (maximally distant), for 4 options.</p>
-<p>What we want is the distance of the selected options from the optimal solutions, which is Kendall’s Tau. However, because a participant may run out of time, there may be missing values. To handle these values, for each trial, we find the orders which partially match the selected order and compute three measures of performance:</p>
-<ol style="list-style-type: decimal">
-<li><p>the maximum distance of those possible orders and the optimal solution (<em>max_distance</em>). This analysis is biased against optimality because it assumes that partially completed sequences would have eventually been non-optimal.</p></li>
+<p>The task set presented to each subject will have an optimal solution (ordered from easiest to most difficult). We first ask:</p>
+<ul>
+<li>What is the proprotion of easy, medium, hard, and very hard patches selected first, second, third or fourth?</li>
+</ul>
+<p><img src="figure/index.Rmd/selectionOrderAnalysis-1.png" width="672" style="display: block; margin: auto;" /></p>
+<ul>
+<li>We next ask whether the sequence of choices reflected the optimal order: What is the proportion of easy-task-first choices in each condition? Of easy-then-medium? Of easy-medium-then-hard?</li>
+</ul>
+<table>
+<caption>Average optimal choices</caption>
+<thead>
+<tr class="header">
+<th align="left">phase</th>
+<th align="left">condition</th>
+<th align="right">easy.first</th>
+<th align="right">easy.med</th>
+<th align="right">easy.med.hard</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">untimed</td>
+<td align="left">fixed</td>
+<td align="right">0.68</td>
+<td align="right">0.55</td>
+<td align="right">0.42</td>
+</tr>
+<tr class="even">
+<td align="left">deadline</td>
+<td align="left">fixed</td>
+<td align="right">0.80</td>
+<td align="right">0.79</td>
+<td align="right">0.73</td>
+</tr>
+<tr class="odd">
+<td align="left">untimed</td>
+<td align="left">random</td>
+<td align="right">0.51</td>
+<td align="right">0.35</td>
+<td align="right">0.24</td>
+</tr>
+<tr class="even">
+<td align="left">deadline</td>
+<td align="left">random</td>
+<td align="right">0.49</td>
+<td align="right">0.24</td>
+<td align="right">0.12</td>
+</tr>
+</tbody>
+</table>
+<p><img src="figure/index.Rmd/analyseMatches-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p>The next analysis will compute something like Kendall’s Tau, rank-order distance, which ranges between 0 (perfect match) and 6 (maximally distant), for 4 options.</p>
+<p>What we want is the distance of the selected options from the optimal solutions, which is Kendall’s Tau. However, because a participant may run out of time, there may be missing values. To handle these values, for each trial, we find the orders which partially match the selected order and compute three measures of performance: 1. the maximum distance of those possible orders and the optimal solution (<em>max_distance</em>). This analysis is biased against optimality because it assumes that partially completed sequences would have eventually been non-optimal.</p>
+<ol start="2" style="list-style-type: decimal">
 <li><p>the minimum distance of the partial orders and the optimal solution (<em>min_distance</em>). This analysis is biased toward optimality because it assumes that partially completed sequences would have eventually been closer to optimal.</p></li>
 <li><p>the average distance of those possible orders and the optimal solution (<em>avg_distance</em>).</p></li>
 </ol>
@@ -964,30 +1121,30 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] knitr_1.28        hrbrthemes_0.8.0  english_1.2-5     gtools_3.8.2     
- [5] DescTools_0.99.34 forcats_0.5.0     stringr_1.4.0     dplyr_0.8.5      
- [9] purrr_0.3.3       readr_1.3.1       tidyr_1.0.2       tibble_3.0.0     
-[13] ggplot2_3.3.0     tidyverse_1.3.0   workflowr_1.6.1  
+ [1] reshape2_1.4.3    knitr_1.28        hrbrthemes_0.8.0  english_1.2-5    
+ [5] gtools_3.8.2      DescTools_0.99.34 forcats_0.5.0     stringr_1.4.0    
+ [9] dplyr_0.8.5       purrr_0.3.3       readr_1.3.1       tidyr_1.0.2      
+[13] tibble_3.0.0      ggplot2_3.3.0     tidyverse_1.3.0   workflowr_1.6.1  
 
 loaded via a namespace (and not attached):
  [1] httr_1.4.1        jsonlite_1.6.1    modelr_0.1.6      assertthat_0.2.1 
  [5] expm_0.999-4      highr_0.8         cellranger_1.1.0  yaml_2.2.1       
  [9] gdtools_0.2.2     Rttf2pt1_1.3.8    pillar_1.4.3      backports_1.1.5  
 [13] lattice_0.20-38   glue_1.4.0        extrafontdb_1.0   digest_0.6.25    
-[17] promises_1.1.0    rvest_0.3.5       colorspace_1.4-1  htmltools_0.4.0  
-[21] httpuv_1.5.2      Matrix_1.2-18     pkgconfig_2.0.3   broom_0.5.5      
-[25] haven_2.2.0       mvtnorm_1.1-0     scales_1.1.0      whisker_0.4      
-[29] later_1.0.0       git2r_0.26.1      farver_2.0.3      generics_0.0.2   
-[33] ellipsis_0.3.0    withr_2.1.2       cli_2.0.2         magrittr_1.5     
-[37] crayon_1.3.4      readxl_1.3.1      evaluate_0.14     fs_1.4.1         
-[41] fansi_0.4.1       nlme_3.1-144      MASS_7.3-51.5     xml2_1.3.0       
-[45] tools_3.6.3       hms_0.5.3         lifecycle_0.2.0   munsell_0.5.0    
-[49] reprex_0.3.0      compiler_3.6.3    systemfonts_0.2.2 rlang_0.4.5      
-[53] grid_3.6.3        rstudioapi_0.11   labeling_0.3      rmarkdown_2.1    
-[57] boot_1.3-24       gtable_0.3.0      DBI_1.1.0         R6_2.4.1         
-[61] lubridate_1.7.4   extrafont_0.17    rprojroot_1.3-2   stringi_1.4.6    
-[65] Rcpp_1.0.4        vctrs_0.2.4       dbplyr_1.4.2      tidyselect_1.0.0 
-[69] xfun_0.12        </code></pre>
+[17] promises_1.1.0    rvest_0.3.5       colorspace_1.4-1  plyr_1.8.6       
+[21] htmltools_0.4.0   httpuv_1.5.2      Matrix_1.2-18     pkgconfig_2.0.3  
+[25] broom_0.5.5       haven_2.2.0       mvtnorm_1.1-0     scales_1.1.0     
+[29] whisker_0.4       later_1.0.0       git2r_0.26.1      farver_2.0.3     
+[33] generics_0.0.2    ellipsis_0.3.0    withr_2.1.2       cli_2.0.2        
+[37] magrittr_1.5      crayon_1.3.4      readxl_1.3.1      evaluate_0.14    
+[41] fs_1.4.1          fansi_0.4.1       nlme_3.1-144      MASS_7.3-51.5    
+[45] xml2_1.3.0        tools_3.6.3       hms_0.5.3         lifecycle_0.2.0  
+[49] munsell_0.5.0     reprex_0.3.0      compiler_3.6.3    systemfonts_0.2.2
+[53] rlang_0.4.5       grid_3.6.3        rstudioapi_0.11   labeling_0.3     
+[57] rmarkdown_2.1     boot_1.3-24       gtable_0.3.0      DBI_1.1.0        
+[61] R6_2.4.1          lubridate_1.7.4   extrafont_0.17    rprojroot_1.3-2  
+[65] stringi_1.4.6     Rcpp_1.0.4        vctrs_0.2.4       dbplyr_1.4.2     
+[69] tidyselect_1.0.0  xfun_0.12        </code></pre>
 </div>
 </div>
 
