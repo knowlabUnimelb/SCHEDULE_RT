@@ -31,6 +31,7 @@ library(ggplot2)
 library(dplyr)
 library(hrbrthemes)
 library(knitr)
+library(reshape2)
 
 #define working directories
 inputdir <- "data"
@@ -56,14 +57,14 @@ nRandomLoggedSubjects = length(randomLoggedSubjects) # Number of subjects who lo
 
 # Data Preprocessing
 
-_Data Cleaning_:
+_Data Cleaning_
 
 Two experiments were completed online: one using fixed task locations on each trial and one using random task locations on each trial. Subjects completed the experiment by clicking a link with the uniquely generated id code. Subjects were able to use the link multiple times; further, subjects were able to exit the experiment at any time. Consequently, the datafile contains partially completed data for some subjects which needs to be identified and removed. 
 
 ```{r data_cleaning, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
 # A full data set has 10 practice trials (0 to 9) and 30 deadline trials (0 to 29)
 # A full data set will have a max trial number of 29 
-nTotalTrials = 29
+nTotalTrials = 29 # Counting from trial 0
 cleanUpData = function(rawdata, nTotalTrials){
   
   completeSubjects = unique(rawdata$subject[rawdata$trial_number == nTotalTrials]) # Unique subject ids
@@ -184,15 +185,22 @@ names(randDemo) = c("nFemales", "nMales", "nOthers", "meanAge", "stdAge", "ages"
 
 ## Participants
 
-We tested `r fd$nSubjects + rd$nSubjects` participants (`r fixedDemo$nFemales+randDemo$nFemales` F, `r fixedDemo$nMales+randDemo$nMales` M, `r fixedDemo$nOthers+randDemo$nOthers` Undeclared). Participants were recruited through the Melbourne School of Psychological Sciences Research Experience Pool (Mean age = `r mean(c(fixedDemo$ages, randDemo$ages), na.rm=TRUE) `, range = `r min(c(fixedDemo$ages, randDemo$ages), na.rm=TRUE) ` - `r max(c(fixedDemo$ages, randDemo$ages), na.rm=TRUE)`). Participants were reimbursed with credit toward completion of a first year psychology subject. Datasets from `r fd$nRepeats + rd$nRepeats` subjects were excluded for completing the experiment twice; i.e., only the first of the datasets for these subjects was retained.
+We tested `r fd$nSubjects + rd$nSubjects` participants (`r fixedDemo$nFemales+randDemo$nFemales` F, `r fixedDemo$nMales+randDemo$nMales` M, `r fixedDemo$nOthers+randDemo$nOthers` Undeclared). Participants were recruited through the Melbourne School of Psychological Sciences Research Experience Pool (Mean age = `r round(mean(c(fixedDemo$ages, randDemo$ages), na.rm=TRUE),2) `, range = `r min(c(fixedDemo$ages, randDemo$ages), na.rm=TRUE) ` - `r max(c(fixedDemo$ages, randDemo$ages), na.rm=TRUE)`). Participants were reimbursed with credit toward completion of a first year psychology subject. Datasets from `r fd$nRepeats + rd$nRepeats` subjects were excluded for completing the experiment twice; i.e., only the first of the datasets for these subjects was retained.
 
-`r fd$nSubjects` were assigned to the _Fixed Difficulty_ condition. In this condition, the location of easy, medium, hard, and very hard random dot kinematograms (RDK's) was held constant across trials. 
+`r paste(toupper(substring(english(fd$nSubjects), 1, 1)), substring(english(fd$nSubjects), 2), sep="")` were assigned to the _Fixed Difficulty_ condition. In this condition, the location of easy, medium, hard, and very hard random dot kinematograms (RDK's) was held constant across trials. 
 
-`r rd$nSubjects` were assigned to the _Random Difficulty_ condition. In this condition, the location of easy, medium, hard, and very hard random dot kinematograms (RDK's) were randomized from trial to trial. The Fixed Difficulty condition was completed before the Random Difficulty condition. Participants only completed one of these conditions.
+`r paste(toupper(substring(english(rd$nSubjects), 1, 1)), substring(english(rd$nSubjects), 2), sep="")` were assigned to the _Random Difficulty_ condition. In this condition, the location of easy, medium, hard, and very hard random dot kinematograms (RDK's) were randomized from trial to trial. 
+
+The Fixed Difficulty experiment was completed before the Random Difficulty experiment. Participants only completed one of these.
+
 
 ## Design
 
-In each condition, participants completed multiple trials in which they selected and completed RDK tasks. On each trial, participants were shown a set of four RDKs labelled Easy, Medium, Hard, and Very Hard. The labels corresponded to the difficulty of the RDK. The proportion of dots moving in a coherent direction was set to .8, .5, .2, and .0 for the Easy, Medium, Hard, and Very Hard locations, respectively.
+```{r getCoherence, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
+coherence_set = sort(unique(as.numeric(c(data$patch_0, data$patch_1, data$patch_2, data$patch_3))), decreasing=TRUE)
+```
+
+In each condition, participants completed multiple trials in which they selected and completed RDK tasks. On each trial, participants were shown a set of four RDKs labelled Easy, Medium, Hard, and Very Hard. The labels corresponded to the difficulty of the RDK. The proportion of dots moving in a coherent direction was set to 0.8, 0.5, 0.2, and 0.0 for the Easy, Medium, Hard, and Very Hard locations, respectively.
 
 From the set of four, participants selected and completed one RDK at a time in any order. The goal of each trial was to complete as many as possible before a deadline. 
 
@@ -218,9 +226,11 @@ rdk = rdk[rdk$rt <3000, ]
 rdk$phase = as.factor(rdk$phase)
 
 # Fix missing 0's in data$correct[data$trial_event == "rdk"] column
-difficulty = aggregate(list("accuracy" = rdk$correct, "rt" = rdk$rt), by = list("difficulty" = rdk$dot_coherence, "phase" = rdk$phase), FUN = function(x) mean(x, na.rm = TRUE))
+difficulty = aggregate(list("accuracy" = rdk$correct, "rt" = rdk$rt), by = list("difficulty" =        rdk$dot_coherence, "phase" = rdk$phase, "condition" = rdk$condition), FUN = function(x) mean(x, na.rm = TRUE))
 ncounts = rdk %>% count(phase, dot_coherence)
 difficulty$n = ncounts$n
+difficulty$accuracy = round(difficulty$accuracy, 2)
+difficulty$rt = round(difficulty$rt, 2)
 
 levels(difficulty$difficulty) = c("Very Hard", "Hard", "Medium", "Easy", "NULL")
 levels(difficulty$phase) = c("no deadline", "deadline")
@@ -242,7 +252,7 @@ We first summarize performance by answering the following:
 
 * How many tasks are completed on average?
 
-On average, across both conditions, participants completed `r avgCompletions$x[avgCompletions$phase == "no deadline"]` tasks during the `r as.character(avgCompletions$phase[1])` phase and `r avgCompletions$x[avgCompletions$phase == "deadline"]` tasks during the `r as.character(avgCompletions$phase[2])` phase. 
+On average, across both conditions, participants completed `r round(avgCompletions$x[avgCompletions$phase == "no deadline"],2)` tasks during the `r as.character(avgCompletions$phase[1])` phase and `r round(avgCompletions$x[avgCompletions$phase == "deadline"],2)` tasks during the `r as.character(avgCompletions$phase[2])` phase. 
 
 * TODO: What is the average time taken to complete the RDK's?
 
@@ -259,19 +269,6 @@ diff_plot <- rdk %>% ggplot(aes(x=dot_coherence, y=rt, fill=dot_coherence)) + ge
 print(diff_plot + ggtitle("Response times as a function of difficulty"))
 ```
 
-* TODO: What is the proportion of easy-task-first choices?
-
-# Optimality in each condition
-
-The task set presented to each subject will have an optimal solution (ordered from easiest to most difficult). The first analysis will compute something like Kendall's Tau, rank-order distance, which ranges between 0 (perfect match) and 6 (maximally distant), for 4 options. 
-
-What we want is the distance of the selected options from the optimal solutions, which is Kendall's Tau. However, because a participant may run out of time, there may be missing values. To handle these values, for each trial, we find the orders which partially match the selected order and compute three measures of performance: 
-
-1. the maximum distance of those possible orders and the optimal solution (*max_distance*). This analysis is biased against optimality because it assumes that partially completed sequences would have eventually been non-optimal. 
-
-2. the minimum distance of the partial orders and the optimal solution (*min_distance*). This analysis is biased toward optimality because it assumes that partially completed sequences would have eventually been closer to optimal.  
-
-3. the average distance of those possible orders and the optimal solution (*avg_distance*). 
 
 ```{r distcomp, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
 n = 4 # Number of tasks
@@ -289,18 +286,6 @@ splitData = function(data){
   return(list("practice" = pracdata, "experiment" = exp_data))
 }
 
-getOptimalOrder = function(data){
-  # Extract patch coherence
-  coherence = cbind(data$patch_0, data$patch_1, data$patch_2, data$patch_3) # will vary by subject
-  # optimal_order = sort(ecoherence, decreasing = TRUE, index.return=TRUE) # e.g., ocoh$ix = [4 3 1 2] optimal order, will vary by subject
-  optimal_order = apply(coherence, 1, function(x) sort(x, decreasing=TRUE, index.return=TRUE))
-  # Organize trial x selection
-  trials = unique(data$trial_number)
-  ntrials = length(trials)
-  
-  return(list("coherence" = coherence, "optimal_order" = optimal_order, "trials" = trials, "ntrials" = ntrials))
-}
-
 # Compute distance from optimal for all perms
 opt_order_set = function(trial_optimal_order, nperms=nperms, allperms=allperms){
   pdist <- rep(NA, nperms)
@@ -313,12 +298,13 @@ opt_order_set = function(trial_optimal_order, nperms=nperms, allperms=allperms){
 # Usage: opt_order_set(poptimal_order[[1]], nperms, allperms)
 
 # Compute distance from optimal for each trial during practice
-get_trial_scores = function(sdata, order_to_compare, ntrials, n, nperms, allperms, nSubjects, subjects){
+get_trial_scores = function(sdata, ntrials, n, nperms, allperms, nSubjects, subjects){
 
   # preallocate variables for output
   max_distances <- matrix(data=NA, nrow=nSubjects, ncol=ntrials)
   min_distances <- matrix(data=NA, nrow=nSubjects, ncol=ntrials)
   avg_distances <- matrix(data=NA, nrow=nSubjects, ncol=ntrials)
+  count_matrix = matrix(0,length(coherence_set),length(coherence_set))
   
   for (j in 1:nSubjects){
         # select out data for subject j
@@ -326,15 +312,31 @@ get_trial_scores = function(sdata, order_to_compare, ntrials, n, nperms, allperm
         
         # preallocated subject specific task selection matrix
         selmat <- matrix(data=NA, nrow=ntrials, ncol=n)
+        optorder <- matrix(data=NA, nrow=ntrials, ncol=n)
+        difforder <- matrix(data=NA, nrow=ntrials, ncol=n)
     for (i in 1:ntrials){
         
-        # compute distances of all permutations to indicated order
-        pdist = opt_order_set(order_to_compare[[i]], nperms, allperms)
-      
         # Get the task selection order for the current trial (may be incomplete if timed out)
         csel = tdata[tdata$trial_number == i-1, ]$button_pressed
         selmat[i, 1:length(csel)] = csel # NULL is coded as option 5
         selmat[i, selmat[i,] == 5] = NA  # Replace NULL with NA
+        
+        # Get the locations of easy, med, hard, etc
+        patch_order = c(as.numeric(as.character(unique(tdata[tdata$trial_number == i-1, ]$patch_0))), as.numeric(as.character(unique(tdata[tdata$trial_number == i-1, ]$patch_1))), as.numeric(as.character(unique(tdata[tdata$trial_number == i-1, ]$patch_2))), as.numeric(as.character(unique(tdata[tdata$trial_number == i-1, ]$patch_3))))
+        
+        # Find the order in which easy, med, hard, etc were selected
+        difforder[i,] = patch_order[selmat[i,]]
+        
+        for (k in 1:n){
+          count_matrix[which(difforder[i,] == coherence_set[k]), k] = count_matrix[which(difforder[i,] == coherence_set[k]), k] + 1
+        }
+        
+        # Get the optimal order
+        order_to_compare = sort(patch_order, decreasing=TRUE, index.return = TRUE)
+        optorder[i, ] = order_to_compare$ix
+        
+        # compute distances of all permutations to indicated order
+        pdist = opt_order_set(order_to_compare, nperms, allperms)
         
         # Find permutation partial matches
         if (!all(is.na(selmat[i,]))){
@@ -350,24 +352,47 @@ get_trial_scores = function(sdata, order_to_compare, ntrials, n, nperms, allperm
         max_distances[j,i] = max(partial_distances)  # Maximum distance of partial matches
         min_distances[j,i] = min(partial_distances)  # Maximum distance of partial matches
         avg_distances[j,i] = mean(partial_distances) # Average distance of partial matches
+        
+        
     }
+    
+    # Create better organised matrix of selections    
+    if (j == 1){
+      fullmat = cbind(rep(subjects[j], ntrials), selmat)
+      fullopt = cbind(rep(subjects[j], ntrials), optorder)
+      fulldiff = cbind(rep(subjects[j], ntrials), difforder)
+    } else {
+      fullmat = rbind(fullmat, cbind(rep(subjects[j], ntrials), selmat))
+      fullopt = rbind(fullopt, cbind(rep(subjects[j], ntrials), optorder))
+      fulldiff = rbind(fulldiff, cbind(rep(subjects[j], ntrials), difforder))
+    }    
   }
-  return(list("max_distances" = max_distances, "min_distances" = min_distances, "avg_distances" = avg_distances))
+
+  # Compute matches by subject for first selection, first two selections, first three selections
+  match1 = aggregate(cbind(fullmat[,1], fullmat[,2]==fullopt[,2]), by=list(fullmat[,1]), FUN = mean)
+  match2 = aggregate(cbind(fullmat[, 1], apply(fullmat[,2:3] == fullopt[,2:3], 1, all)), by=list(fullmat[,1]), FUN = mean)
+  match3 = aggregate(cbind(fullmat[, 1], apply(fullmat[,2:4] == fullopt[,2:4], 1, all)), by=list(fullmat[,1]), FUN = mean)
+  # match4 = aggregate(cbind(fullmat[, 1], apply(fullmat[,2:5] == fullopt[,2:5], 1, all)), by=list(fullmat[,1]), FUN = mean) # same as match3
+  matches = as.data.frame(cbind(match1$V1, match1$V2, match2$V2, match3$V2))
+  names(matches) = c("subjects", "match1", "match2", "match3")
+  
+  return(list("selections" = fullmat, "optimal_orders" = fullopt, "diff_orders" = fulldiff, "selection_counts" = count_matrix, "matches" = matches, "max_distances" = max_distances, "min_distances" = min_distances, "avg_distances" = avg_distances))
 }
 
-fp = getOptimalOrder(splitData(fd$data)$practice)
-fe = getOptimalOrder(splitData(fd$data)$experiment)
-rp = getOptimalOrder(splitData(rd$data)$practice)
-re = getOptimalOrder(splitData(rd$data)$experiment)
-
 # Compute distances for condition x practice/experiment
-scores = list("fixed" = list("practice" = get_trial_scores(splitData(fd$data)$practice, fp$optimal_order, fp$ntrials, 
+# sdata, order_to_compare, ntrials, n, nperms, allperms, nSubjects, subjects
+# sdata = splitData(fd$data)$practice
+# order_to_compare = fp$optimal_order
+# ntrials = fp$ntrials
+# nSubjects =fd$nSubjects
+# subjects = fd$subjects
+scores = list("fixed" = list("practice" = get_trial_scores(splitData(fd$data)$practice, 10, 
                                                            n, nperms, allperms, fd$nSubjects, fd$subjects), 
-                             "experiment" = get_trial_scores(splitData(fd$data)$experiment, fe$optimal_order, fe$ntrials, 
+                             "experiment" = get_trial_scores(splitData(fd$data)$experiment, 30, 
                                                            n, nperms, allperms, fd$nSubjects, fd$subjects)), 
-              "random" = list("practice" = get_trial_scores(splitData(rd$data)$practice, rp$optimal_order, rp$ntrials, 
+              "random" = list("practice" = get_trial_scores(splitData(rd$data)$practice, 10, 
                                                            n, nperms, allperms, rd$nSubjects, rd$subjects), 
-                              "experiment" = get_trial_scores(splitData(rd$data)$experiment, re$optimal_order, re$ntrials, 
+                              "experiment" = get_trial_scores(splitData(rd$data)$experiment, 30, 
                                                            n, nperms, allperms, rd$nSubjects, rd$subjects)))
 
 
@@ -437,7 +462,94 @@ avg_avgdata$phase = as.factor(avg_avgdata$phase)         # Convert phase to fact
 levels(avg_avgdata$condition) = c("fixed", "random") # Replace condition names
 
 
+# Set up summary data for matches
+set1 = cbind(rep("fixed",fd$nSubjects), rep("untimed" ,fd$nSubjects), scores$fixed$practice$matches)
+names(set1) = c("condition", "phase", "subjects", "match1", "match2", "match3")
+set2 = cbind(rep("fixed",fd$nSubjects), rep("deadline" ,fd$nSubjects), scores$fixed$experiment$matches)
+names(set2) = c("condition", "phase", "subjects", "match1", "match2", "match3")
+set3 = cbind(rep("random",rd$nSubjects), rep("untimed" ,rd$nSubjects), scores$random$practice$matches)
+names(set3) = c("condition", "phase", "subjects", "match1", "match2", "match3")
+set4 = cbind(rep("random",rd$nSubjects), rep("deadline" ,rd$nSubjects), scores$random$experiment$matches)
+names(set4) = c("condition", "phase", "subjects", "match1", "match2", "match3")
+
+match_mat = rbind(set1, set2, set3, set4)
+
 ```
+
+
+# Optimality in each condition
+
+The task set presented to each subject will have an optimal solution (ordered from easiest to most difficult). We first ask: 
+
+* What is the proprotion of easy, medium, hard, and very hard patches selected first, second, third or fourth?
+
+```{r selectionOrderAnalysis, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
+
+# selection_counts [rows are choice order (1,2,3,4), columns are diffculty (easy,med, hard,vhard)]
+
+# Convert to proportions
+fpmat = t(apply(scores$fixed$practice$selection_counts, 1, function(x) x/sum(x)))
+femat = t(apply(scores$fixed$experiment$selection_counts, 1, function(x) x/sum(x)))
+rpmat = t(apply(scores$random$practice$selection_counts, 1, function(x) x/sum(x)))
+remat = t(apply(scores$random$experiment$selection_counts, 1, function(x) x/sum(x)))
+
+fpmelt = melt(fpmat)
+femelt = melt(femat)
+rpmelt = melt(rpmat)
+remelt = melt(remat)
+names(fpmelt) = c("Difficulty", "Order", "value")
+names(femelt) = c("Difficulty", "Order", "value")
+names(rpmelt) = c("Difficulty", "Order", "value")
+names(remelt) = c("Difficulty", "Order", "value")
+
+hm = rbind(cbind("condition" = rep("Fixed No Deadline", nrow(fpmelt)), fpmelt), 
+           cbind("condition" = rep("Fixed Deadline", nrow(fpmelt)), femelt),
+           cbind("condition" = rep("Random No Deadline", nrow(fpmelt)), rpmelt),
+           cbind("condition" = rep("Random Deadline", nrow(fpmelt)), remelt))
+
+hmplot = ggplot(hm, aes(x=Difficulty, y=Order)) +
+          geom_tile(aes(fill=value)) +
+          scale_fill_gradientn(colours=c("blue","pink", "red")) +
+          geom_text(aes(label=round(value, 2))) + 
+          scale_y_reverse() +
+          facet_wrap(~condition) + 
+          labs(y="Choice", x = "Difficulty")
+print(hmplot)
+
+```
+
+* We next ask whether the sequence of choices reflected the optimal order: What is the proportion of easy-task-first choices in each condition? Of easy-then-medium? Of easy-medium-then-hard?
+
+```{r analyseMatches, fig.height = 10, fig.width = 9, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
+avgMatch = aggregate(list("easy first"=match_mat$match1, "easy-med"=match_mat$match2, "easy-med-hard"=match_mat$match3), by = list("phase"=match_mat$phase, "condition"=match_mat$condition), FUN = function(x)mean(x,na.rm=TRUE))
+
+avgMatch$easy.first = round(avgMatch$easy.first,2)
+avgMatch$easy.med = round(avgMatch$easy.med,2)
+avgMatch$easy.med.hard = round(avgMatch$easy.med.hard,2)
+
+# Create the table
+kable(avgMatch, caption="Average optimal choices")
+
+long_match = melt(match_mat, id.var = c("condition", "phase"), measure.var = c("match1", "match2", "match3"), variable.name = "match")
+levels(long_match$match) = c("Order = Easy", "Order = Easy, Medium", "Order = Easy, Medium, Hard")
+
+match_plot <- long_match %>% ggplot(aes(x=value, fill=match)) + geom_histogram(color="white", alpha=0.6, bins = 10, position="identity") + facet_wrap(~condition+phase+match, nrow=4, ncol = 3) + labs(y="Participant Frequency", x = "Proportion of First Choices")
+
+print(match_plot + ggtitle("Optimally Ordered Responses")) 
+
+```
+
+
+
+The next analysis will compute something like Kendall's Tau, rank-order distance, which ranges between 0 (perfect match) and 6 (maximally distant), for 4 options. 
+
+What we want is the distance of the selected options from the optimal solutions, which is Kendall's Tau. However, because a participant may run out of time, there may be missing values. To handle these values, for each trial, we find the orders which partially match the selected order and compute three measures of performance: 
+1. the maximum distance of those possible orders and the optimal solution (*max_distance*). This analysis is biased against optimality because it assumes that partially completed sequences would have eventually been non-optimal. 
+
+2. the minimum distance of the partial orders and the optimal solution (*min_distance*). This analysis is biased toward optimality because it assumes that partially completed sequences would have eventually been closer to optimal.  
+
+3. the average distance of those possible orders and the optimal solution (*avg_distance*). 
+
 
 The following figures compare max_distance, min_distance, and avg_distance between the fixed difficulty and random difficulty conditions as a function of deadline condition and phase. 
 
@@ -502,13 +614,13 @@ get_spatial_consistency = function(sdata, spatial_orders, ntrials, n, nSubjects,
 
 # Compute responses consistent with a spatial strategy
 # sdata, spatial_orders, ntrials, n, nSubjects, subjects
-spatial_scores = list("fixed" = list("practice" = get_spatial_consistency(splitData(fd$data)$practice, spatial_orders, fp$ntrials, 
+spatial_scores = list("fixed" = list("practice" = get_spatial_consistency(splitData(fd$data)$practice, spatial_orders, 10, 
                                                          n, fd$nSubjects, fd$subjects), 
-                            "experiment" = get_spatial_consistency(splitData(fd$data)$experiment, spatial_orders, fe$ntrials,
+                            "experiment" = get_spatial_consistency(splitData(fd$data)$experiment, spatial_orders, 30,
                                                          n, fd$nSubjects, fd$subjects)), 
-             "random" = list("practice" = get_spatial_consistency(splitData(rd$data)$practice, spatial_orders, rp$ntrials, 
+             "random" = list("practice" = get_spatial_consistency(splitData(rd$data)$practice, spatial_orders, 10, 
                                                          n, rd$nSubjects, rd$subjects), 
-                            "experiment" = get_spatial_consistency(splitData(rd$data)$experiment, spatial_orders, re$ntrials,
+                            "experiment" = get_spatial_consistency(splitData(rd$data)$experiment, spatial_orders, 30,
                                                          n, rd$nSubjects, rd$subjects)))
 
 ```
@@ -577,3 +689,4 @@ print(spatial_choice_plot)
 Some other questions arise:
 
 * TODO: What should be done with fixed location participants in which the optimal solution is also a circular strategy? Analyse the data again but removing trials in which difficulty is mapped in a circular manner?
+
