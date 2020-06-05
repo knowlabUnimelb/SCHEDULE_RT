@@ -744,7 +744,7 @@ get_spatial_consistency = function(sdata, spatial_orders, ntrials, n, nSubjects,
     for (i in 1:ntrials){
 
         # Get the task selection order for the current trial (may be incomplete if timed out)
-        csel = tdata[tdata$trial_number == i-1, ]$button_pressed
+        csel = tdata[tdata$trial_number == i-1, ]$button_pressed+1
         #csel[csel==5] = NA # NULL is coded as option 5, Replace NULL with NA
         #csel = as.numeric(as.character(as.matrix(csel)))
         
