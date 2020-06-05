@@ -1,20 +1,20 @@
 Column,Type,Null,Default,Comments
-subject,varchar(255),Yes ,NULL ,subject id number 
-condition,varchar(255),Yes ,NULL ,condition name 
-trial_number,varchar(255),Yes ,NULL ,Trial Number 
-trial_index,varchar(255),Yes ,NULL ,trial number 
-trial_event,varchar(255),Yes ,NULL ,"event: practice_select_rdk - practice, select_rdk - task selection, rdk - random dot task "
-button_pressed,varchar(255),Yes ,NULL ,which rdk selected 
-rt,varchar(255),Yes ,NULL ,response time 
-dot_direction,varchar(255),Yes ,NULL ,direction of rdk 
-dot_coherence,varchar(255),Yes ,NULL ,difficulty 
-key_press,varchar(255),Yes ,NULL ,response  
-trial_duration,varchar(255),Yes ,NULL ,time remaining for choice 
-correct,varchar(255),Yes ,NULL ,"1 = correct, 0 = wrong "
-time_elapsed,varchar(255),Yes ,NULL ,total time elapsed 
-patch_0,varchar(255),Yes ,NULL ,Coherence of patch 1 (west) 
-patch_1,varchar(255),Yes ,NULL ,Coherence of patch 2 (north) 
-patch_2,varchar(255),Yes ,NULL ,Coherence of patch 3 (east) 
-patch_3,varchar(255),Yes ,NULL ,Coherence of patch 4 (south) 
-responses,varchar(255),Yes ,NULL ,Demographic information free text 
-uniqueid,varchar(255),Yes ,NULL ,SONA generated id 
+subject,character,Yes ,NULL ,subject id number 
+condition,factor,Yes ,NULL ,condition name 
+trial_number,integer,Yes ,NULL ,Trial Number 
+trial_index,integer,Yes ,NULL ,trial number 
+trial_event,factor,Yes ,NULL ,"event: practice_select_rdk - practice, select_rdk - task selection, rdk - random dot task "
+button_pressed,integer,Yes ,NULL ,which rdk selected 
+rt,numeric,Yes ,NULL ,response time 
+dot_direction,numeric,Yes ,NULL ,direction of rdk 
+dot_coherence,numeric,Yes ,NULL ,difficulty 
+key_press,integer,Yes ,NULL ,response  
+trial_duration,numeric,Yes ,NULL ,time remaining for choice 
+correct,numeric,Yes ,NULL ,"1 = correct, 0 = wrong "
+time_elapsed,numeric,Yes ,NULL ,total time elapsed 
+patch_0,numeric,Yes ,NULL ,Coherence of patch 1 (west) 
+patch_1,numeric,Yes ,NULL ,Coherence of patch 2 (north) 
+patch_2,numeric,Yes ,NULL ,Coherence of patch 3 (east) 
+patch_3,numeric,Yes ,NULL ,Coherence of patch 4 (south) 
+responses,character,Yes ,NULL ,Demographic information free text 
+uniqueid,character,Yes ,NULL ,SONA generated id 
