@@ -409,7 +409,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-06-01
+<strong>Last updated:</strong> 2020-06-05
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -500,16 +500,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomknowlabUnimelbSCHEDULERTtree33ea1a40cc5f04a7904ee65b7bd0225bedd8906ctargetblank33ea1a4a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/knowlabUnimelb/SCHEDULE_RT/tree/33ea1a40cc5f04a7904ee65b7bd0225bedd8906c" target="_blank">33ea1a4</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomknowlabUnimelbSCHEDULERTtree4688f88e2e04fb73522e5c95426677aaff38532etargetblank4688f88a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/knowlabUnimelb/SCHEDULE_RT/tree/4688f88e2e04fb73522e5c95426677aaff38532e" target="_blank">4688f88</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomknowlabUnimelbSCHEDULERTtree33ea1a40cc5f04a7904ee65b7bd0225bedd8906ctargetblank33ea1a4a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomknowlabUnimelbSCHEDULERTtree4688f88e2e04fb73522e5c95426677aaff38532etargetblank4688f88a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/knowlabUnimelb/SCHEDULE_RT/tree/33ea1a40cc5f04a7904ee65b7bd0225bedd8906c" target="_blank">33ea1a4</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/knowlabUnimelb/SCHEDULE_RT/tree/4688f88e2e04fb73522e5c95426677aaff38532e" target="_blank">4688f88</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -518,10 +518,10 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/patch_selection.png
     Ignored:    analysis/site_libs/
 
 Untracked files:
-    Untracked:  analysis/license.utf8.md
     Untracked:  analysis/prereg.pdf
     Untracked:  analysis/prereg.tex
     Untracked:  data/create_database.sql
@@ -563,6 +563,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/knowlabUnimelb/SCHEDULE_RT/blob/4688f88e2e04fb73522e5c95426677aaff38532e/analysis/index.Rmd" target="_blank">4688f88</a>
+</td>
+<td>
+knowlabUnimelb
+</td>
+<td>
+2020-06-05
+</td>
+<td>
+Update inferential statistics
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/knowlabUnimelb/SCHEDULE_RT/47e87beca63465b3547a75d2a93e85d4409af724/docs/index.html" target="_blank">47e87be</a>
+</td>
+<td>
+knowlabUnimelb
+</td>
+<td>
+2020-06-01
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -848,10 +882,12 @@ Start workflowr project.
 <h1>Scheduling Project</h1>
 <p>Details regarding our study are provided here: <a href="prereg.html">Preregistration Document</a></p>
 </div>
-<div id="data-preprocessing" class="section level1">
-<h1>Data Preprocessing</h1>
-<p><em>Data Cleaning</em></p>
-<p>Two experiments were completed online: one using fixed task locations on each trial and one using random task locations on each trial. Subjects completed the experiment by clicking a link with the uniquely generated id code. Subjects were able to use the link multiple times; further, subjects were able to exit the experiment at any time. Consequently, the datafile contains partially completed data for some subjects which needs to be identified and removed.</p>
+<div id="overview" class="section level1">
+<h1>Overview</h1>
+<p>Scheduling theory is concerned with the development of policies which determine the “optimal allocation of resources, over time, to a set of tasks” (Parker, 1995). Scheduling problems have been studied extensively in the context of operations research and computer science, where optimal policies have been established for many cases. However, almost no research has examined how cognitive and perceptual mechanisms perform with respect to these optimal policies.</p>
+<p>For many types of goals, such as minimizing the number of tasks completed after a deadline or completing as many tasks as possible in a given length of time, an optimal schedule can be determined (Chretienne et al., 1995). In the present study, we are focused on the scheduling of tasks that vary in difficulty where the goal is to complete as many tasks as possible prior to the deadline. In this case, it is optimal to complete subtasks in order of shortest to longest completion time.</p>
+<p>In this study, each subtask is a Random Dot Kinematogram (RDK). In an RDK, dots are moving across an aperture on the screen in a pseudo-random fashion. The participant must to determine whether more dots are moving coherently to the right or to the left. Multiple RDK patches will be presented on the selection screen. Participants will click on the RDK they want to complete, indicate the direction of motion in that patch, and then return to the main screen to select the next RDK. The RDK’s will vary in coherence and consequently, difficulty, and average completion time (Ludwig &amp; Evens, 2017).</p>
+<p>Two experiments were completed online: one using fixed task difficulty locations on each trial and one using random task diffuculty locations on each trial. Within each experiment, subjects completed several trials both where there was no deadline and where there was a six second deadline.</p>
 </div>
 <div id="method" class="section level1">
 <h1>Method</h1>
@@ -864,170 +900,248 @@ Start workflowr project.
 </div>
 <div id="design" class="section level2">
 <h2>Design</h2>
-<p>In each condition, participants completed multiple trials in which they selected and completed RDK tasks. On each trial, participants were shown a set of four RDKs labelled Easy, Medium, Hard, and Very Hard. The labels corresponded to the difficulty of the RDK. The proportion of dots moving in a coherent direction was set to 0.8, 0.5, 0.2, and 0.0 for the Easy, Medium, Hard, and Very Hard locations, respectively.</p>
-<p>From the set of four, participants selected and completed one RDK at a time in any order. The goal of each trial was to complete as many as possible before a deadline.</p>
+<p>In each condition, participants completed multiple trials in which they selected and completed RDK tasks. On each trial, participants were shown a set of four RDKs labelled Easy, Medium, Hard, and Very Hard. The labels corresponded to the difficulty of the RDK. The proportion of dots moving in a coherent direction was set to 0.8, 0.5, 0.2, and 0.0 for the Easy, Medium, Hard, and Very Hard locations, respectively. From the set of four, participants selected and completed one RDK at a time in any order. The goal of each trial was to complete as many as possible before a deadline. If an incorrect RDK response was made, that RDK was restarted at the same coherence but with a resampled direction (so the direction may have changed), and the participant had to respond to the RDK again. A new task could not be selected until the RDK was completed successfully.</p>
+<p><img src="figure/index.Rmd/taskImage-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Participants first completed 10 trials with a long (60 sec) deadline to help participants learn the task, explore strategies, and allow for comparison to a short-deadline condition. We term this the <em>no deadline</em> condition since the provided time is well beyond what is necessary to complete all four RDK’s. Next, participants completed 30 trials with a 6 second deadline.</p>
+<p><em>Data Cleaning</em></p>
+<p>Subjects completed the experiment by clicking a link with the uniquely generated id code. Subjects were able to use the link multiple times; further, subjects were able to exit the experiment at any time. Consequently, the datafile contains partially completed data for some subjects which needs to be identified and removed.</p>
+<p>A handful of subjects (N = 15) had less than chance accuracy on the easiest RDK indicating equipment problems or a misunderstanding of task directions. We removed these participants from further anlaysis leaving 42 and 36 in the fixed and random location conditions, respectively.</p>
 </div>
 </div>
 <div id="data-analysis" class="section level1">
 <h1>Data Analysis</h1>
+<p>We first summarize performance by answering the following questions:</p>
+<div id="task-completions" class="section level2">
+<h2>Task completions</h2>
+<ul>
+<li>How many tasks are completed on average?</li>
+</ul>
+<p>Across both conditions, participants completed NA tasks during the phase and NA tasks during the phase.</p>
 <table>
-<caption>Mean accuracy and RT for each difficulty and each phase</caption>
+<caption>Average number of correctly completed tasks in each condition</caption>
 <thead>
 <tr class="header">
-<th align="left">difficulty</th>
-<th align="left">phase</th>
-<th align="left">condition</th>
-<th align="right">accuracy</th>
-<th align="right">rt</th>
-<th align="right">n</th>
+<th align="left">Condition</th>
+<th align="left">Phase</th>
+<th align="right">M</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">Very Hard</td>
-<td align="left">no deadline</td>
-<td align="left">fixed_location</td>
-<td align="right">0.55</td>
-<td align="right">1294.34</td>
-<td align="right">1375</td>
+<td align="left">fixed</td>
+<td align="left">no_deadline</td>
+<td align="right">3.66</td>
 </tr>
 <tr class="even">
-<td align="left">Hard</td>
-<td align="left">no deadline</td>
-<td align="left">fixed_location</td>
-<td align="right">0.68</td>
-<td align="right">1121.78</td>
-<td align="right">1181</td>
+<td align="left">fixed</td>
+<td align="left">deadline</td>
+<td align="right">3.39</td>
 </tr>
 <tr class="odd">
-<td align="left">Medium</td>
-<td align="left">no deadline</td>
-<td align="left">fixed_location</td>
-<td align="right">0.60</td>
-<td align="right">895.33</td>
-<td align="right">1382</td>
+<td align="left">random</td>
+<td align="left">no_deadline</td>
+<td align="right">3.70</td>
 </tr>
 <tr class="even">
-<td align="left">Easy</td>
-<td align="left">no deadline</td>
-<td align="left">fixed_location</td>
-<td align="right">0.46</td>
-<td align="right">855.13</td>
-<td align="right">2082</td>
-</tr>
-<tr class="odd">
-<td align="left">Very Hard</td>
+<td align="left">random</td>
 <td align="left">deadline</td>
-<td align="left">fixed_location</td>
-<td align="right">0.61</td>
-<td align="right">588.70</td>
-<td align="right">2914</td>
-</tr>
-<tr class="even">
-<td align="left">Hard</td>
-<td align="left">deadline</td>
-<td align="left">fixed_location</td>
-<td align="right">0.73</td>
-<td align="right">591.70</td>
-<td align="right">3086</td>
-</tr>
-<tr class="odd">
-<td align="left">Medium</td>
-<td align="left">deadline</td>
-<td align="left">fixed_location</td>
-<td align="right">0.78</td>
-<td align="right">533.98</td>
-<td align="right">3149</td>
-</tr>
-<tr class="even">
-<td align="left">Easy</td>
-<td align="left">deadline</td>
-<td align="left">fixed_location</td>
-<td align="right">0.78</td>
-<td align="right">525.20</td>
-<td align="right">3542</td>
-</tr>
-<tr class="odd">
-<td align="left">Very Hard</td>
-<td align="left">no deadline</td>
-<td align="left">random_location</td>
-<td align="right">0.50</td>
-<td align="right">1128.44</td>
-<td align="right">1375</td>
-</tr>
-<tr class="even">
-<td align="left">Hard</td>
-<td align="left">no deadline</td>
-<td align="left">random_location</td>
-<td align="right">0.67</td>
-<td align="right">1011.09</td>
-<td align="right">1181</td>
-</tr>
-<tr class="odd">
-<td align="left">Medium</td>
-<td align="left">no deadline</td>
-<td align="left">random_location</td>
-<td align="right">0.61</td>
-<td align="right">852.85</td>
-<td align="right">1382</td>
-</tr>
-<tr class="even">
-<td align="left">Easy</td>
-<td align="left">no deadline</td>
-<td align="left">random_location</td>
-<td align="right">0.36</td>
-<td align="right">790.95</td>
-<td align="right">2082</td>
-</tr>
-<tr class="odd">
-<td align="left">Very Hard</td>
-<td align="left">deadline</td>
-<td align="left">random_location</td>
-<td align="right">0.57</td>
-<td align="right">499.18</td>
-<td align="right">2914</td>
-</tr>
-<tr class="even">
-<td align="left">Hard</td>
-<td align="left">deadline</td>
-<td align="left">random_location</td>
-<td align="right">0.64</td>
-<td align="right">477.94</td>
-<td align="right">3086</td>
-</tr>
-<tr class="odd">
-<td align="left">Medium</td>
-<td align="left">deadline</td>
-<td align="left">random_location</td>
-<td align="right">0.70</td>
-<td align="right">471.92</td>
-<td align="right">3149</td>
-</tr>
-<tr class="even">
-<td align="left">Easy</td>
-<td align="left">deadline</td>
-<td align="left">random_location</td>
-<td align="right">0.60</td>
-<td align="right">479.59</td>
-<td align="right">3542</td>
+<td align="right">3.26</td>
 </tr>
 </tbody>
 </table>
-<p>We first summarize performance by answering the following:</p>
-<ul>
-<li>How many tasks are completed on average?</li>
-</ul>
-<p>On average, across both conditions, participants completed 3.61 tasks during the no deadline phase and 3.24 tasks during the deadline phase.</p>
-<ul>
-<li><p>TODO: What is the average time taken to complete the RDK’s?</p></li>
-<li><p>TODO: Did this differ between the fixed and random location conditions?</p></li>
-<li><p>What is the average completion time and accuracy of the easy, medium, hard, and very hard tasks? The results indicated that the RTs became faster as the difficulty if the RDK became easier.</p></li>
-</ul>
-<p><img src="figure/index.Rmd/difficulty_plot-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>As one might expect, there were fewer tasks completed under a deadline than without a deadline (<span class="math inline">\(\beta_{deadline}\)</span> = , SE = ). we inferred that the coefficient for location condition was not different from 0 as the 2 x SE interval included 0 (<span class="math inline">\(\beta_{condition}\)</span> = , SE = ). There was no interaction between deadline and location condition (<span class="math inline">\(\beta_{condition \times deadline}\)</span>= , SE = ). <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
 </div>
-<div id="optimality-in-each-condition" class="section level1">
-<h1>Optimality in each condition</h1>
+<div id="rdk-performance" class="section level2">
+<h2>RDK performance</h2>
+<p>We next analysed performance on the RDK discriminations. We first removed 2 trials which had RTs greater than 3000 msec. We then ask:</p>
+<ul>
+<li>What is the average completion time and accuracy of the easy, medium, hard, and very hard tasks?</li>
+</ul>
+<p>RTs became shorter and more accurate as the difficulty if the RDK became easier. As expected, the RTs were shorter under a deadline than without a deadline.</p>
+<p><img src="figure/index.Rmd/difficulty_plot-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>We further broke down RTs by condition, deadline, and difficulty.</p>
+<table>
+<caption>Mean accuracy and RT for each difficulty and each phase</caption>
+<thead>
+<tr class="header">
+<th align="left">condition</th>
+<th align="left">phase</th>
+<th align="left">difficulty</th>
+<th align="right">n</th>
+<th align="right">Mean.Correct</th>
+<th align="right">SE.Correct</th>
+<th align="right">Mean.RT</th>
+<th align="right">SE.RT</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">fixed</td>
+<td align="left">no_deadline</td>
+<td align="left">Very Hard</td>
+<td align="right">588</td>
+<td align="right">0.55</td>
+<td align="right">0.02</td>
+<td align="right">1311.43</td>
+<td align="right">28.41</td>
+</tr>
+<tr class="even">
+<td align="left">fixed</td>
+<td align="left">no_deadline</td>
+<td align="left">Hard</td>
+<td align="right">498</td>
+<td align="right">0.76</td>
+<td align="right">0.02</td>
+<td align="right">1163.58</td>
+<td align="right">27.51</td>
+</tr>
+<tr class="odd">
+<td align="left">fixed</td>
+<td align="left">no_deadline</td>
+<td align="left">Medium</td>
+<td align="right">435</td>
+<td align="right">0.89</td>
+<td align="right">0.02</td>
+<td align="right">917.79</td>
+<td align="right">23.33</td>
+</tr>
+<tr class="even">
+<td align="left">fixed</td>
+<td align="left">no_deadline</td>
+<td align="left">Easy</td>
+<td align="right">440</td>
+<td align="right">0.88</td>
+<td align="right">0.02</td>
+<td align="right">910.94</td>
+<td align="right">24.86</td>
+</tr>
+<tr class="odd">
+<td align="left">fixed</td>
+<td align="left">deadline</td>
+<td align="left">Very Hard</td>
+<td align="right">1281</td>
+<td align="right">0.62</td>
+<td align="right">0.01</td>
+<td align="right">598.47</td>
+<td align="right">9.34</td>
+</tr>
+<tr class="even">
+<td align="left">fixed</td>
+<td align="left">deadline</td>
+<td align="left">Hard</td>
+<td align="right">1355</td>
+<td align="right">0.76</td>
+<td align="right">0.01</td>
+<td align="right">599.28</td>
+<td align="right">7.59</td>
+</tr>
+<tr class="odd">
+<td align="left">fixed</td>
+<td align="left">deadline</td>
+<td align="left">Medium</td>
+<td align="right">1328</td>
+<td align="right">0.86</td>
+<td align="right">0.01</td>
+<td align="right">546.91</td>
+<td align="right">6.18</td>
+</tr>
+<tr class="even">
+<td align="left">fixed</td>
+<td align="left">deadline</td>
+<td align="left">Easy</td>
+<td align="right">1288</td>
+<td align="right">0.89</td>
+<td align="right">0.01</td>
+<td align="right">518.26</td>
+<td align="right">5.75</td>
+</tr>
+<tr class="odd">
+<td align="left">random</td>
+<td align="left">no_deadline</td>
+<td align="left">Very Hard</td>
+<td align="right">593</td>
+<td align="right">0.51</td>
+<td align="right">0.02</td>
+<td align="right">1168.52</td>
+<td align="right">28.30</td>
+</tr>
+<tr class="even">
+<td align="left">random</td>
+<td align="left">no_deadline</td>
+<td align="left">Hard</td>
+<td align="right">453</td>
+<td align="right">0.71</td>
+<td align="right">0.02</td>
+<td align="right">1052.36</td>
+<td align="right">28.14</td>
+</tr>
+<tr class="odd">
+<td align="left">random</td>
+<td align="left">no_deadline</td>
+<td align="left">Medium</td>
+<td align="right">431</td>
+<td align="right">0.79</td>
+<td align="right">0.02</td>
+<td align="right">846.02</td>
+<td align="right">24.54</td>
+</tr>
+<tr class="even">
+<td align="left">random</td>
+<td align="left">no_deadline</td>
+<td align="left">Easy</td>
+<td align="right">377</td>
+<td align="right">0.89</td>
+<td align="right">0.02</td>
+<td align="right">851.16</td>
+<td align="right">24.94</td>
+</tr>
+<tr class="odd">
+<td align="left">random</td>
+<td align="left">deadline</td>
+<td align="left">Very Hard</td>
+<td align="right">1264</td>
+<td align="right">0.58</td>
+<td align="right">0.01</td>
+<td align="right">509.96</td>
+<td align="right">9.24</td>
+</tr>
+<tr class="even">
+<td align="left">random</td>
+<td align="left">deadline</td>
+<td align="left">Hard</td>
+<td align="right">1298</td>
+<td align="right">0.66</td>
+<td align="right">0.01</td>
+<td align="right">488.68</td>
+<td align="right">7.71</td>
+</tr>
+<tr class="odd">
+<td align="left">random</td>
+<td align="left">deadline</td>
+<td align="left">Medium</td>
+<td align="right">1198</td>
+<td align="right">0.78</td>
+<td align="right">0.01</td>
+<td align="right">472.38</td>
+<td align="right">7.10</td>
+</tr>
+<tr class="even">
+<td align="left">random</td>
+<td align="left">deadline</td>
+<td align="left">Easy</td>
+<td align="right">1229</td>
+<td align="right">0.81</td>
+<td align="right">0.01</td>
+<td align="right">450.44</td>
+<td align="right">6.68</td>
+</tr>
+</tbody>
+</table>
+<p>Statistical analysis, using a 2 condition <span class="math inline">\(\times\)</span> 2 phase <span class="math inline">\(\times\)</span> 4 difficulty between-within ANOVA, of the effect of these factors on accuracy confirmed the effect of difficulty, F(3, 216) = 167.51, p = 0, <span class="math inline">\(\eta^2\)</span> = 0.4. RDK responses in the fixed condition were more accurate than RDK responses in the random condition, F(1, 72) = 6.08, p = 0.02, <span class="math inline">\(\eta^2\)</span> = 0.03. RDK responses were also more accurate under a deadline then under no deadline, F(1, 72) = 4.16, p = 0.04, <span class="math inline">\(\eta^2\)</span> = 0.01. There was also a significant phase <span class="math inline">\(\times\)</span> difficulty interaction, F(3, 216) = 4.78, p = 0, <span class="math inline">\(\eta^2\)</span> = 0.02 reflecting a greater increase from easy to very hard when there was no deadline compared to when there was a deadline.</p>
+<p>We used the same analysis to examine the effect of condition, phase, and difficulty on RT. We confirmed that RTs were shorter under a deadline, F(1, 72) = 366.2, p = 0, <span class="math inline">\(\eta^2\)</span> = 0.54, and that RTs became shorter as the RDK’s became easier, F(3, 216) = 70.56, p = 0, <span class="math inline">\(\eta^2\)</span> = 0.13. There was again an interaction between phase and difficulty, F(3, 216) = 75.33, p = 0, <span class="math inline">\(\eta^2\)</span> = 0.07 indicating that RT decreased more with increasing dot coherence when there was no deadline compared to when there was a deadline. These results accord with the vast literature on RDK performance (Ludwig &amp; Evans, 2017). [CHECK REFERENCE]</p>
+</div>
+<div id="optimality-in-each-condition" class="section level2">
+<h2>Optimality in each condition</h2>
 <p>The task set presented to each subject will have an optimal solution (ordered from easiest to most difficult). We first ask:</p>
 <ul>
 <li>What is the proprotion of easy, medium, hard, and very hard patches selected first, second, third or fourth?</li>
@@ -1052,29 +1166,29 @@ Start workflowr project.
 <td align="left">untimed</td>
 <td align="left">fixed</td>
 <td align="right">0.68</td>
-<td align="right">0.55</td>
-<td align="right">0.42</td>
+<td align="right">0.51</td>
+<td align="right">0.39</td>
 </tr>
 <tr class="even">
 <td align="left">deadline</td>
 <td align="left">fixed</td>
-<td align="right">0.80</td>
 <td align="right">0.79</td>
-<td align="right">0.73</td>
+<td align="right">0.65</td>
+<td align="right">0.56</td>
 </tr>
 <tr class="odd">
 <td align="left">untimed</td>
 <td align="left">random</td>
-<td align="right">0.51</td>
+<td align="right">0.53</td>
 <td align="right">0.35</td>
-<td align="right">0.24</td>
+<td align="right">0.26</td>
 </tr>
 <tr class="even">
 <td align="left">deadline</td>
 <td align="left">random</td>
-<td align="right">0.49</td>
-<td align="right">0.24</td>
-<td align="right">0.12</td>
+<td align="right">0.50</td>
+<td align="right">0.26</td>
+<td align="right">0.17</td>
 </tr>
 </tbody>
 </table>
@@ -1088,8 +1202,8 @@ Start workflowr project.
 <p>The following figures compare max_distance, min_distance, and avg_distance between the fixed difficulty and random difficulty conditions as a function of deadline condition and phase.</p>
 <p><img src="figure/index.Rmd/plotData-1.png" width="672" style="display: block; margin: auto;" /><img src="figure/index.Rmd/plotData-2.png" width="672" style="display: block; margin: auto;" /><img src="figure/index.Rmd/plotData-3.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="alternative-response-strategies" class="section level1">
-<h1>Alternative response strategies</h1>
+<div id="alternative-response-strategies" class="section level2">
+<h2>Alternative response strategies</h2>
 <p>An alternative possible strategy involves selecting tasks based on spatial position. One salient strategy would be to start with a task and then select the remaining tasks in clockwise and anti-clockwise order.</p>
 <p>The following plot shows the distribution of distribution of participant’s spatial strategy use. Higher proportions indicate responses which are more consistent with a spatial strategy. These figures indicate that when difficulty is maintained in a fixed location, two groups emerge under a deadline: those who do not use a spatial strategy and those who do use a spatial strategy.</p>
 <p>In the random difficulty condition, participants tend not to use a spatial strategy except later in the task where there is a deadline.</p>
@@ -1118,34 +1232,45 @@ locale:
 [5] LC_TIME=English_Australia.1252    
 
 attached base packages:
-[1] stats     graphics  grDevices utils     datasets  methods   base     
+[1] grid      stats     graphics  grDevices utils     datasets  methods  
+[8] base     
 
 other attached packages:
- [1] reshape2_1.4.3    knitr_1.28        hrbrthemes_0.8.0  english_1.2-5    
- [5] gtools_3.8.2      DescTools_0.99.34 forcats_0.5.0     stringr_1.4.0    
- [9] dplyr_0.8.5       purrr_0.3.3       readr_1.3.1       tidyr_1.0.2      
-[13] tibble_3.0.0      ggplot2_3.3.0     tidyverse_1.3.0   workflowr_1.6.1  
+ [1] rstatix_0.5.0     lme4_1.1-21       Matrix_1.2-18     png_0.1-7        
+ [5] reshape2_1.4.3    knitr_1.28        hrbrthemes_0.8.0  english_1.2-5    
+ [9] gtools_3.8.2      DescTools_0.99.34 forcats_0.5.0     stringr_1.4.0    
+[13] dplyr_0.8.5       purrr_0.3.3       readr_1.3.1       tidyr_1.0.2      
+[17] tibble_3.0.0      ggplot2_3.3.0     tidyverse_1.3.0   workflowr_1.6.1  
 
 loaded via a namespace (and not attached):
- [1] httr_1.4.1        jsonlite_1.6.1    modelr_0.1.6      assertthat_0.2.1 
- [5] expm_0.999-4      highr_0.8         cellranger_1.1.0  yaml_2.2.1       
- [9] gdtools_0.2.2     Rttf2pt1_1.3.8    pillar_1.4.3      backports_1.1.5  
-[13] lattice_0.20-38   glue_1.4.0        extrafontdb_1.0   digest_0.6.25    
-[17] promises_1.1.0    rvest_0.3.5       colorspace_1.4-1  plyr_1.8.6       
-[21] htmltools_0.4.0   httpuv_1.5.2      Matrix_1.2-18     pkgconfig_2.0.3  
-[25] broom_0.5.5       haven_2.2.0       mvtnorm_1.1-0     scales_1.1.0     
-[29] whisker_0.4       later_1.0.0       git2r_0.26.1      farver_2.0.3     
-[33] generics_0.0.2    ellipsis_0.3.0    withr_2.1.2       cli_2.0.2        
-[37] magrittr_1.5      crayon_1.3.4      readxl_1.3.1      evaluate_0.14    
-[41] fs_1.4.1          fansi_0.4.1       nlme_3.1-144      MASS_7.3-51.5    
-[45] xml2_1.3.0        tools_3.6.3       hms_0.5.3         lifecycle_0.2.0  
-[49] munsell_0.5.0     reprex_0.3.0      compiler_3.6.3    systemfonts_0.2.2
-[53] rlang_0.4.5       grid_3.6.3        rstudioapi_0.11   labeling_0.3     
-[57] rmarkdown_2.1     boot_1.3-24       gtable_0.3.0      DBI_1.1.0        
-[61] R6_2.4.1          lubridate_1.7.4   extrafont_0.17    rprojroot_1.3-2  
-[65] stringi_1.4.6     Rcpp_1.0.4        vctrs_0.2.4       dbplyr_1.4.2     
-[69] tidyselect_1.0.0  xfun_0.12        </code></pre>
+ [1] nlme_3.1-144      fs_1.4.1          lubridate_1.7.4   httr_1.4.1       
+ [5] rprojroot_1.3-2   tools_3.6.3       backports_1.1.5   R6_2.4.1         
+ [9] DBI_1.1.0         colorspace_1.4-1  withr_2.1.2       tidyselect_1.0.0 
+[13] curl_4.3          compiler_3.6.3    git2r_0.26.1      extrafontdb_1.0  
+[17] cli_2.0.2         rvest_0.3.5       expm_0.999-4      xml2_1.3.0       
+[21] labeling_0.3      scales_1.1.0      mvtnorm_1.1-0     systemfonts_0.2.2
+[25] digest_0.6.25     foreign_0.8-75    minqa_1.2.4       rmarkdown_2.1    
+[29] rio_0.5.16        pkgconfig_2.0.3   htmltools_0.4.0   extrafont_0.17   
+[33] highr_0.8         dbplyr_1.4.2      rlang_0.4.5       readxl_1.3.1     
+[37] rstudioapi_0.11   farver_2.0.3      generics_0.0.2    jsonlite_1.6.1   
+[41] zip_2.0.4         car_3.0-8         magrittr_1.5      Rcpp_1.0.4       
+[45] munsell_0.5.0     fansi_0.4.1       abind_1.4-5       gdtools_0.2.2    
+[49] lifecycle_0.2.0   stringi_1.4.6     whisker_0.4       yaml_2.2.1       
+[53] carData_3.0-4     MASS_7.3-51.5     plyr_1.8.6        promises_1.1.0   
+[57] crayon_1.3.4      lattice_0.20-38   haven_2.2.0       splines_3.6.3    
+[61] hms_0.5.3         pillar_1.4.3      boot_1.3-24       reprex_0.3.0     
+[65] glue_1.4.0        evaluate_0.14     data.table_1.12.8 modelr_0.1.6     
+[69] vctrs_0.2.4       nloptr_1.2.2.1    httpuv_1.5.2      Rttf2pt1_1.3.8   
+[73] cellranger_1.1.0  gtable_0.3.0      assertthat_0.2.1  openxlsx_4.1.5   
+[77] xfun_0.12         broom_0.5.5       later_1.0.0       ellipsis_0.3.0   </code></pre>
 </div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>We compared three models: (1) a standard linear regression model with location condition, deadline, and their interaction as factors (DF = 5, BIC = 7373.9905694) ; (2) a multilevel regression model with an additional random intercept for each subject (DF = 6, BIC = 6533.5611201); and (3) a multilevel regression with a random intercept and random deadline coefficient for each subject (DF = 8, BIC = 6324.2759215). The third model was preferred on a BIC basis; hence, we report the details of that model only.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+</ol>
 </div>
 
 
