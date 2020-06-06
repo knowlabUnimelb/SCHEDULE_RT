@@ -42,13 +42,20 @@ inputdir <- "data"
 
 # Reading data and variable names 
 fixed_datafilename = "200511_fixed_rdk_data.csv"
-random_datafilename = "200525_random_rdk_data.csv"
+random_datafilename = "200606_random_rdk_data.csv"
 
 colfile       <- read.csv(paste(inputdir,"data_dictionary.csv",sep="/"), stringsAsFactors = FALSE)
 fixed_datafn  <- paste(inputdir,fixed_datafilename,sep="/") 
 random_datafn <- paste(inputdir,random_datafilename,sep="/") 
 fixd_rawdata     <- read.csv(fixed_datafn, header = FALSE, col.names = colfile$Column, stringsAsFactors = FALSE) # Add column labels to data
 rand_rawdata     <- read.csv(random_datafn, header = FALSE, col.names = colfile$Column, stringsAsFactors = FALSE) # Add column labels to data
+
+# Handful of subjects who partially completed the experiment without an id, remove them
+fixd_rawdata$uniqueid = as.integer(fixd_rawdata$uniqueid)
+rand_rawdata$uniqueid = as.integer(rand_rawdata$uniqueid)
+
+fixd_rawdata = fixd_rawdata[!is.na(fixd_rawdata$uniqueid), ]
+rand_rawdata = rand_rawdata[!is.na(rand_rawdata$uniqueid), ]
 
 # Most columns need to be read in as characters to deal with the issue that there are missing NULL values, fix those here to avoid headaches later
 fixd_rawdata$condition = as.factor(fixd_rawdata$condition)
@@ -350,7 +357,7 @@ tc.ml2.summary = summary(tc.ml2)
 
 ```
 
-As one might expect, there were fewer tasks completed under a deadline than without a deadline ($\beta_{deadline}$ = `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "phase1", colnames(tc.ml2.summary$coefficients) == "Estimate"]), 2)`, SE =  `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "phase1", colnames(tc.ml2.summary$coefficients) == "Std. Error"]), 2)`). we inferred that the coefficient for location condition was not different from 0 as the 2 x SE interval included 0 ($\beta_{condition}$ = `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom_location", colnames(tc.ml2.summary$coefficients) == "Estimate"]), 2)`, SE =  `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom_location", colnames(tc.ml2.summary$coefficients) == "Std. Error"]), 2)`). There was no interaction between deadline and location condition ($\beta_{condition \times deadline}$= `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom_location:phase1", colnames(tc.ml2.summary$coefficients) == "Estimate"]), 2)`, SE =  `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom_location:phase1", colnames(tc.ml2.summary$coefficients) == "Std. Error"]), 2)`). [^1]
+As one might expect, there were fewer tasks completed under a deadline than without a deadline ($\beta_{deadline}$ = `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "phasedeadline", colnames(tc.ml2.summary$coefficients) == "Estimate"]), 2)`, SE =  `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "phasedeadline", colnames(tc.ml2.summary$coefficients) == "Std. Error"]), 2)`). we inferred that the coefficient for location condition was not different from 0 as the 2 x SE interval included 0 ($\beta_{condition}$ = `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom", colnames(tc.ml2.summary$coefficients) == "Estimate"]), 2)`, SE =  `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom", colnames(tc.ml2.summary$coefficients) == "Std. Error"]), 2)`). There was no interaction between deadline and location condition ($\beta_{condition \times deadline}$= `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom:phasedeadline", colnames(tc.ml2.summary$coefficients) == "Estimate"]), 2)`, SE =  `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom:phasedeadline", colnames(tc.ml2.summary$coefficients) == "Std. Error"]), 2)`). [^1]
 
 [^1]: We compared three models: (1) a standard linear regression model with location condition, deadline, and their interaction as factors (DF = `r compare.1$Df[1]`, BIC = `r compare.1$BIC[1]`) ; (2) a multilevel regression model with an additional random intercept for each subject (DF = `r compare.1$Df[2]`, BIC = `r compare.1$BIC[2]`); and (3) a multilevel regression with a random intercept and random deadline coefficient for each subject (DF = `r compare.2$Df[2]`, BIC = `r compare.2$BIC[2]`). The third model was preferred on a BIC basis; hence, we report the details of that model only.
 
@@ -420,7 +427,7 @@ kable(difficulty, caption="Mean accuracy and RT for each difficulty and each pha
 # aggregate(rdk$correct, by=list(rdk$difficulty), FUN=mean)
 ```
 
-Statistical analysis, using a 2 condition $\times$ 2 phase $\times$ 4 difficulty between-within ANOVA, of the effect of these factors on accuracy confirmed the effect of difficulty, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "difficulty"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "difficulty"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "difficulty"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "difficulty"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "difficulty"], 2)`. RDK responses in the fixed condition were more accurate than RDK responses in the random condition, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "condition"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "condition"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "condition"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "condition"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "condition"], 2)`. RDK responses were also more accurate under a deadline then under no deadline, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "phase"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "phase"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "phase"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "phase"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "phase"], 2)`. There was also a significant phase $\times$ difficulty interaction, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "phase:difficulty"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "phase:difficulty"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "phase:difficulty"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "phase:difficulty"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "phase:difficulty"], 2)` reflecting a greater increase from easy to very hard when there was no deadline compared to when there was a deadline.
+Statistical analysis, using a 2 condition $\times$ 2 phase $\times$ 4 difficulty between-within ANOVA, of the effect of these factors on accuracy confirmed the effect of difficulty, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "difficulty"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "difficulty"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "difficulty"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "difficulty"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "difficulty"], 2)`. RDK responses in the fixed condition were more accurate than RDK responses in the random condition, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "condition"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "condition"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "condition"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "condition"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "condition"], 2)`. RDK responses were not more accurate under a deadline then under no deadline, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "phase"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "phase"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "phase"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "phase"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "phase"], 2)`. However, there was a significant phase $\times$ difficulty interaction, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "phase:difficulty"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "phase:difficulty"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "phase:difficulty"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "phase:difficulty"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "phase:difficulty"], 2)` reflecting a greater increase from easy to very hard when there was no deadline compared to when there was a deadline.
 
 We used the same analysis to examine the effect of condition, phase, and difficulty on RT. We confirmed that RTs were shorter under a deadline, F(`r anova.rt$ANOVA$DFn[anova.rt$ANOVA$Effect == "phase"]`, `r anova.rt$ANOVA$DFd[anova.rt$ANOVA$Effect == "phase"]`) = `r round(anova.rt$ANOVA$F[anova.rt$ANOVA$Effect == "phase"], 2)`, p = `r round(anova.rt$ANOVA$p[anova.rt$ANOVA$Effect == "phase"],2)`, $\eta^2$ = `r round(anova.rt$ANOVA$ges[anova.rt$ANOVA$Effect == "phase"], 2)`, and that RTs became shorter as the RDK's became easier, F(`r anova.rt$ANOVA$DFn[anova.rt$ANOVA$Effect == "difficulty"]`, `r anova.rt$ANOVA$DFd[anova.rt$ANOVA$Effect == "difficulty"]`) = `r round(anova.rt$ANOVA$F[anova.rt$ANOVA$Effect == "difficulty"], 2)`, p = `r round(anova.rt$ANOVA$p[anova.rt$ANOVA$Effect == "difficulty"],2)`, $\eta^2$ = `r round(anova.rt$ANOVA$ges[anova.rt$ANOVA$Effect == "difficulty"], 2)`. There was again an interaction between phase and difficulty, F(`r anova.rt$ANOVA$DFn[anova.rt$ANOVA$Effect == "phase:difficulty"]`, `r anova.rt$ANOVA$DFd[anova.rt$ANOVA$Effect == "phase:difficulty"]`) = `r round(anova.rt$ANOVA$F[anova.rt$ANOVA$Effect == "phase:difficulty"], 2)`, p = `r round(anova.rt$ANOVA$p[anova.rt$ANOVA$Effect == "phase:difficulty"],2)`, $\eta^2$ = `r round(anova.rt$ANOVA$ges[anova.rt$ANOVA$Effect == "phase:difficulty"], 2)` indicating that RT decreased more with increasing dot coherence when there was no deadline compared to when there was a deadline. These results accord with the vast literature on RDK performance (Ludwig & Evans, 2017). [CHECK REFERENCE]
 
@@ -537,11 +544,10 @@ get_trial_scores = function(sdata, ntrials, n, nperms, allperms, nSubjects, subj
 
 # Compute distances for condition x practice/experiment
 # sdata, order_to_compare, ntrials, n, nperms, allperms, nSubjects, subjects
-# sdata = splitData(fd$data)$practice
-# order_to_compare = fp$optimal_order
-# ntrials = fp$ntrials
-# nSubjects =fd$nSubjects
-# subjects = fd$subjects
+# sdata = splitData(rd$data)$practice
+#  ntrials = 10
+# nSubjects =rd$nSubjects
+# subjects = rd$subjects
 scores = list("fixed" = list("practice" = get_trial_scores(splitData(fd$data)$practice, 10, 
                                                            n, nperms, allperms, fd$nSubjects, fd$subjects), 
                              "experiment" = get_trial_scores(splitData(fd$data)$experiment, 30, 
@@ -634,7 +640,9 @@ match_mat = rbind(set1, set2, set3, set4)
 
 The task set presented to each subject will have an optimal solution (ordered from easiest to most difficult). We first ask: 
 
-* What is the proprotion of easy, medium, hard, and very hard patches selected first, second, third or fourth?
+* What is the proportion of easy, medium, hard, and very hard patches selected first, second, third or fourth?
+
+These matrices indicate the proportions of responses for each difficulty level which were chosen first, second, third, or fourth, respectively. It is evident at a glance that the ordering of choices is more optimal when the locations are fixed; that is, the proportions on the diagonal are higher. When the locations are fixed, choice order becomes more optimal under a deadline. By contrast, when locations are random, responding becomes _less_ optimal under a deadline. This likely reflects the additional costs of having to search for the appropriate task to complete. This search is minimised in the fixed location condition. 
 
 ```{r selectionOrderAnalysis, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
 
@@ -692,7 +700,7 @@ print(match_plot + ggtitle("Optimally Ordered Responses"))
 
 ```
 
-
+* How optimal were responses? 
 
 The next analysis will compute something like Kendall's Tau, rank-order distance, which ranges between 0 (perfect match) and 6 (maximally distant), for 4 options. 
 
@@ -703,8 +711,7 @@ What we want is the distance of the selected options from the optimal solutions,
 
 3. the average distance of those possible orders and the optimal solution (*avg_distance*). 
 
-
-The following figures compare max_distance, min_distance, and avg_distance between the fixed difficulty and random difficulty conditions as a function of deadline condition and phase. 
+The following figures compare max_distance, min_distance, and avg_distance between the fixed difficulty and random difficulty conditions as a function of deadline condition and phase. For each of these measures, lower values reflect respones which are closer to optimal.
 
 ```{r plotData, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
 max_plot <- avg_maxdata %>% ggplot(aes(x=avg, fill=phase)) + geom_histogram(color="white", alpha=0.6, bins = 10, position="identity") + facet_wrap(~condition+phase) + labs(y="Frequency", x = "Max Distance")
@@ -838,8 +845,3 @@ spatial_choice_plot <- avg_scdata %>% ggplot(aes(x=avg, fill=phase)) + geom_hist
 print(spatial_choice_plot)
 
 ```
-
-Some other questions arise:
-
-* TODO: What should be done with fixed location participants in which the optimal solution is also a circular strategy? Analyse the data again but removing trials in which difficulty is mapped in a circular manner?
-
