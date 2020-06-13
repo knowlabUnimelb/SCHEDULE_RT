@@ -702,9 +702,10 @@ print(match_plot + ggtitle("Optimally Ordered Responses"))
 
 * How optimal were responses? 
 
-The next analysis will compute something like Kendall's Tau, rank-order distance, which ranges between 0 (perfect match) and 6 (maximally distant), for 4 options. 
+The next analysis will compute the distance between the task order and the optimal order (easiest to very hard for that trial), which ranges between 0 (perfect match) and 6 (maximally distant), for 4 options. 
 
-What we want is the distance of the selected options from the optimal solutions, which is Kendall's Tau. However, because a participant may run out of time, there may be missing values. To handle these values, for each trial, we find the orders which partially match the selected order and compute three measures of performance: 
+What we want is the distance of the selected options from the optimal solutions, which is the edit distance (or number of discordant pairs) between orders. However, because a participant may run out of time, there may be missing values. To handle these values, for each trial, we find the orders which partially match the selected order and compute three measures of performance:
+
 1. the maximum distance of those possible orders and the optimal solution (*max_distance*). This analysis is biased against optimality because it assumes that partially completed sequences would have eventually been non-optimal. 
 
 2. the minimum distance of the partial orders and the optimal solution (*min_distance*). This analysis is biased toward optimality because it assumes that partially completed sequences would have eventually been closer to optimal.  
@@ -723,6 +724,76 @@ avg_plot <- avg_avgdata %>% ggplot(aes(x=avg, fill=phase)) + geom_histogram(colo
 print(max_plot + ggtitle("Max Distance"))
 print(min_plot + ggtitle("Min Distance"))
 print(avg_plot + ggtitle("Avg Distance"))
+
+```
+
+## Sampling distribution anlaysis
+
+In order to characterise performance, we examined three sampling distributions for comparison to our data. The first is the sampling distribution of edit distances from optimal assuming that orders are sampled uniformly at random. The second distribution assumes that the first choice was optimal but the remaining orders are sampled at random. Finally, the third distributions assumes that the first two choices are selected optimally but that the remaining are randomly selected. It is clear that the mode of the distribution moves from a distance of 3 to a distance of 0 as the sampling distribution summarises orders which better conform to optimality. 
+
+To characterise the optimality of each condition at each point in the experiment, we first computed the ks-test statistic between the data (the average partial distance data) and the random order distribution and the first-two optimal distribution. Since smaller ks-statistics indicate a closer match between the distributions, we then took the ratio of the ks-statistics (random over first two-optimal). Values less than one indicate that the data are more consistent with random than optimal responding. Values greater than one indicate that the data are more consistent with optimal rather than random responding. 
+
+```{r sampling_dist, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
+
+opt_order_dist = function(trial_optimal_order, nperms=nperms, allperms=allperms){
+  pdist <- rep(NA, nperms)
+  for (i in 1:nperms){
+    distObj = ConDisPairs(table(allperms[i, ], trial_optimal_order))
+    pdist[i] = distObj$D  
+  }
+  return(pdist)
+}
+
+opt_order = c(1,2,3,4)
+opt_dist_list = opt_order_dist(opt_order, nperms, allperms)
+
+nsamples = 1000
+
+# sample a bunch of orders, and compute the distances
+allrand = as.data.frame(list("s" = sample(opt_dist_list, nsamples, replace = TRUE)))
+onefix = as.data.frame(list("s" = sample(opt_dist_list[allperms[,1]==1], nsamples, replace = TRUE)))
+twofix = as.data.frame(list("s" = sample(opt_dist_list[allperms[,1]==1 & allperms[,2]==2], nsamples, replace = TRUE)))
+distance_samples = as.data.frame(rbind(cbind("cond" = rep(1, nsamples), "s" = allrand$s), cbind("cond" = rep(2, nsamples), "s" = onefix$s), cbind("cond" = rep(3, nsamples), "s" = twofix$s)))
+
+
+# plot the distribution of distances
+samp_plot <- distance_samples %>% ggplot(aes(s)) + 
+  geom_histogram(color="white", alpha =0.8, bins=7, position="identity") + 
+  labs(y = "Frequency of Sample", x = "Distance From Optimal") + 
+  facet_wrap(~cond)
+print(samp_plot)
+
+# Statistical comparison
+#ks.test(avg_avgdata$avg[avg_avgdata$condition == "fixed" & avg_avgdata$phase == "deadline early"], avg_avgdata$avg[avg_avgdata$condition == "fixed" & avg_avgdata$phase == "deadline late"])
+
+# Lower values of the ks test indicate higher similarity between the distributions, so compare the ratio of optimal vs random distances at each time point
+# Note: you don't have to sample for the kstest, you can just use the actual values, but sampling is fine
+# > 1 indicates more optimal than random, < 1 indicates more random than optimal
+
+ks.fixed.phase1 = ks.test(allrand$s, avg_avgdata$avg[avg_avgdata$condition == "fixed" & avg_avgdata$phase == "untimed practice"])$statistic/ks.test(twofix$s, avg_avgdata$avg[avg_avgdata$condition == "fixed" & avg_avgdata$phase == "untimed practice"])$statistic
+
+ks.fixed.phase2 = ks.test(allrand$s, avg_avgdata$avg[avg_avgdata$condition == "fixed" & avg_avgdata$phase == "deadline early"])$statistic/ks.test(twofix$s, avg_avgdata$avg[avg_avgdata$condition == "fixed" & avg_avgdata$phase == "deadline early"])$statistic
+
+ks.fixed.phase3 = ks.test(allrand$s, avg_avgdata$avg[avg_avgdata$condition == "fixed" & avg_avgdata$phase == "deadline late"])$statistic/ks.test(twofix$s, avg_avgdata$avg[avg_avgdata$condition == "fixed" & avg_avgdata$phase == "deadline late"])$statistic
+
+ks.random.phase1 = ks.test(allrand$s, avg_avgdata$avg[avg_avgdata$condition == "random" & avg_avgdata$phase == "untimed practice"])$statistic/ks.test(twofix$s, avg_avgdata$avg[avg_avgdata$condition == "random" & avg_avgdata$phase == "untimed practice"])$statistic
+
+ks.random.phase2 = ks.test(allrand$s, avg_avgdata$avg[avg_avgdata$condition == "random" & avg_avgdata$phase == "deadline early"])$statistic/ks.test(twofix$s, avg_avgdata$avg[avg_avgdata$condition == "random" & avg_avgdata$phase == "deadline early"])$statistic
+
+ks.random.phase3 = ks.test(allrand$s, avg_avgdata$avg[avg_avgdata$condition == "random" & avg_avgdata$phase == "deadline late"])$statistic/ks.test(twofix$s, avg_avgdata$avg[avg_avgdata$condition == "random" & avg_avgdata$phase == "deadline late"])$statistic
+
+# Build data for plotting
+randomness = as.data.frame(list("condition" = factor(c("fixed", "fixed", "fixed", "random", "random", "random"), levels =c("fixed", "random")), "phase" = factor(c("untimed", "deadline early", "deadline late", "untimed", "deadline early", "deadline late"), levels = c("untimed", "deadline early", "deadline late")), "ratio" = c(ks.fixed.phase1, ks.fixed.phase2, ks.fixed.phase3, ks.random.phase1, ks.random.phase2, ks.random.phase3)))
+levels(randomness$phase) = c("untimed", "deadline early", "deadline late")
+
+# Plot
+random_eval_plot <- randomness %>% ggplot(aes(x=phase, y=ratio, group=condition)) + 
+                     geom_line(aes(linetype=condition), size=1) +
+                     geom_point(size=4) + 
+                     labs(y="Ratio (Random Distance/Optimal Distance)", x = "Phase") + 
+                     ggtitle("Comparison to random and optimal sampling distributions") + 
+                     geom_hline(yintercept =1, linetype="dotted", color="black", size=.5)
+print(random_eval_plot)
 
 ```
 
