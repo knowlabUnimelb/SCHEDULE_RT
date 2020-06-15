@@ -36,6 +36,7 @@ library(png)
 library(grid)
 library(lme4)
 library(rstatix)
+library(jpeg)
 
 #define working directories
 inputdir <- "data"
@@ -430,6 +431,20 @@ kable(difficulty, caption="Mean accuracy and RT for each difficulty and each pha
 Statistical analysis, using a 2 condition $\times$ 2 phase $\times$ 4 difficulty between-within ANOVA, of the effect of these factors on accuracy confirmed the effect of difficulty, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "difficulty"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "difficulty"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "difficulty"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "difficulty"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "difficulty"], 2)`. RDK responses in the fixed condition were more accurate than RDK responses in the random condition, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "condition"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "condition"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "condition"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "condition"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "condition"], 2)`. RDK responses were not more accurate under a deadline then under no deadline, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "phase"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "phase"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "phase"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "phase"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "phase"], 2)`. However, there was a significant phase $\times$ difficulty interaction, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "phase:difficulty"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "phase:difficulty"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "phase:difficulty"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "phase:difficulty"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "phase:difficulty"], 2)` reflecting a greater increase from easy to very hard when there was no deadline compared to when there was a deadline.
 
 We used the same analysis to examine the effect of condition, phase, and difficulty on RT. We confirmed that RTs were shorter under a deadline, F(`r anova.rt$ANOVA$DFn[anova.rt$ANOVA$Effect == "phase"]`, `r anova.rt$ANOVA$DFd[anova.rt$ANOVA$Effect == "phase"]`) = `r round(anova.rt$ANOVA$F[anova.rt$ANOVA$Effect == "phase"], 2)`, p = `r round(anova.rt$ANOVA$p[anova.rt$ANOVA$Effect == "phase"],2)`, $\eta^2$ = `r round(anova.rt$ANOVA$ges[anova.rt$ANOVA$Effect == "phase"], 2)`, and that RTs became shorter as the RDK's became easier, F(`r anova.rt$ANOVA$DFn[anova.rt$ANOVA$Effect == "difficulty"]`, `r anova.rt$ANOVA$DFd[anova.rt$ANOVA$Effect == "difficulty"]`) = `r round(anova.rt$ANOVA$F[anova.rt$ANOVA$Effect == "difficulty"], 2)`, p = `r round(anova.rt$ANOVA$p[anova.rt$ANOVA$Effect == "difficulty"],2)`, $\eta^2$ = `r round(anova.rt$ANOVA$ges[anova.rt$ANOVA$Effect == "difficulty"], 2)`. There was again an interaction between phase and difficulty, F(`r anova.rt$ANOVA$DFn[anova.rt$ANOVA$Effect == "phase:difficulty"]`, `r anova.rt$ANOVA$DFd[anova.rt$ANOVA$Effect == "phase:difficulty"]`) = `r round(anova.rt$ANOVA$F[anova.rt$ANOVA$Effect == "phase:difficulty"], 2)`, p = `r round(anova.rt$ANOVA$p[anova.rt$ANOVA$Effect == "phase:difficulty"],2)`, $\eta^2$ = `r round(anova.rt$ANOVA$ges[anova.rt$ANOVA$Effect == "phase:difficulty"], 2)` indicating that RT decreased more with increasing dot coherence when there was no deadline compared to when there was a deadline. These results accord with the vast literature on RDK performance (Ludwig & Evans, 2017). [CHECK REFERENCE]
+
+## Reward Rate
+
+To confirm that coherence offered a good proxy to difficulty (and hence, that an optimal order of easiest to hardest was maintained), we calculated the reward rate for each patch in each condition by dividing the response time by the probability correct. The reward rate ordering matches the coherence ordering across all conditions. 
+
+
+```{r rewardRate_image, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
+img <- readJPEG("analysis/rewardRate.jpg")
+g <- rasterGrob(img, interpolate=TRUE)
+
+qplot() +
+  annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) 
+```
+
 
 ## Optimality in each condition
 
