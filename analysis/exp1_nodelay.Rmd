@@ -1,5 +1,5 @@
 ---
-title: "exp1_nodelay"
+title: "Experiment 1: 4 RDKs, no delay"
 author: "knowlabUnimelb"
 date: "2020-10-29"
 output: workflowr::wflow_html
@@ -382,6 +382,9 @@ diff_plot <- rdk %>% ggplot(aes(x=dot_coherence, y=rt, fill=dot_coherence)) + ge
 print(diff_plot + ggtitle("Response times as a function of difficulty"))
 
 # RT summed over additional attempts
+rdk.sumrt$difficulty = as.factor(rdk.sumrt$difficulty)
+levels(rdk.sumrt$difficulty) = c("very hard", "hard", "medium", "easy")
+
 sumdiff_plot <- rdk.sumrt %>% ggplot(aes(x=difficulty, y=sumrt, fill=difficulty)) + geom_violin(adjust = 1.5, trim = TRUE) + facet_wrap(~phase) + labs(y="RT (msec)", x = "Difficulty")
 
 print(sumdiff_plot + ggtitle("Response times summed over attempts as a function of difficulty"))
