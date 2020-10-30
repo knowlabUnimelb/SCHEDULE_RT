@@ -28,7 +28,7 @@ We conducted a number of experiments in which we controlled the difficulty of ea
 
 Four experiments were completed online: 
 
-# [Experiment 1](analysis/exp1_nodelay.Rmd): *Four RDK Subtasks with No Delay* 
+# [Experiment 1](exp1_nodelay.html): *Four RDK Subtasks with No Delay* 
 
 In this experiment, there were two conditions, one using one using fixed task difficulty locations on each trial and one using random task difficulty locations on each trial. In each condition, subjects completed several trials selecting and completing RDK tasks when there was no deadline for completing all of the subtasks and where there was a six second deadline for completing all of the subtasks. There were four subtasks. When an error was made on the RDK task, the direction of the RDK was immediately restarted with a potentially new sampled direction. 
 
