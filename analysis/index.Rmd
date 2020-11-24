@@ -15,7 +15,7 @@ Daniel R. Little^1^, Ami Eidels^2^, and Deborah J. Lin^1^
 
 # Scheduling Project
 
-Details regarding our study are provided here: [Preregistration Document](prereg.html)
+Preregistration of our hypotheses and data analysis plan are available here: [Preregistration Document](prereg.html) and [OSF](https://osf.io/3kfh6/)
 
 
 # Overview
@@ -24,13 +24,13 @@ Scheduling theory is concerned with the development of policies which determine 
 
 For many types of goals, such as minimizing the number of tasks completed after a deadline or completing as many tasks as possible in a given length of time, an optimal schedule can be determined (Chretienne et al., 1995). In the present study, we are focused on the scheduling of tasks that vary in difficulty where the goal is to complete as many tasks as possible prior to the deadline. In this case, it is optimal to complete subtasks in order of shortest to longest completion time.
 
-We conducted a number of experiments in which we controlled the difficulty of each subtask by requiring perceptual decisions with known properties. For example, in Experiments 1-3, each subtask is a Random Dot Kinematogram (RDK). In an RDK, dots are moving across an aperture on the screen in a pseudo-random fashion. The participant must to determine whether more dots are moving coherently to the right or to the left. Multiple RDK patches will be presented on the selection screen. Participants will click on the RDK they want to complete, indicate the direction of motion in that patch, and then return to the main screen to select the next RDK. The RDK's will vary in coherence and consequently, difficulty, and average completion time (Ludwig & Evens, 2017).
+We conducted a number of experiments in which we controlled the difficulty of each subtask by requiring perceptual decisions with known properties. For example, in Experiments 1-3, each subtask is a Random Dot Kinematogram (RDK). In an RDK, dots are moving across an aperture on the screen in a pseudo-random fashion. The participant must to determine whether more dots are moving coherently to the right or to the left. Multiple RDK patches will be presented on the selection screen. Participants will click on the RDK they want to complete, indicate the direction of motion in that patch, and then return to the main screen to select the next RDK. The RDK's will vary in coherence and consequently, difficulty and average completion time (Ludwig & Evens, 2017).
 
 Four experiments were completed online: 
 
 # [Experiment 1](exp1_nodelay.html): *Four RDK Subtasks with No Delay* 
 
-In this experiment, there were two conditions, one using one using fixed task difficulty locations on each trial and one using random task difficulty locations on each trial. In each condition, subjects completed several trials selecting and completing RDK tasks when there was no deadline for completing all of the subtasks and where there was a six second deadline for completing all of the subtasks. There were four subtasks. When an error was made on the RDK task, the direction of the RDK was immediately restarted with a potentially new sampled direction. 
+In this experiment, there were two conditions, one using fixed locations of task difficulty on each trial and one using random locations of task difficulty on each trial. In each condition, subjects completed several trials selecting and completing RDK tasks when there was no deadline for completing all of the subtasks and where there was a six second deadline for completing all of the subtasks. There were four subtasks. When an error was made on the RDK task, the direction of the RDK was immediately restarted with a potentially new sampled direction. 
 
 # Experiment 2: *Four RDK Subtasks with Error Delay* 
 
