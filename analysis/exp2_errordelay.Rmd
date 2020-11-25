@@ -1,7 +1,7 @@
 ---
-title: "Experiment 1: 4 RDKs, no delay"
+title: "Experiment 1: 4 RDKs with error delay"
 author: "knowlabUnimelb"
-date: "2020-10-29"
+date: "2020-11-24"
 output: workflowr::wflow_html
 editor_options:
   chunk_output_type: console
@@ -35,12 +35,17 @@ library(jpeg)
 ```
 
 ```{r load_data, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
+# Notes: 
+# Uniqueid 25363 attempted the experiment three times, only finishing it the third time
+# Somehow, the demographic line did not record on their third attempt; this fouls up the analysis which expects it
+# I've added this line to the data. This can be safely accomplished because the uniqueid's are tied to their SONA account and the same sex and gender were already entered twice for the prior attempts
+
 #define working directories
 inputdir <- "data"
 
 # Reading data and variable names 
-fixed_datafilename = "exp1_fixed_rdk_data.csv"
-random_datafilename = "exp1_random_rdk_data.csv"
+fixed_datafilename = "exp2_fixed_rdk_delay_data.csv"
+random_datafilename = "exp2_random_rdk_delay_data.csv"
 
 colfile       <- read.csv(paste(inputdir,"data_dictionary.csv",sep="/"), stringsAsFactors = FALSE)
 fixed_datafn  <- paste(inputdir,fixed_datafilename,sep="/") 
@@ -101,8 +106,6 @@ nRandomLoggedSubjects = length(randomLoggedSubjects) # Number of subjects who lo
 
 ```
 
-
-
 ```{r data_cleaning, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
 # A full data set has 10 practice trials (0 to 9) and 30 deadline trials (0 to 29)
 # A full data set will have a max trial number of 29 
@@ -138,7 +141,8 @@ rd = cleanUpData(rand_rawdata, nTotalTrials)
 
 ```{r add_phase, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
 
-# Add in phase column which indicates whether current trials are practice or experiment
+# Add in phase column which indicattzes whether current trials are practice or experiment
+# Somehow, the demographic row for subject 25363 was removed
 add_phase_col = function(data){
   data$data$phase = rep(NA, nrow(data$data))
   for (i in 1:data$nSubjects){
@@ -196,7 +200,11 @@ processDemographics = function(data, nSubjects){
   sex = rep(NA, nSubjects)
   age = rep(NA, nSubjects)
   for (i in 1:nSubjects){
+    
+    if (!is.na(sexage[i])){
     sex[i] = toupper(substr(sexage[i], colon_loc[[i]][1]+2, comma_loc[[i]][1]-2))
+
+    
     
     x = substr(sexage[i], colon_loc[[i]][2]+2, nchar(sexage[i])-2)
     if (nchar(x) == 2){
@@ -204,11 +212,15 @@ processDemographics = function(data, nSubjects){
     } else {
       age[i] = as.numeric(substr(sexage[i], colon_loc[[i]][2]+2, colon_loc[[i]][2]+4))    
     }
+    
+    } else {
+      sex[i] = "NIL"
+    }
   }
   
-  nFemales = sum(sex == "FEMALE" | sex == "WOMEN")
-  nMales = sum(sex == "MALE")
-  nOther = sum(sex != "FEMALE" & sex != "MALE" & sex != "WOMEN")
+  nFemales = sum(sex == "FEMALE" | sex == "WOMEN" | sex == "F")
+  nMales = sum(sex == "MALE" | sex == "M")
+  nOther = sum(sex != "FEMALE" & sex != "MALE" & sex != "WOMEN" & sex != "M" & sex != "F")
   
   meanAge = mean(age, na.rm = TRUE)
   stdAge  = sd(age, na.rm = TRUE)
@@ -222,11 +234,13 @@ randDemo = processDemographics(rd$data, rd$nSubjects)
 names(randDemo) = c("nFemales", "nMales", "nOthers", "meanAge", "stdAge", "ages")
 
 ```
+In Experiment 1, where there was no time penalty applied for making an incorrect RDK judgment, it was possible for subjects to adopt a "fast guess" strategy, particularly when responding to the hardest RDK's. Although our analysis of RT and reward rate suggested that this was not the case, we sought to further mitigate against this strategy by imposing a 500 msec time penalty after an error response. Experiment 2 thus acts as a conceptual replication of Experiment 1 but with an additional error penalty. 
+
 # Method
 
 ## Participants
 
-We tested `r fd$nSubjects + rd$nSubjects` participants (`r fixedDemo$nFemales+randDemo$nFemales` F, `r fixedDemo$nMales+randDemo$nMales` M, `r fixedDemo$nOthers+randDemo$nOthers` Undeclared). Participants were recruited through the Melbourne School of Psychological Sciences Research Experience Pool (Mean age = `r round(mean(c(fixedDemo$ages, randDemo$ages), na.rm=TRUE),2) `, range = `r min(c(fixedDemo$ages, randDemo$ages), na.rm=TRUE) ` - `r max(c(fixedDemo$ages, randDemo$ages), na.rm=TRUE)`). Participants were reimbursed with credit toward completion of a first year psychology subject. Datasets from `r fd$nRepeats + rd$nRepeats` subjects were excluded for completing the experiment twice; i.e., only the first of the datasets for these subjects was retained.
+We tested `r fd$nSubjects + rd$nSubjects` participants (`r fixedDemo$nFemales+randDemo$nFemales` F, `r fixedDemo$nMales+randDemo$nMales` M, `r fixedDemo$nOthers+randDemo$nOthers` Undeclared). Participants were recruited through the Melbourne School of Psychological Sciences Research Experience Pool (Mean age = `r round(mean(c(fixedDemo$ages, randDemo$ages), na.rm=TRUE),2) `, range = `r min(c(fixedDemo$ages, randDemo$ages), na.rm=TRUE) ` - `r max(c(fixedDemo$ages, randDemo$ages), na.rm=TRUE)`) and  were reimbursed with credit toward completion of a first year psychology subject. Datasets from `r fd$nRepeats + rd$nRepeats` subjects were excluded for completing the experiment twice; i.e., only the first of the datasets for these subjects was retained.
 
 `r paste(toupper(substring(english(fd$nSubjects), 1, 1)), substring(english(fd$nSubjects), 2), sep="")` were assigned to the _Fixed Difficulty_ condition. In this condition, the location of easy, medium, hard, and very hard random dot kinematograms (RDK's) was held constant across trials. 
 
@@ -241,23 +255,9 @@ The Fixed Difficulty experiment was completed before the Random Difficulty exper
 coherence_set = sort(unique(c(data$patch_0, data$patch_1, data$patch_2, data$patch_3)), decreasing = TRUE)
 ```
 
-In each condition, participants completed multiple trials in which they selected and completed RDK tasks. On each trial, participants were shown a set of four RDKs labelled Easy, Medium, Hard, and Very Hard. The labels corresponded to the cohenrence of the RDK; that is, the proportion of dots moving in a coherent direction was set to 80%, 50%, 20%, and 0% for the Easy, Medium, Hard, and Very Hard locations, respectively. From the set of four RDKs, participants selected and completed one RDK at a time in any order. The goal of each trial was to complete as many as possible before a deadline. If an incorrect RDK response was made, that RDK was restarted at the same coherence but with a resampled direction (so the direction may have changed), and the participant had to respond to the RDK again. A new task could not be selected until the RDK was completed successfully.
-
-```{r taskImage, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
-img <- readPNG("analysis/patch_selection.png")
-g <- rasterGrob(img, interpolate=TRUE)
-
-qplot() +
-  annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) 
-```
-
-
-Participants first completed 10 trials with a long (30 sec) deadline to help participants learn the task, explore strategies, and allow for comparison to a short-deadline condition. We term this the _no deadline_ condition since the provided time is well beyond what is necessary to complete all four RDK's. Next, participants completed 30 trials with a 6 second deadline.
+The design of the experiment was identical to Experiment 1, with the sole exception being that after making an error on an RDK direction judgment, a blank interval was presented for 500 msec before the RDK was resampled, and the RDK trial began again. 
 
 _Data Cleaning_
-
-Subjects completed the experiment by clicking a link with the uniquely generated id code. Subjects were able to use the link multiple times; further, subjects were able to exit the experiment at any time. Consequently, the datafile contains partially completed data for some subjects which needed to be identified and removed. 
-
 
 ```{r analyse_RDK_difficulty, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
 rdk = data[data$trial_event == "rdk", ]
@@ -302,7 +302,7 @@ nRemainingRandom = n$n[n$condition == 2]
 
 ```
 
-A handful of subjects (N = `r nNonlearners`) had less than chance accuracy on the easiest RDK indicating equipment problems or a misunderstanding of task directions. We removed these participants from further anlaysis leaving `r nRemainingFixed` and `r nRemainingRandom` in the fixed and random location conditions, respectively.
+`r nNonlearners` subjects had less than chance accuracy on the easiest RDK; we removed these participants from further anlaysis leaving `r nRemainingFixed` and `r nRemainingRandom` in the fixed and random location conditions, respectively.
 
 ```{r task_completion, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
 tcdata = aggregate(rdk$trial_event[rdk$correct == 1], by=list("condition" = rdk$condition[rdk$correct == 1], "trial" = rdk$trial_number[rdk$correct == 1], "phase" = rdk$phase[rdk$correct == 1], "subject" = rdk$uniqueid[rdk$correct == 1]), FUN=length)
@@ -312,8 +312,6 @@ avgCompletions = aggregate(list("M" = tcdata$x), by=list("Phase"=tcdata$phase, "
 ```
 
 # Data Analysis
-
-We first summarize performance by answering the following questions: 
 
 ## Task completions
 
@@ -345,9 +343,9 @@ tc.ml2.summary = summary(tc.ml2)
 
 ```
 
-As one might expect, there were fewer tasks completed under a deadline than without a deadline ($\beta_{deadline}$ = `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "phasedeadline", colnames(tc.ml2.summary$coefficients) == "Estimate"]), 2)`, SE =  `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "phasedeadline", colnames(tc.ml2.summary$coefficients) == "Std. Error"]), 2)`).[^1] There was no difference between conditions, ($\beta_{condition}$ = `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom", colnames(tc.ml2.summary$coefficients) == "Estimate"]), 2)`, SE =  `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom", colnames(tc.ml2.summary$coefficients) == "Std. Error"]), 2)`), and no interaction between deadline and location condition ($\beta_{condition \times deadline}$= `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom:phasedeadline", colnames(tc.ml2.summary$coefficients) == "Estimate"]), 2)`, SE =  `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom:phasedeadline", colnames(tc.ml2.summary$coefficients) == "Std. Error"]), 2)`). [^2]
+There were fewer tasks completed under a deadline than without a deadline ($\beta_{deadline}$ = `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "phasedeadline", colnames(tc.ml2.summary$coefficients) == "Estimate"]), 2)`, SE =  `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "phasedeadline", colnames(tc.ml2.summary$coefficients) == "Std. Error"]), 2)`).[^1] There was no difference between conditions, ($\beta_{condition}$ = `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom", colnames(tc.ml2.summary$coefficients) == "Estimate"]), 2)`, SE =  `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom", colnames(tc.ml2.summary$coefficients) == "Std. Error"]), 2)`). As shown in the table, there was an interaction between deadline and location condition ($\beta_{condition \times deadline}$= `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom:phasedeadline", colnames(tc.ml2.summary$coefficients) == "Estimate"]), 2)`, SE =  `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom:phasedeadline", colnames(tc.ml2.summary$coefficients) == "Std. Error"]), 2)`), with deadline affecting the number of completed tasks in the random condition more than in the fixed condition. [^2]
 
-[^1]: Throughout, we infer significance by examining whether 2 $\times$ SE includes 0.
+[^1]: Throughout, we infer significance by examining whether 2 \(\times\) SE includes 0.
 
 [^2]: We compared three models: (1) a standard linear regression model with location condition, deadline, and their interaction as factors (BIC = `r round(compare.1$BIC[1], 2)`) ; (2) a multilevel regression model with an additional random intercept for each subject (BIC = `r round(compare.1$BIC[2], 2)`); and (3) a multilevel regression with a random intercept and random deadline coefficient for each subject (BIC = `r round(compare.2$BIC[2], 2)`). The third model was preferred on a BIC basis; hence, we report the details of that model only.
 
@@ -361,7 +359,7 @@ aov.rt.data = aggregate(list("rt" = rdk$rt), by = list("subject" = rdk$subject, 
 # Note that RT is computed by averaging every attempt
 # Another way to compute RT is by summing over incorrect attempts until the RDK is responded to correctly
 
-rdk.sumrt = aggregate(list("sumrt" = rdk$rt), by = list("subject"=rdk$subject, "condition"=rdk$condition, "phase"=rdk$phase, "difficulty"=rdk$dot_coherence, "trial"=rdk$trial_number), FUN = function(x) tail(cumsum(x), n=1))
+rdk.sumrt = aggregate(list("sumrt" = rdk$rt), by = list("subject"=rdk$subject, "condition"=rdk$condition, "phase"=rdk$phase, "difficulty"=rdk$dot_coherence, "trial"=rdk$trial_number), FUN = function(x) tail(cumsum(x), n=1)+((length(x)-1) * 500))
 
 rdk.sumrt = rdk.sumrt[rdk.sumrt$sumrt <= 6000, ]
 
@@ -376,11 +374,9 @@ anova.sumrt = anova_test(data = aov.sumrt.data, dv = rt, wid = subject, within =
 
 ```
 
-We next analysed performance on the RDK discriminations. We then asked:
-
 * What was the average completion time and accuracy of the easy, medium, hard, and very hard tasks? 
 
-RTs became shorter and more accurate as the difficulty of the RDK became easier. As expected, the RTs were shorter under a deadline than without a deadline. We visualised the response times in two ways: First, we simply took the average of each attempt on each RDK after first removing `r nlongrts.no_deadline + nlongrts.deadline` trials which had RTs greater than 3000 msec. 
+RTs became shorter and more accurate as the difficulty of the RDK became easier. As expected, the RTs were shorter under a deadline than without a deadline. For the first plot, showing the average of each attempt on each RDK, we first removed trials with RTs greater than 3000 msec (N = `r nlongrts.no_deadline + nlongrts.deadline`). 
 
 ```{r difficulty_plot, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
 # Difficulty plot
@@ -392,7 +388,7 @@ diff_plot <- rdk %>% ggplot(aes(x=dot_coherence, y=rt, fill=dot_coherence)) + ge
 print(diff_plot + ggtitle("Response times as a function of difficulty"))
 ```
 
-Second, we computed the time to complete an RDK as the cumulative sum across multiple attempts within a trial (termed SumRT). That is, if an error is made and the RDK needs to be repeated, then the total RT is the sum of both attempts. 
+For the second plot, showing the time to complete an RDK as the cumulative sum across multiple attempts within a trial. We removed trials with RTs greater than 6000 msec. This plot reflects the total time to complete the RDK correctly, including any error penalties. 
 
 ```{r difficulty_sum_plot, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
 # RT summed over additional attempts
@@ -469,37 +465,17 @@ knitr::kable(difficulty, caption="Mean accuracy, RT, and RT summed across attemp
 # aggregate(rdk$correct, by=list(rdk$difficulty), FUN=mean)
 ```
 
-Statistical analysis, using a 2 condition $\times$ 2 phase $\times$ 4 difficulty between-within ANOVA, of the effect of these factors on accuracy confirmed the effect of difficulty, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "difficulty"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "difficulty"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "difficulty"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "difficulty"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "difficulty"], 2)`. RDK responses in the fixed condition were more accurate than RDK responses in the random condition, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "condition"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "condition"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "condition"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "condition"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "condition"], 2)`. RDK responses were not more accurate under a deadline then under no deadline, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "phase"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "phase"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "phase"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "phase"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "phase"], 2)`. However, there was a significant phase $\times$ difficulty interaction, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "phase:difficulty"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "phase:difficulty"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "phase:difficulty"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "phase:difficulty"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "phase:difficulty"], 2)` reflecting a greater increase from easy to very hard when there was no deadline compared to when there was a deadline.
+Statistical analysis, using a 2 condition $\times$ 2 phase $\times$ 4 difficulty between-within ANOVA, of the effect of these factors on accuracy confirmed the effect of difficulty, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "difficulty"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "difficulty"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "difficulty"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "difficulty"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "difficulty"], 2)`. RDK responses in the fixed condition were more accurate than RDK responses in the random condition, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "condition"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "condition"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "condition"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "condition"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "condition"], 2)`. RDK responses were not more accurate under a deadline then under no deadline, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "phase"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "phase"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "phase"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "phase"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "phase"], 2)`. Finally, unlike Experiment 1, there was no phase $\times$ difficulty interaction, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "phase:difficulty"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "phase:difficulty"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "phase:difficulty"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "phase:difficulty"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "phase:difficulty"], 2)` reflecting a greater increase from easy to very hard when there was no deadline compared to when there was a deadline.
 
-We used the same analysis to examine the effect of condition, phase, and difficulty on RT. We confirmed that RTs were shorter under a deadline, F(`r anova.rt$ANOVA$DFn[anova.rt$ANOVA$Effect == "phase"]`, `r anova.rt$ANOVA$DFd[anova.rt$ANOVA$Effect == "phase"]`) = `r round(anova.rt$ANOVA$F[anova.rt$ANOVA$Effect == "phase"], 2)`, p = `r round(anova.rt$ANOVA$p[anova.rt$ANOVA$Effect == "phase"],2)`, $\eta^2$ = `r round(anova.rt$ANOVA$ges[anova.rt$ANOVA$Effect == "phase"], 2)`, and that RTs became shorter as the RDK's became easier, F(`r anova.rt$ANOVA$DFn[anova.rt$ANOVA$Effect == "difficulty"]`, `r anova.rt$ANOVA$DFd[anova.rt$ANOVA$Effect == "difficulty"]`) = `r round(anova.rt$ANOVA$F[anova.rt$ANOVA$Effect == "difficulty"], 2)`, p = `r round(anova.rt$ANOVA$p[anova.rt$ANOVA$Effect == "difficulty"],2)`, $\eta^2$ = `r round(anova.rt$ANOVA$ges[anova.rt$ANOVA$Effect == "difficulty"], 2)`. There was again an interaction between phase and difficulty, F(`r anova.rt$ANOVA$DFn[anova.rt$ANOVA$Effect == "phase:difficulty"]`, `r anova.rt$ANOVA$DFd[anova.rt$ANOVA$Effect == "phase:difficulty"]`) = `r round(anova.rt$ANOVA$F[anova.rt$ANOVA$Effect == "phase:difficulty"], 2)`, p = `r round(anova.rt$ANOVA$p[anova.rt$ANOVA$Effect == "phase:difficulty"],2)`, $\eta^2$ = `r round(anova.rt$ANOVA$ges[anova.rt$ANOVA$Effect == "phase:difficulty"], 2)` indicating that RT decreased more with increasing dot coherence when there was no deadline compared to when there was a deadline. These results accord with the vast literature on RDK performance (see e.g., Ludwig & Evens, 2017). 
+RTs were shorter under a deadline, F(`r anova.rt$ANOVA$DFn[anova.rt$ANOVA$Effect == "phase"]`, `r anova.rt$ANOVA$DFd[anova.rt$ANOVA$Effect == "phase"]`) = `r round(anova.rt$ANOVA$F[anova.rt$ANOVA$Effect == "phase"], 2)`, p = `r round(anova.rt$ANOVA$p[anova.rt$ANOVA$Effect == "phase"],2)`, $\eta^2$ = `r round(anova.rt$ANOVA$ges[anova.rt$ANOVA$Effect == "phase"], 2)`, and that RTs became shorter as the RDK's became easier, F(`r anova.rt$ANOVA$DFn[anova.rt$ANOVA$Effect == "difficulty"]`, `r anova.rt$ANOVA$DFd[anova.rt$ANOVA$Effect == "difficulty"]`) = `r round(anova.rt$ANOVA$F[anova.rt$ANOVA$Effect == "difficulty"], 2)`, p = `r round(anova.rt$ANOVA$p[anova.rt$ANOVA$Effect == "difficulty"],2)`, $\eta^2$ = `r round(anova.rt$ANOVA$ges[anova.rt$ANOVA$Effect == "difficulty"], 2)`. There was again an interaction between phase and difficulty, F(`r anova.rt$ANOVA$DFn[anova.rt$ANOVA$Effect == "phase:difficulty"]`, `r anova.rt$ANOVA$DFd[anova.rt$ANOVA$Effect == "phase:difficulty"]`) = `r round(anova.rt$ANOVA$F[anova.rt$ANOVA$Effect == "phase:difficulty"], 2)`, p = `r round(anova.rt$ANOVA$p[anova.rt$ANOVA$Effect == "phase:difficulty"],2)`, $\eta^2$ = `r round(anova.rt$ANOVA$ges[anova.rt$ANOVA$Effect == "phase:difficulty"], 2)` indicating that RT decreased more with increasing dot coherence when there was no deadline compared to when there was a deadline. The pattern of these results replicated Experiment 1. 
 
-Finally, we repeated the analysis using the sumRT examining the effect of condition, phase, and difficulty. We confirmed that sumRTs were shorter under a deadline, F(`r anova.sumrt$ANOVA$DFn[anova.sumrt$ANOVA$Effect == "phase"]`, `r anova.sumrt$ANOVA$DFd[anova.sumrt$ANOVA$Effect == "phase"]`) = `r round(anova.sumrt$ANOVA$F[anova.sumrt$ANOVA$Effect == "phase"], 2)`, p = `r round(anova.sumrt$ANOVA$p[anova.sumrt$ANOVA$Effect == "phase"],2)`, $\eta^2$ = `r round(anova.sumrt$ANOVA$ges[anova.sumrt$ANOVA$Effect == "phase"], 2)`, and that RTs became shorter as the RDK's became easier, F(`r anova.sumrt$ANOVA$DFn[anova.sumrt$ANOVA$Effect == "difficulty"]`, `r anova.sumrt$ANOVA$DFd[anova.sumrt$ANOVA$Effect == "difficulty"]`) = `r round(anova.sumrt$ANOVA$F[anova.sumrt$ANOVA$Effect == "difficulty"], 2)`, p = `r round(anova.sumrt$ANOVA$p[anova.sumrt$ANOVA$Effect == "difficulty"],2)`, $\eta^2$ = `r round(anova.sumrt$ANOVA$ges[anova.sumrt$ANOVA$Effect == "difficulty"], 2)`. There was again an interaction between phase and difficulty, F(`r anova.sumrt$ANOVA$DFn[anova.sumrt$ANOVA$Effect == "phase:difficulty"]`, `r anova.sumrt$ANOVA$DFd[anova.sumrt$ANOVA$Effect == "phase:difficulty"]`) = `r round(anova.sumrt$ANOVA$F[anova.sumrt$ANOVA$Effect == "phase:difficulty"], 2)`, p = `r round(anova.sumrt$ANOVA$p[anova.sumrt$ANOVA$Effect == "phase:difficulty"],2)`, $\eta^2$ = `r round(anova.sumrt$ANOVA$ges[anova.sumrt$ANOVA$Effect == "phase:difficulty"], 2)` indicating that RT decreased more with increasing dot coherence when there was no deadline compared to when there was a deadline. 
+In analysing sumRT, we confirmed that sumRTs were shorter under a deadline, F(`r anova.sumrt$ANOVA$DFn[anova.sumrt$ANOVA$Effect == "phase"]`, `r anova.sumrt$ANOVA$DFd[anova.sumrt$ANOVA$Effect == "phase"]`) = `r round(anova.sumrt$ANOVA$F[anova.sumrt$ANOVA$Effect == "phase"], 2)`, p = `r round(anova.sumrt$ANOVA$p[anova.sumrt$ANOVA$Effect == "phase"],2)`, $\eta^2$ = `r round(anova.sumrt$ANOVA$ges[anova.sumrt$ANOVA$Effect == "phase"], 2)`, and that RTs became shorter as the RDK's became easier, F(`r anova.sumrt$ANOVA$DFn[anova.sumrt$ANOVA$Effect == "difficulty"]`, `r anova.sumrt$ANOVA$DFd[anova.sumrt$ANOVA$Effect == "difficulty"]`) = `r round(anova.sumrt$ANOVA$F[anova.sumrt$ANOVA$Effect == "difficulty"], 2)`, p = `r round(anova.sumrt$ANOVA$p[anova.sumrt$ANOVA$Effect == "difficulty"],2)`, $\eta^2$ = `r round(anova.sumrt$ANOVA$ges[anova.sumrt$ANOVA$Effect == "difficulty"], 2)`. There was again an interaction between phase and difficulty, F(`r anova.sumrt$ANOVA$DFn[anova.sumrt$ANOVA$Effect == "phase:difficulty"]`, `r anova.sumrt$ANOVA$DFd[anova.sumrt$ANOVA$Effect == "phase:difficulty"]`) = `r round(anova.sumrt$ANOVA$F[anova.sumrt$ANOVA$Effect == "phase:difficulty"], 2)`, p = `r round(anova.sumrt$ANOVA$p[anova.sumrt$ANOVA$Effect == "phase:difficulty"],2)`, $\eta^2$ = `r round(anova.sumrt$ANOVA$ges[anova.sumrt$ANOVA$Effect == "phase:difficulty"], 2)` indicating that RT decreased more with increasing dot coherence when there was no deadline compared to when there was a deadline. 
 
 ## Reward Rate
 
-To confirm that coherence offered a good proxy for difficulty (and hence, that an optimal order of easiest to hardest was maintained), we calculated the reward rate for each patch. Reward rate can be defined as “the proportion of correct trials divided by the average duration between decisions” (Gold & Shadlen, 2002), and is tantamount, in our task, to  percentage of correct responses per unit time (Bogacz et al, 2006). For our purposes, we can fix time at 1 sec calculate the Reward Rate as the number of RDK tasks completed in 1 sec.
+We again computed the reward rate to test whether our ordering of Easy to Very Hard reflected an optimal order. For Experiment 2, the computation of reward rate now includes the 500 msec penalty after each incorrect RDK response. 
 
-By assumption, the weight of all tasks is the same and is equal to, say, 1 point each. Normally, we would expect performance on easier tasks to be both faster and more accurate. The optimal strategy to complete as many tasks as possible (thereby maximising reward rate) should then be to approach them by order of difficulty, easy to hardest. But what if, for example, on hard tasks, people guess quickly? They could gain points and waste very little time, possibly leading to a sizable reward rate. 
-
-Take the following hypothetical example: suppose you complete an easy task with perfect accuracy but take a long time to make the perceptual decision, say MRT = 2 sec. Suppose then the very difficult condition is too hard to judge. It would take > 2 secs to judge correct, but you can and guess quickly and average a time less than 2 sec, say MRT = 0.5 sec. With two response alternatives your odds are 50% so over the long run you are better off starting with the hardest task, with chance accuracy and no time lost (of course, one may also guess on the easy task, and we can check the data to see if people do so). The next section calculates reward rate for each of the four difficulty conditions, based on empirical data delineating % correct and MRT.
-
-```{r old_text, results="hide"}
-# The figure below calculates reward rate for formula [2] ‘time to complete one task’, based on the values in Table \@ref(tab:difficulty_table). The numbers on the x-axis correspond to task difficulty (1=hardest, 4=easiest). The first row plots the average probability correct across all subjects, for each task. The second row plots mean RT. The third and last raw plots REWARD RATE = [probability correct] / [mean RT]. This gives the average time of correctly completing one task. For example, in the fixed set-up presented in the left most panels, for task 1 condition 1 (most difficult) mean RT was 1.311 sec [top left panel] and p(correct)=0.55 [middle panel]. In terms of reward rate this means in takes, on average,  2.384 sec (RR=1.311 / 0.55) to correctly complete one difficult task [bottom panel]. 
-```
-
-```{r rewardRate_image, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
-# *** this calculation momentarily ignores the need to respond correctly before moving on to the next RDK. I’ll have to think how it can be built in.
-
-# Inspection of the figure reveals that time-per-1-completed-task (1/rate) is roughly monotonically increasing when tasks become harder. Under such conditions, the optimal order of task-completion should be easy-to-hardest. This could change in a predictable manner if people value differently easy and hard tasks (overweight completion of harder tasks)
-
-# img <- readJPEG("analysis/rewardRate.jpg")
-# g <- rasterGrob(img, interpolate=TRUE) 
-
-# qplot() + annotation_custom(g, xmin=-Inf, xmax=Inf, ymin=-Inf, ymax=Inf) 
-
-```
-
-Inspection of the figure reveals that RR is roughly monotonically increasing when tasks become easier. Under such conditions, the optimal order of task-completion should be easy-to-hardest. This could change in a predictable manner if people value differently easy and hard tasks (overweight completion of harder tasks). The only notable exception was in the fixed, no deadline task, where the easy and medium RDK conditions had equal RR. 
+Inspection of the figure reveals that RR is roughly monotonically increasing when tasks become easier in all conditions. Again, under such conditions, the optimal order of task-completion should be easy-to-hardest.
 
 
 ```{r rewardRate_plot, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
@@ -718,11 +694,11 @@ match_mat = rbind(set1, set2, set3, set4)
 
 ```
 
-Having now established that the RDK's are ordered in accuracy, difficulty, and reward rate, it is clear that the task set presented to each subject has an optimal solution, ordered from easiest to most difficult. We now ask: 
+As in Experiment 1, we have established that the RDK's are ordered in accuracy, difficulty, and reward rate. The analysis of optimality also replicated the results for Experiment 1.
 
 * What is the proportion of easy, medium, hard, and very hard patches selected first, second, third or fourth?
 
-These matrices indicate the proportions of responses for each difficulty level which were chosen first, second, third, or fourth, respectively. It is evident at a glance that the ordering of choices is more optimal when the locations are fixed; that is, the proportions on the diagonal are higher. When the locations are fixed, choice order becomes more optimal under a deadline. By contrast, when locations are random, responding becomes _less_ optimal under a deadline. This likely reflects the additional costs of having to search for the appropriate task to complete. This search is minimised in the fixed location condition. 
+The ordering of choices is more optimal when the locations are fixed and subtask order becomes more optimal under a deadline. By contrast, when locations are random, responding becomes _less_ optimal under a deadline. Again, this likely reflects the additional costs of having to search for the appropriate task to complete. 
 
 ```{r selectionOrderAnalysis, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
 
@@ -759,7 +735,7 @@ print(hmplot)
 
 ```
 
-* We next ask whether the sequence of choices reflected the optimal order: What is the proportion of easy-task-first choices in each condition? Of easy-then-medium? Of easy-medium-then-hard? This provides an indication of how the order of responding deviates from optimal in each condition. The table presents the proportion of subjects responding with each order; the figure presents the frequency with which subjects respond with the easiest first RDK, easiest then medium, and so on.
+* What is the proportion of easy-task-first choices in each condition? Of easy-then-medium? Of easy-medium-then-hard? This provides an indication of how the order of responding deviates from optimal in each condition. The table presents the proportion of subjects responding with each order; the figure presents the frequency with which subjects respond with the easiest first RDK, easiest then medium, and so on.
 
 ```{r analyseMatches, fig.height = 10, fig.width = 9, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
 avgMatch = aggregate(list("easy first"=match_mat$match1, "easy-med"=match_mat$match2, "easy-med-hard"=match_mat$match3), by = list("phase"=match_mat$phase, "condition"=match_mat$condition), FUN = function(x)mean(x,na.rm=TRUE))
@@ -782,16 +758,6 @@ print(match_plot + ggtitle("Optimally Ordered Responses"))
 
 * How optimal were responses? 
 
-The next analysis computed the distance between the selected order and the optimal order (easiest to very hard for that trial), which ranges between 0 (perfect match) and 6 (maximally distant), for 4 options. 
-
-What we want is the distance of the selected options from the optimal solutions, which is the edit distance (or number of discordant pairs) between orders. However, because a participant may run out of time, there may be missing values. To handle these values, for each trial, we find the orders which partially match the selected order and compute three measures of performance:
-
-1. the maximum distance of those possible orders and the optimal solution (*max_distance*). This analysis is biased against optimality because it assumes that partially completed sequences would have eventually been non-optimal. 
-
-2. the minimum distance of the partial orders and the optimal solution (*min_distance*). This analysis is biased toward optimality because it assumes that partially completed sequences would have eventually been closer to optimal.  
-
-3. the average distance of those possible orders and the optimal solution (*avg_distance*). 
-
 The following figures compare max_distance, min_distance, and avg_distance between the fixed difficulty and random difficulty conditions as a function of deadline condition and phase. For each of these measures, lower values reflect respones which are closer to optimal.
 
 ```{r plotData, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
@@ -809,9 +775,7 @@ print(avg_plot + ggtitle("Avg Distance"))
 
 ## Sampling distribution anlaysis
 
-In order to characterise performance, we examined three sampling distributions for comparison to our data. The first is the sampling distribution of edit distances from optimal assuming that orders are sampled uniformly at random. The second distribution assumes that the first choice was optimal but the remaining orders are sampled at random. Finally, the third distributions assumes that the first two choices are selected optimally but that the remaining are randomly selected. It is clear that the mode of the distribution moves from a distance of 3 to a distance of 0 as the sampling distribution summarises orders which better conform to optimality. 
-
-To characterise the optimality of each condition at each point in the experiment, we first computed the ks-test statistic between the data (the average partial distance data) and the random order distribution and the first-two optimal distribution. Since smaller ks-statistics indicate a closer match between the distributions, we then took the ratio of the ks-statistics (random over first two-optimal). Values less than one indicate that the data are more consistent with random than optimal responding. Values greater than one indicate that the data are more consistent with optimal rather than random responding. 
+In order to characterise performance, we again computed the ks-test statistic between the data (the average partial distance data) and the random order distribution and the first-two optimal distribution. Recall that values less than one indicate that the data are more consistent with random than optimal responding. Values greater than one indicate that the data are more consistent with optimal rather than random responding. 
 
 ```{r sampling_dist, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
 
@@ -877,11 +841,11 @@ print(random_eval_plot)
 
 ```
 
-This figure efficiently summarises the main result: responding is more optimal in the fixed deadline condition particularly during the last ten trials; in the random deadline conditions, responding was closer to a random sampling distribution than to an optimal sampling distribution. 
+As in Experiment 1, responding is more optimal in the fixed deadline condition particularly during the last ten trials; in the random deadline conditions, responding was closer to a random sampling distribution than to an optimal sampling distribution. 
 
 ## Alternative response strategies
 
-An alternative possible strategy involves selecting RDKs based on spatial position. One salient strategy would be to start with a random RDK and then select the remaining tasks in clockwise and anti-clockwise order. 
+Also as like Experiment 1, there was little evidence of a spatial response strategy. 
 
 ```{r spatial_analysis, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
 
@@ -985,9 +949,6 @@ avg_sddata$phase = as.factor(avg_sddata$phase)         # Convert phase to factor
 levels(avg_sddata$condition) = c("fixed", "random") # Replace condition names
 
 ```
-
-The following plot shows the distribution of participants' spatial strategy use. Higher proportions indicate responses which are more consistent with a spatial strategy. These figures indicate that most participants do not use a spatial strategy. when difficulty is maintained in a fixed location, two groups emerge under a deadline: those who do not use a spatial strategy, though there is a slightly higher frequency of spatial strategy use in the random condition.
-
 ```{r plotSpatialData, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
 spatial_choice_plot <- avg_scdata %>% ggplot(aes(x=avg, fill=phase)) + geom_histogram(color="white", alpha=0.6, bins = 10, position="identity") + facet_wrap(~condition+phase) + labs(y="Frequency", x = "Proportion of Spatially Consistent Responses") + ggtitle("Spatial Strategy Analysis")
 

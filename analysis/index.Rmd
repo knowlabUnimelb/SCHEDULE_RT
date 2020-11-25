@@ -32,7 +32,7 @@ Four experiments were completed online:
 
 In this experiment, there were two conditions, one using fixed locations of task difficulty on each trial and one using random locations of task difficulty on each trial. In each condition, subjects completed several trials selecting and completing RDK tasks when there was no deadline for completing all of the subtasks and where there was a six second deadline for completing all of the subtasks. There were four subtasks. When an error was made on the RDK task, the direction of the RDK was immediately restarted with a potentially new sampled direction. 
 
-# Experiment 2: *Four RDK Subtasks with Error Delay* 
+# [Experiment 2](exp2_errordelay.html): *Four RDK Subtasks with Error Delay* 
 
 This experiment was identical to Experiment 1, with one exception. When an error was made on the RDK direction judgment, a 500 msec delay was inserted before resampling the RDK direction and restarting the RDK motion. Both fixed and random location conditions were used. 
 
