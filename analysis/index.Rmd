@@ -8,6 +8,8 @@ editor_options:
   chunk_output_type: console
 ---
 
+(REP Title: Prioritizing Dot Discrimination Tasks)
+
 Daniel R. Little^1^, Ami Eidels^2^, and Deborah J. Lin^1^
 
 
@@ -40,7 +42,7 @@ This experiment was identical to Experiment 1, with one exception. When an error
 
 In this experiemnt, we increased the number of RDK subtasks to eight. In the timed condition, a 12 second deadline was applied.  Only the fixed location condition was tested.
 
-# Experiment 4: *Four Pixel Brightness Subtasks with Error Delay* 
+# [Experiment 4](exp4_pixeldelay.Rmd): *Four Pixel Brightness Subtasks with Error Delay* 
 
 In this experiment, we substituted an pixel brightness judgment for each RDK subtask. In the pixel brightness subtask, participants had to judge whether the number of black pixels in a 100 x 100 patch were greater or less than 50%. We again only tested the fixed location condition with a 500 msec delay after an error before the patch was resampled. 
 
