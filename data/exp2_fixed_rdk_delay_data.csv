@@ -606,7 +606,7 @@
 85420,fixed_location_delay,17,531,rdk,NULL,-1,180,0,-1,763,,477104,0.8,0.5,0,0.2,NULL,26275
 85420,fixed_location_delay,18,536,select_rdk,0,563.49,NULL,NULL,NULL,NULL,NULL,480910,0.8,0.5,0,0.2,NULL,26275
 85420,fixed_location_delay,18,538,rdk,NULL,588.735,180,0.8,90,5434,1,481504,0.8,0.5,0,0.2,NULL,26275
-77906,fixed_location_delay,NULL,899,demographics,NULL,7952,NULL,NULL,NULL,NULL,NULL,532084,0.2,0.5,0,0.8,"{""Email"":""graceceline@LIve.com""}",25196
+77906,fixed_location_delay,NULL,899,demographics,NULL,7952,NULL,NULL,NULL,NULL,NULL,532084,0.2,0.5,0,0.8,,25196
 85420,fixed_location_delay,18,540,select_rdk,1,816.565,NULL,NULL,NULL,NULL,NULL,482326,0.8,0.5,0,0.2,NULL,26275
 85420,fixed_location_delay,18,542,rdk,NULL,450.755,0,0.5,88,4021,1,482783,0.8,0.5,0,0.2,NULL,26275
 85420,fixed_location_delay,18,544,select_rdk,3,883.01,NULL,NULL,NULL,NULL,NULL,483673,0.8,0.5,0,0.2,NULL,26275
@@ -696,7 +696,7 @@
 85420,fixed_location_delay,29,745,select_rdk,3,869.585,NULL,NULL,NULL,NULL,NULL,588450,0.8,0.5,0,0.2,NULL,26275
 85420,fixed_location_delay,29,747,rdk,NULL,915.555,0,0.2,88,2162,1,589373,0.8,0.5,0,0.2,NULL,26275
 85420,fixed_location_delay,29,749,select_rdk,NULL,NULL,NULL,NULL,NULL,NULL,NULL,590622,0.8,0.5,0,0.2,NULL,26275
-85420,fixed_location_delay,NULL,753,demographics,NULL,4807.355,NULL,NULL,NULL,NULL,NULL,597304,0.8,0.5,0,0.2,"{""Email"":""""}",26275
+85420,fixed_location_delay,NULL,753,demographics,NULL,4807.355,NULL,NULL,NULL,NULL,NULL,597304,0.8,0.5,0,0.2,,26275
 82121,fixed_location_delay,NULL,4,demographics,NULL,9269.66,NULL,NULL,NULL,NULL,NULL,113717,0.2,0.5,0,0.8,"{""Gender"":""F"",""Age"":""40""}",26267
 82121,fixed_location_delay,0,9,practice_rdk,3,7167.205,NULL,NULL,NULL,NULL,NULL,193282,0.2,0.5,0,0.8,NULL,26267
 82121,fixed_location_delay,0,11,rdk,NULL,4668.175,180,0.8,90,22831,1,197955,0.2,0.5,0,0.8,NULL,26267
@@ -1400,7 +1400,7 @@
 99934,fixed_location_delay,26,778,rdk,NULL,522.095,180,0.5,90,3845,1,462195,0.8,0,0.2,0.5,NULL,24942
 99934,fixed_location_delay,26,780,select_rdk,2,430.96,NULL,NULL,NULL,NULL,NULL,462629,0.8,0,0.2,0.5,NULL,24942
 29988,fixed_location_delay,5,126,rdk,NULL,1320.805,180,0,90,24247,1,227956,0,0.5,0.2,0.8,NULL,24962
-82121,fixed_location_delay,NULL,765,demographics,NULL,24660.89,NULL,NULL,NULL,NULL,NULL,695148,0.2,0.5,0,0.8,"{""Email"":""""}",26267
+82121,fixed_location_delay,NULL,765,demographics,NULL,24660.89,NULL,NULL,NULL,NULL,NULL,695148,0.2,0.5,0,0.8,,26267
 99934,fixed_location_delay,26,782,rdk,NULL,674.845,180,0.2,90,2889,1,463306,0.8,0,0.2,0.5,NULL,24942
 99934,fixed_location_delay,26,784,select_rdk,1,523.53,NULL,NULL,NULL,NULL,NULL,463832,0.8,0,0.2,0.5,NULL,24942
 99934,fixed_location_delay,26,786,rdk,NULL,879.395,180,0,90,1688,1,464714,0.8,0,0.2,0.5,NULL,24942
@@ -1464,7 +1464,7 @@
 29988,fixed_location_delay,9,198,rdk,NULL,1302.12,180,0.2,90,26981,1,271525,0,0.5,0.2,0.8,NULL,24962
 29988,fixed_location_delay,9,200,practice_rdk,0,587.06,NULL,NULL,NULL,NULL,NULL,272114,0,0.5,0.2,0.8,NULL,24962
 29988,fixed_location_delay,9,202,rdk,NULL,1707.965,180,0,90,25090,1,273824,0,0.5,0.2,0.8,NULL,24962
-99934,fixed_location_delay,NULL,855,demographics,NULL,14718.14,NULL,NULL,NULL,NULL,NULL,510558,0.8,0,0.2,0.5,"{""Email"":""alyssa.waldon@student.unimelb.edu.au""}",24942
+99934,fixed_location_delay,NULL,855,demographics,NULL,14718.14,NULL,NULL,NULL,NULL,NULL,510558,0.8,0,0.2,0.5,,24942
 29988,fixed_location_delay,0,210,select_rdk,3,1535.315,NULL,NULL,NULL,NULL,NULL,301162,0,0.5,0.2,0.8,NULL,24962
 29988,fixed_location_delay,0,212,rdk,NULL,675.045,180,0.8,90,4464,1,301838,0,0.5,0.2,0.8,NULL,24962
 29988,fixed_location_delay,0,214,select_rdk,1,1581.465,NULL,NULL,NULL,NULL,NULL,303422,0,0.5,0.2,0.8,NULL,24962
@@ -1720,7 +1720,7 @@
 29988,fixed_location_delay,29,801,select_rdk,0,559.3300001,NULL,NULL,NULL,NULL,NULL,560617,0,0.5,0.2,0.8,NULL,24962
 29988,fixed_location_delay,29,803,rdk,NULL,423.3649999,0,0,90,1027,,561041,0,0.5,0.2,0.8,NULL,24962
 29988,fixed_location_delay,29,805,rdk,NULL,-1,0,0,-1,603,,562151,0,0.5,0.2,0.8,NULL,24962
-29988,fixed_location_delay,NULL,809,demographics,NULL,30625.15,NULL,NULL,NULL,NULL,NULL,597566,0,0.5,0.2,0.8,"{""Email"":""j.wang@student.unimelb.edu.au""}",24962
+29988,fixed_location_delay,NULL,809,demographics,NULL,30625.15,NULL,NULL,NULL,NULL,NULL,597566,0,0.5,0.2,0.8,,24962
 76121,fixed_location_delay,NULL,4,demographics,NULL,5361.035,NULL,NULL,NULL,NULL,NULL,173698,0.2,0.5,0,0.8,"{""Gender"":""female"",""Age"":""20""}",24808
 76121,fixed_location_delay,0,9,practice_rdk,3,3786.335,NULL,NULL,NULL,NULL,NULL,205357,0.2,0.5,0,0.8,NULL,24808
 76121,fixed_location_delay,0,11,rdk,NULL,3219.41,0,0.8,88,26209,1,208588,0.2,0.5,0,0.8,NULL,24808
@@ -2056,7 +2056,7 @@
 76121,fixed_location_delay,29,794,select_rdk,2,660.92,NULL,NULL,NULL,NULL,NULL,663188,0.2,0.5,0,0.8,NULL,24808
 76121,fixed_location_delay,29,788,rdk,NULL,637.975,180,0.2,90,4098,1,661323,0.2,0.5,0,0.8,NULL,24808
 76121,fixed_location_delay,29,796,rdk,NULL,751.38,0,0,88,1604,1,663943,0.2,0.5,0,0.8,NULL,24808
-76121,fixed_location_delay,NULL,800,demographics,NULL,3407.91,NULL,NULL,NULL,NULL,NULL,669972,0.2,0.5,0,0.8,"{""Email"":""""}",24808
+76121,fixed_location_delay,NULL,800,demographics,NULL,3407.91,NULL,NULL,NULL,NULL,NULL,669972,0.2,0.5,0,0.8,,24808
 81543,fixed_location_delay,NULL,4,demographics,NULL,6070.665,NULL,NULL,NULL,NULL,NULL,71589,0.5,0.8,0.2,0,"{""Gender"":""female"",""Age"":""19""}",24798
 81543,fixed_location_delay,0,9,practice_rdk,1,3768.475,NULL,NULL,NULL,NULL,NULL,120345,0.5,0.8,0.2,0,NULL,24798
 81543,fixed_location_delay,0,11,rdk,NULL,2291.335,180,0.8,90,26216,1,122664,0.5,0.8,0.2,0,NULL,24798
@@ -2414,7 +2414,7 @@
 28077,fixed_location_delay,3,88,rdk,NULL,497.685,0,0.5,88,25150,1,180873,0.8,0,0.2,0.5,NULL,26351
 28077,fixed_location_delay,4,93,practice_rdk,1,530.115,NULL,NULL,NULL,NULL,NULL,184078,0.8,0,0.2,0.5,NULL,26351
 28077,fixed_location_delay,4,95,rdk,NULL,2256.68,180,0,88,29469,,186336,0.8,0,0.2,0.5,NULL,26351
-81543,fixed_location_delay,NULL,833,demographics,NULL,75790.405,NULL,NULL,NULL,NULL,NULL,848563,0.5,0.8,0.2,0,"{""Email"":""ecgray@student.unimelb.edu.au""}",24798
+81543,fixed_location_delay,NULL,833,demographics,NULL,75790.405,NULL,NULL,NULL,NULL,NULL,848563,0.5,0.8,0.2,0,,24798
 28077,fixed_location_delay,4,97,rdk,NULL,359.82,0,0,90,27211,,187199,0.8,0,0.2,0.5,NULL,26351
 28077,fixed_location_delay,4,99,rdk,NULL,1003.06,180,0,90,26851,1,188705,0.8,0,0.2,0.5,NULL,26351
 28077,fixed_location_delay,4,101,practice_rdk,0,800.98,NULL,NULL,NULL,NULL,NULL,189508,0.8,0,0.2,0.5,NULL,26351
@@ -2729,7 +2729,7 @@
 28077,fixed_location_delay,29,827,rdk,NULL,405.655,180,0.2,90,3574,1,510986,0.8,0,0.2,0.5,NULL,26351
 28077,fixed_location_delay,29,829,select_rdk,1,465.69,NULL,NULL,NULL,NULL,NULL,511454,0.8,0,0.2,0.5,NULL,26351
 28077,fixed_location_delay,29,831,rdk,NULL,597.445,0,0,88,2701,1,512054,0.8,0,0.2,0.5,NULL,26351
-28077,fixed_location_delay,NULL,835,demographics,NULL,11366.03,NULL,NULL,NULL,NULL,NULL,524442,0.8,0,0.2,0.5,"{""Email"":""cgdct97@gmail.com""}",26351
+28077,fixed_location_delay,NULL,835,demographics,NULL,11366.03,NULL,NULL,NULL,NULL,NULL,524442,0.8,0,0.2,0.5,,26351
 90946,fixed_location_delay,NULL,4,demographics,NULL,9552.235,NULL,NULL,NULL,NULL,NULL,226430,0.5,0.2,0.8,0,"{""Gender"":""Female"",""Age"":""20""}",26236
 90946,fixed_location_delay,0,9,practice_rdk,2,5297.775,NULL,NULL,NULL,NULL,NULL,359625,0.5,0.2,0.8,0,NULL,26236
 90946,fixed_location_delay,0,11,rdk,NULL,4415.975,0,0.8,90,24698,,364050,0.5,0.2,0.8,0,NULL,26236
@@ -3290,7 +3290,7 @@
 90946,fixed_location_delay,29,1241,rdk,NULL,292.53,180,0.2,88,1922,,2017622,0.5,0.2,0.8,0,NULL,26236
 90946,fixed_location_delay,29,1243,rdk,NULL,282.355,180,0.2,90,1627,1,2018413,0.5,0.2,0.8,0,NULL,26236
 90946,fixed_location_delay,29,1245,select_rdk,NULL,NULL,NULL,NULL,NULL,NULL,NULL,2019764,0.5,0.2,0.8,0,NULL,26236
-90946,fixed_location_delay,NULL,1249,demographics,NULL,23823.695,NULL,NULL,NULL,NULL,NULL,2046370,0.5,0.2,0.8,0,"{""Email"":""hmalinova@student.melbuni.edu.au""}",26236
+90946,fixed_location_delay,NULL,1249,demographics,NULL,23823.695,NULL,NULL,NULL,NULL,NULL,2046370,0.5,0.2,0.8,0,,26236
 69166,fixed_location_delay,NULL,4,demographics,NULL,7966.46,NULL,NULL,NULL,NULL,NULL,50704,0.5,0.2,0.8,0,"{""Gender"":""Female"",""Age"":""18""}",24910
 69166,fixed_location_delay,0,9,practice_rdk,2,8819.765,NULL,NULL,NULL,NULL,NULL,100213,0.5,0.2,0.8,0,NULL,24910
 69166,fixed_location_delay,0,11,rdk,NULL,2395.49,0,0.8,88,21177,1,102616,0.5,0.2,0.8,0,NULL,24910
@@ -3648,7 +3648,7 @@
 69166,fixed_location_delay,29,835,rdk,NULL,197.335,0,0.2,88,3681,1,570754,0.5,0.2,0.8,0,NULL,24910
 69166,fixed_location_delay,29,837,select_rdk,3,722.31,NULL,NULL,NULL,NULL,NULL,571479,0.5,0.2,0.8,0,NULL,24910
 69166,fixed_location_delay,29,839,rdk,NULL,171.145,180,0,90,2757,1,571653,0.5,0.2,0.8,0,NULL,24910
-69166,fixed_location_delay,NULL,843,demographics,NULL,17686.975,NULL,NULL,NULL,NULL,NULL,590578,0.5,0.2,0.8,0,"{""Email"":""""}",24910
+69166,fixed_location_delay,NULL,843,demographics,NULL,17686.975,NULL,NULL,NULL,NULL,NULL,590578,0.5,0.2,0.8,0,,24910
 13204,fixed_location_delay,NULL,4,demographics,NULL,11658,NULL,NULL,NULL,NULL,NULL,108602,0.5,0.8,0,0.2,"{""Gender"":""female"",""Age"":""20""}",26427
 13204,fixed_location_delay,0,9,practice_rdk,1,5742.2,NULL,NULL,NULL,NULL,NULL,247812,0.5,0.8,0,0.2,NULL,26427
 13204,fixed_location_delay,0,11,rdk,NULL,1355,0,0.8,88,24253,1,249176,0.5,0.8,0,0.2,NULL,26427
@@ -3984,7 +3984,7 @@
 13204,fixed_location_delay,29,791,select_rdk,3,1549,NULL,NULL,NULL,NULL,NULL,769980,0.5,0.8,0,0.2,NULL,26427
 13204,fixed_location_delay,29,793,rdk,NULL,982.8,0,0.2,88,1344,1,770967,0.5,0.8,0,0.2,NULL,26427
 13204,fixed_location_delay,29,795,select_rdk,NULL,NULL,NULL,NULL,NULL,NULL,NULL,771342,0.5,0.8,0,0.2,NULL,26427
-13204,fixed_location_delay,NULL,799,demographics,NULL,68235.7,NULL,NULL,NULL,NULL,NULL,843400,0.5,0.8,0,0.2,"{""Email"":""haoqingd@student.unimelb.edu.au""}",26427
+13204,fixed_location_delay,NULL,799,demographics,NULL,68235.7,NULL,NULL,NULL,NULL,NULL,843400,0.5,0.8,0,0.2,,26427
 6166,fixed_location_delay,NULL,4,demographics,NULL,4504.755,NULL,NULL,NULL,NULL,NULL,92885,0.5,0.8,0,0.2,"{""Gender"":""Male"",""Age"":""18""}",24830
 6166,fixed_location_delay,0,9,practice_rdk,1,4855.45,NULL,NULL,NULL,NULL,NULL,182852,0.5,0.8,0,0.2,NULL,24830
 6166,fixed_location_delay,0,11,rdk,NULL,3099.895,0,0.8,88,25142,1,185960,0.5,0.8,0,0.2,NULL,24830
@@ -4337,7 +4337,7 @@
 6166,fixed_location_delay,29,825,rdk,NULL,62.78499984,180,0.2,90,4975,1,556790,0.5,0.8,0,0.2,NULL,24830
 6166,fixed_location_delay,29,827,select_rdk,2,281.225,NULL,NULL,NULL,NULL,NULL,557074,0.5,0.8,0,0.2,NULL,24830
 6166,fixed_location_delay,29,829,rdk,NULL,37.47999994,0,0,88,4628,1,557116,0.5,0.8,0,0.2,NULL,24830
-6166,fixed_location_delay,NULL,833,demographics,NULL,4933.885,NULL,NULL,NULL,NULL,NULL,563445,0.5,0.8,0,0.2,"{""Email"":""""}",24830
+6166,fixed_location_delay,NULL,833,demographics,NULL,4933.885,NULL,NULL,NULL,NULL,NULL,563445,0.5,0.8,0,0.2,,24830
 50165,fixed_location_delay,NULL,4,demographics,NULL,7775.99,NULL,NULL,NULL,NULL,NULL,38828,0.5,0.2,0.8,0,"{""Gender"":""Female"",""Age"":""19""}",25870
 50165,fixed_location_delay,0,9,practice_rdk,2,3587.855,NULL,NULL,NULL,NULL,NULL,63027,0.5,0.2,0.8,0,NULL,25870
 50165,fixed_location_delay,0,11,rdk,NULL,1572.88,180,0.8,88,26408,,64611,0.5,0.2,0.8,0,NULL,25870
@@ -5248,7 +5248,7 @@
 50165,fixed_location_delay,14,1122,rdk,NULL,426.5549998,180,0.8,88,995,,762974,0.5,0.2,0.8,0,NULL,25870
 48493,fixed_location_delay,29,902,select_rdk,0,556.565,NULL,NULL,NULL,NULL,NULL,443423,0,0.8,0.2,0.5,NULL,24980
 48493,fixed_location_delay,29,904,rdk,NULL,501.415,180,0,90,2305,1,443931,0,0.8,0.2,0.5,NULL,24980
-48493,fixed_location_delay,NULL,908,demographics,NULL,4039.415,NULL,NULL,NULL,NULL,NULL,449798,0,0.8,0.2,0.5,"{""Email"":""""}",24980
+48493,fixed_location_delay,NULL,908,demographics,NULL,4039.415,NULL,NULL,NULL,NULL,NULL,449798,0,0.8,0.2,0.5,,24980
 50165,fixed_location_delay,14,1124,rdk,NULL,451.3699999,0,0.8,90,551,,763974,0.5,0.2,0.8,0,NULL,25870
 50165,fixed_location_delay,14,1126,rdk,NULL,-1,0,0.8,-1,97,,764581,0.5,0.2,0.8,0,NULL,25870
 50165,fixed_location_delay,15,1131,select_rdk,2,828.4799999,NULL,NULL,NULL,NULL,NULL,768032,0.5,0.2,0.8,0,NULL,25870
@@ -5395,7 +5395,7 @@
 50165,fixed_location_delay,29,1439,rdk,NULL,474.015,180,0.8,88,977,,919876,0.5,0.2,0.8,0,NULL,25870
 50165,fixed_location_delay,29,1441,rdk,NULL,464.6149999,0,0.8,90,502,,920847,0.5,0.2,0.8,0,NULL,25870
 50165,fixed_location_delay,29,1443,rdk,NULL,-1,0,0.8,-1,36,,921397,0.5,0.2,0.8,0,NULL,25870
-50165,fixed_location_delay,NULL,1447,demographics,NULL,3845.98,NULL,NULL,NULL,NULL,NULL,928976,0.5,0.2,0.8,0,"{""Email"":""""}",25870
+50165,fixed_location_delay,NULL,1447,demographics,NULL,3845.98,NULL,NULL,NULL,NULL,NULL,928976,0.5,0.2,0.8,0,,25870
 89597,fixed_location_delay,1,38,rdk,NULL,1240,180,0.5,90,25969,1,125146,0.2,0.5,0.8,0,NULL,26219
 89597,fixed_location_delay,1,40,practice_rdk,0,869,NULL,NULL,NULL,NULL,NULL,126017,0.2,0.5,0.8,0,NULL,26219
 89597,fixed_location_delay,1,42,rdk,NULL,1397,180,0.2,90,23857,1,127416,0.2,0.5,0.8,0,NULL,26219
@@ -5738,7 +5738,7 @@
 89597,fixed_location_delay,29,833,rdk,NULL,538,180,0,88,1765,,534089,0.2,0.5,0.8,0,NULL,26219
 89597,fixed_location_delay,29,835,rdk,NULL,615,180,0,88,1225,,535208,0.2,0.5,0.8,0,NULL,26219
 89597,fixed_location_delay,29,837,rdk,NULL,517,180,0,90,609,1,536229,0.2,0.5,0.8,0,NULL,26219
-89597,fixed_location_delay,NULL,841,demographics,NULL,11598,NULL,NULL,NULL,NULL,NULL,549993,0.2,0.5,0.8,0,"{""Email"":""smochizuki@student.unimelb.edu.au""}",26219
+89597,fixed_location_delay,NULL,841,demographics,NULL,11598,NULL,NULL,NULL,NULL,NULL,549993,0.2,0.5,0.8,0,,26219
 73904,fixed_location_delay,NULL,4,demographics,NULL,7434,NULL,NULL,NULL,NULL,NULL,26899,0.2,0,0.5,0.8,"{""Gender"":""Female"",""Age"":""20""}",25109
 73904,fixed_location_delay,0,9,practice_rdk,2,6116,NULL,NULL,NULL,NULL,NULL,100931,0.2,0,0.5,0.8,NULL,25109
 73904,fixed_location_delay,0,11,rdk,NULL,4350,180,0.5,90,23882,1,105287,0.2,0,0.5,0.8,NULL,25109
@@ -6087,7 +6087,7 @@
 73904,fixed_location_delay,29,817,rdk,NULL,561,180,0,90,2390,1,532659,0.2,0,0.5,0.8,NULL,25109
 73904,fixed_location_delay,29,819,select_rdk,0,608,NULL,NULL,NULL,NULL,NULL,533270,0.2,0,0.5,0.8,NULL,25109
 73904,fixed_location_delay,29,821,rdk,NULL,498,180,0.2,90,1218,1,533770,0.2,0,0.5,0.8,NULL,25109
-73904,fixed_location_delay,NULL,825,demographics,NULL,3730,NULL,NULL,NULL,NULL,NULL,540353,0.2,0,0.5,0.8,"{""Email"":""""}",25109
+73904,fixed_location_delay,NULL,825,demographics,NULL,3730,NULL,NULL,NULL,NULL,NULL,540353,0.2,0,0.5,0.8,,25109
 38791,fixed_location_delay,NULL,4,demographics,NULL,4751.425,NULL,NULL,NULL,NULL,NULL,131885,0.8,0.2,0,0.5,"{""Gender"":""Female"",""Age"":""20""}",24611
 38791,fixed_location_delay,0,9,practice_rdk,0,3978.93,NULL,NULL,NULL,NULL,NULL,200670,0.8,0.2,0,0.5,NULL,24611
 38791,fixed_location_delay,0,11,rdk,NULL,1326.335,0,0.8,88,26018,1,202004,0.8,0.2,0,0.5,NULL,24611
@@ -6436,7 +6436,7 @@
 38791,fixed_location_delay,29,819,rdk,NULL,1395.18,0,0.2,88,2924,1,608683,0.8,0.2,0,0.5,NULL,24611
 38791,fixed_location_delay,29,821,select_rdk,2,489.085,NULL,NULL,NULL,NULL,NULL,609176,0.8,0.2,0,0.5,NULL,24611
 38791,fixed_location_delay,29,823,rdk,NULL,720.765,0,0,88,1036,1,609900,0.8,0.2,0,0.5,NULL,24611
-38791,fixed_location_delay,NULL,827,demographics,NULL,2461.615,NULL,NULL,NULL,NULL,NULL,613499,0.8,0.2,0,0.5,"{""Email"":""""}",24611
+38791,fixed_location_delay,NULL,827,demographics,NULL,2461.615,NULL,NULL,NULL,NULL,NULL,613499,0.8,0.2,0,0.5,,24611
 52929,fixed_location_delay,NULL,4,demographics,NULL,9108.2,NULL,NULL,NULL,NULL,NULL,219808,0,0.5,0.8,0.2,"{""Gender"":""male"",""Age"":""20""}",26268
 23848,fixed_location_delay,NULL,4,demographics,NULL,4354.74,NULL,NULL,NULL,NULL,NULL,18039,0.2,0,0.8,0.5,"{""Gender"":""Female"",""Age"":""19""}",24789
 23848,fixed_location_delay,0,9,practice_rdk,0,2527.835,NULL,NULL,NULL,NULL,NULL,74187,0.2,0,0.8,0.5,NULL,24789
@@ -6972,7 +6972,7 @@
 52929,fixed_location_delay,12,446,select_rdk,1,467.41,NULL,NULL,NULL,NULL,NULL,734183,0,0.5,0.8,0.2,NULL,26268
 52929,fixed_location_delay,12,448,rdk,NULL,453.475,0,0.5,90,4582,,734641,0,0.5,0.8,0.2,NULL,26268
 52929,fixed_location_delay,12,450,rdk,NULL,546.815,0,0.5,88,4126,1,735696,0,0.5,0.8,0.2,NULL,26268
-23848,fixed_location_delay,NULL,823,demographics,NULL,2714.05,NULL,NULL,NULL,NULL,NULL,517259,0.2,0,0.8,0.5,"{""Email"":""""}",24789
+23848,fixed_location_delay,NULL,823,demographics,NULL,2714.05,NULL,NULL,NULL,NULL,NULL,517259,0.2,0,0.8,0.5,,24789
 52929,fixed_location_delay,12,452,select_rdk,3,1161.955,NULL,NULL,NULL,NULL,NULL,736862,0,0.5,0.8,0.2,NULL,26268
 52929,fixed_location_delay,12,454,rdk,NULL,538.84,180,0.2,90,2407,1,737407,0,0.5,0.8,0.2,NULL,26268
 52929,fixed_location_delay,12,456,select_rdk,0,619.93,NULL,NULL,NULL,NULL,NULL,738031,0,0.5,0.8,0.2,NULL,26268
@@ -7122,7 +7122,7 @@
 52929,fixed_location_delay,29,795,select_rdk,3,1189.485,NULL,NULL,NULL,NULL,NULL,911883,0,0.5,0.8,0.2,NULL,26268
 52929,fixed_location_delay,29,797,rdk,NULL,1179.745,0,0.2,88,2241,1,913068,0,0.5,0.8,0.2,NULL,26268
 52929,fixed_location_delay,29,799,select_rdk,NULL,NULL,NULL,NULL,NULL,NULL,NULL,914130,0,0.5,0.8,0.2,NULL,26268
-52929,fixed_location_delay,NULL,803,demographics,NULL,10478.525,NULL,NULL,NULL,NULL,NULL,929344,0,0.5,0.8,0.2,"{""Email"":""kennethkt@student.unimelb.edu.au""}",26268
+52929,fixed_location_delay,NULL,803,demographics,NULL,10478.525,NULL,NULL,NULL,NULL,NULL,929344,0,0.5,0.8,0.2,,26268
 8433,fixed_location_delay,NULL,4,demographics,NULL,8218.86,NULL,NULL,NULL,NULL,NULL,30294,0.5,0,0.2,0.8,"{""Gender"":""Female"",""Age"":""19""}",26169
 8433,fixed_location_delay,0,9,practice_rdk,3,4449.045,NULL,NULL,NULL,NULL,NULL,63079,0.5,0,0.2,0.8,NULL,26169
 88620,fixed_location_delay,NULL,4,demographics,NULL,5394.25,NULL,NULL,NULL,NULL,NULL,16428,0,0.8,0.2,0.5,"{""Gender"":""Female"",""Age"":""19""}",26169
@@ -7474,7 +7474,7 @@
 88620,fixed_location_delay,29,819,rdk,NULL,487.55,0,0.2,88,2808,1,610891,0,0.8,0.2,0.5,NULL,26169
 88620,fixed_location_delay,29,821,select_rdk,0,478.09,NULL,NULL,NULL,NULL,NULL,611373,0,0.8,0.2,0.5,NULL,26169
 88620,fixed_location_delay,29,823,rdk,NULL,462.175,180,0,90,1836,1,611841,0,0.8,0.2,0.5,NULL,26169
-88620,fixed_location_delay,NULL,827,demographics,NULL,50838.54,NULL,NULL,NULL,NULL,NULL,667447,0,0.8,0.2,0.5,"{""Email"":""fanxuang@student.unimelb.edu.au""}",26169
+88620,fixed_location_delay,NULL,827,demographics,NULL,50838.54,NULL,NULL,NULL,NULL,NULL,667447,0,0.8,0.2,0.5,,26169
 32509,fixed_location_delay,NULL,4,demographics,NULL,9284.22,NULL,NULL,NULL,NULL,NULL,27414,0,0.5,0.8,0.2,"{""Gender"":""female"",""Age"":""19""}",25348
 32509,fixed_location_delay,0,9,practice_rdk,2,3165.095,NULL,NULL,NULL,NULL,NULL,1538692,0,0.5,0.8,0.2,NULL,25348
 32509,fixed_location_delay,0,11,rdk,NULL,4654.245,0,0.8,88,26832,1,1543354,0,0.5,0.8,0.2,NULL,25348
@@ -7850,7 +7850,7 @@
 32509,fixed_location_delay,29,882,select_rdk,0,354.5,NULL,NULL,NULL,NULL,NULL,2226548,0,0.5,0.8,0.2,NULL,25348
 32509,fixed_location_delay,29,884,rdk,NULL,331.12,180,0,88,2664,,2226882,0,0.5,0.8,0.2,NULL,25348
 32509,fixed_location_delay,29,886,rdk,NULL,626.845,0,0,88,2332,1,2228012,0,0.5,0.8,0.2,NULL,25348
-32509,fixed_location_delay,NULL,890,demographics,NULL,2394.19,NULL,NULL,NULL,NULL,NULL,2231505,0,0.5,0.8,0.2,"{""Email"":""""}",25348
+32509,fixed_location_delay,NULL,890,demographics,NULL,2394.19,NULL,NULL,NULL,NULL,NULL,2231505,0,0.5,0.8,0.2,,25348
 94054,fixed_location_delay,NULL,4,demographics,NULL,35183.305,NULL,NULL,NULL,NULL,NULL,118822,0.8,0.2,0.5,0,"{""Gender"":""female"",""Age"":""19""}",26432
 94054,fixed_location_delay,0,9,practice_rdk,0,4432.11,NULL,NULL,NULL,NULL,NULL,188201,0.8,0.2,0.5,0,NULL,26432
 94054,fixed_location_delay,0,11,rdk,NULL,11085.135,180,0.8,90,25564,1,199293,0.8,0.2,0.5,0,NULL,26432
@@ -8405,7 +8405,7 @@
 53211,fixed_location_delay,14,504,select_rdk,3,614.7949999,NULL,NULL,NULL,NULL,NULL,445318,0.8,0.2,0,0.5,NULL,24846
 53211,fixed_location_delay,14,506,rdk,NULL,481.87,0,0.5,88,4234,1,445802,0.8,0.2,0,0.5,NULL,24846
 53211,fixed_location_delay,14,508,select_rdk,2,582.895,NULL,NULL,NULL,NULL,NULL,446387,0.8,0.2,0,0.5,NULL,24846
-94054,fixed_location_delay,NULL,809,demographics,NULL,15837.465,NULL,NULL,NULL,NULL,NULL,864505,0.8,0.2,0.5,0,"{""Email"":""grchen@student.unimelb.edu.au""}",26432
+94054,fixed_location_delay,NULL,809,demographics,NULL,15837.465,NULL,NULL,NULL,NULL,NULL,864505,0.8,0.2,0.5,0,,26432
 53211,fixed_location_delay,14,510,rdk,NULL,516.0149999,180,0,88,3167,,446905,0.8,0.2,0,0.5,NULL,24846
 53211,fixed_location_delay,14,512,rdk,NULL,958.555,0,0,90,2650,,448366,0.8,0.2,0,0.5,NULL,24846
 53211,fixed_location_delay,14,514,rdk,NULL,363.06,0,0,90,1690,,449232,0.8,0.2,0,0.5,NULL,24846
@@ -8543,7 +8543,7 @@
 53211,fixed_location_delay,29,823,rdk,NULL,513.6500001,180,0.8,90,1747,1,589499,0.8,0.2,0,0.5,NULL,24846
 53211,fixed_location_delay,29,825,select_rdk,3,605.52,NULL,NULL,NULL,NULL,NULL,590107,0.8,0.2,0,0.5,NULL,24846
 53211,fixed_location_delay,29,827,rdk,NULL,-1,180,0.5,-1,625,,590736,0.8,0.2,0,0.5,NULL,24846
-53211,fixed_location_delay,NULL,831,demographics,NULL,29405.695,NULL,NULL,NULL,NULL,NULL,624859,0.8,0.2,0,0.5,"{""Email"":""dpeh@student.unimelb.edu.au""}",24846
+53211,fixed_location_delay,NULL,831,demographics,NULL,29405.695,NULL,NULL,NULL,NULL,NULL,624859,0.8,0.2,0,0.5,,24846
 50904,fixed_location_delay,NULL,4,demographics,NULL,6150.23,NULL,NULL,NULL,NULL,NULL,214901,0.8,0.2,0,0.5,"{""Gender"":""Female"",""Age"":""18""}",24663
 50904,fixed_location_delay,0,9,practice_rdk,0,5400.325,NULL,NULL,NULL,NULL,NULL,290856,0.8,0.2,0,0.5,NULL,24663
 50904,fixed_location_delay,0,11,rdk,NULL,1397.635,0,0.8,88,24595,1,292261,0.8,0.2,0,0.5,NULL,24663
@@ -8923,7 +8923,7 @@
 50904,fixed_location_delay,29,879,rdk,NULL,589.625,180,0,90,3606,1,761592,0.8,0.2,0,0.5,NULL,24663
 50904,fixed_location_delay,29,881,select_rdk,1,440.5550002,NULL,NULL,NULL,NULL,NULL,762035,0.8,0.2,0,0.5,NULL,24663
 50904,fixed_location_delay,29,883,rdk,NULL,496.235,0,0.2,88,2571,1,762538,0.8,0.2,0,0.5,NULL,24663
-50904,fixed_location_delay,NULL,887,demographics,NULL,14672.275,NULL,NULL,NULL,NULL,NULL,778307,0.8,0.2,0,0.5,"{""Email"":""amohn@student.unimelb.edu.au""}",24663
+50904,fixed_location_delay,NULL,887,demographics,NULL,14672.275,NULL,NULL,NULL,NULL,NULL,778307,0.8,0.2,0,0.5,,24663
 20465,fixed_location_delay,NULL,4,demographics,NULL,6946,NULL,NULL,NULL,NULL,NULL,69680,0.5,0.2,0,0.8,"{""Gender"":""female"",""Age"":""19""}",25011
 20465,fixed_location_delay,0,9,practice_rdk,0,6400,NULL,NULL,NULL,NULL,NULL,164128,0.5,0.2,0,0.8,NULL,25011
 20465,fixed_location_delay,0,11,rdk,NULL,3370,180,0.5,90,23597,1,167509,0.5,0.2,0,0.8,NULL,25011
@@ -9292,7 +9292,7 @@
 20465,fixed_location_delay,29,857,rdk,NULL,611,0,0.2,88,2181,1,609697,0.5,0.2,0,0.8,NULL,25011
 20465,fixed_location_delay,29,859,select_rdk,2,773,NULL,NULL,NULL,NULL,NULL,610475,0.5,0.2,0,0.8,NULL,25011
 20465,fixed_location_delay,29,861,rdk,NULL,334,0,0,88,794,1,610813,0.5,0.2,0,0.8,NULL,25011
-20465,fixed_location_delay,NULL,865,demographics,NULL,11140,NULL,NULL,NULL,NULL,NULL,623276,0.5,0.2,0,0.8,"{""Email"":""operezdelasa@student.edu.au""}",25011
+20465,fixed_location_delay,NULL,865,demographics,NULL,11140,NULL,NULL,NULL,NULL,NULL,623276,0.5,0.2,0,0.8,,25011
 45376,fixed_location_delay,NULL,4,demographics,NULL,7076.61,NULL,NULL,NULL,NULL,NULL,29371,0.2,0.8,0,0.5,"{""Gender"":""female"",""Age"":""19""}",25768
 45376,fixed_location_delay,0,9,practice_rdk,1,4615.745,NULL,NULL,NULL,NULL,NULL,95119,0.2,0.8,0,0.5,NULL,25768
 45376,fixed_location_delay,0,11,rdk,NULL,3824.975,0,0.8,88,25380,1,98954,0.2,0.8,0,0.5,NULL,25768
@@ -9620,7 +9620,7 @@
 45376,fixed_location_delay,29,777,rdk,NULL,695.425,180,0.2,88,2185,,588479,0.2,0.8,0,0.5,NULL,25768
 45376,fixed_location_delay,29,779,rdk,NULL,481.625,0,0.2,90,1486,,589465,0.2,0.8,0,0.5,NULL,25768
 45376,fixed_location_delay,29,781,rdk,NULL,-1,0,0.2,-1,1004,,590984,0.2,0.8,0,0.5,NULL,25768
-45376,fixed_location_delay,NULL,785,demographics,NULL,43667.36,NULL,NULL,NULL,NULL,NULL,637829,0.2,0.8,0,0.5,"{""Email"":""yuwechen1@student.unimelb.edu.au""}",25768
+45376,fixed_location_delay,NULL,785,demographics,NULL,43667.36,NULL,NULL,NULL,NULL,NULL,637829,0.2,0.8,0,0.5,,25768
 7770,fixed_location_delay,NULL,4,demographics,NULL,6193,NULL,NULL,NULL,NULL,NULL,28849,0.8,0.2,0,0.5,"{""Gender"":""female"",""Age"":""20""}",24920
 7770,fixed_location_delay,0,9,practice_rdk,3,2239,NULL,NULL,NULL,NULL,NULL,165460,0.8,0.2,0,0.5,NULL,24920
 7770,fixed_location_delay,0,11,rdk,NULL,-1,0,0.5,-1,27758,,194308,0.8,0.2,0,0.5,NULL,24920
@@ -10030,7 +10030,7 @@
 7770,fixed_location_delay,29,939,rdk,NULL,242,0,0,88,2186,1,694678,0.8,0.2,0,0.5,NULL,24920
 7770,fixed_location_delay,29,941,select_rdk,1,806,NULL,NULL,NULL,NULL,NULL,695488,0.8,0.2,0,0.5,NULL,24920
 7770,fixed_location_delay,29,943,rdk,NULL,177,180,0.2,90,1134,1,695667,0.8,0.2,0,0.5,NULL,24920
-7770,fixed_location_delay,NULL,947,demographics,NULL,18268,NULL,NULL,NULL,NULL,NULL,715368,0.8,0.2,0,0.5,"{""Email"":""hanlong@student.unimelb.edu.au""}",24920
+7770,fixed_location_delay,NULL,947,demographics,NULL,18268,NULL,NULL,NULL,NULL,NULL,715368,0.8,0.2,0,0.5,,24920
 69810,fixed_location_delay,NULL,4,demographics,NULL,6125.685,NULL,NULL,NULL,NULL,NULL,18013,0.8,0.5,0.2,0,"{""Gender"":""Female"",""Age"":""20""}",24809
 69810,fixed_location_delay,0,9,practice_rdk,0,3660.045,NULL,NULL,NULL,NULL,NULL,55621,0.8,0.5,0.2,0,NULL,24809
 69810,fixed_location_delay,0,11,rdk,NULL,879.965,0,0.8,90,26336,,56512,0.8,0.5,0.2,0,NULL,24809
@@ -10386,7 +10386,7 @@
 69810,fixed_location_delay,29,831,rdk,NULL,522.71,0,0.5,88,3427,1,476901,0.8,0.5,0.2,0,NULL,24809
 69810,fixed_location_delay,29,833,select_rdk,2,593.865,NULL,NULL,NULL,NULL,NULL,477499,0.8,0.5,0.2,0,NULL,24809
 69810,fixed_location_delay,29,835,rdk,NULL,602.29,0,0.2,88,2305,1,478107,0.8,0.5,0.2,0,NULL,24809
-69810,fixed_location_delay,NULL,839,demographics,NULL,18010.66,NULL,NULL,NULL,NULL,NULL,498492,0.8,0.5,0.2,0,"{""Email"":""triding@student.unimelb.edu.au""}",24809
+69810,fixed_location_delay,NULL,839,demographics,NULL,18010.66,NULL,NULL,NULL,NULL,NULL,498492,0.8,0.5,0.2,0,,24809
 5760,fixed_location_delay,NULL,4,demographics,NULL,8867.4,NULL,NULL,NULL,NULL,NULL,37479,0,0.5,0.8,0.2,"{""Gender"":""Female"",""Age"":""19""}",25031
 5760,fixed_location_delay,0,9,practice_rdk,2,6080.69,NULL,NULL,NULL,NULL,NULL,145915,0,0.5,0.8,0.2,NULL,25031
 5760,fixed_location_delay,0,11,rdk,NULL,1584.47,180,0.8,90,23917,1,147507,0,0.5,0.8,0.2,NULL,25031
@@ -10740,7 +10740,7 @@
 5760,fixed_location_delay,29,827,rdk,NULL,502.28,0,0.2,88,3088,1,779220,0,0.5,0.8,0.2,NULL,25031
 5760,fixed_location_delay,29,829,select_rdk,0,644.585,NULL,NULL,NULL,NULL,NULL,779869,0,0.5,0.8,0.2,NULL,25031
 5760,fixed_location_delay,29,831,rdk,NULL,542.32,180,0,90,1938,1,780415,0,0.5,0.8,0.2,NULL,25031
-5760,fixed_location_delay,NULL,835,demographics,NULL,4250.955,NULL,NULL,NULL,NULL,NULL,789650,0,0.5,0.8,0.2,"{""Email"":""""}",25031
+5760,fixed_location_delay,NULL,835,demographics,NULL,4250.955,NULL,NULL,NULL,NULL,NULL,789650,0,0.5,0.8,0.2,,25031
 62198,fixed_location_delay,NULL,4,demographics,NULL,4318.15,NULL,NULL,NULL,NULL,NULL,27081,0,0.8,0.5,0.2,"{""Gender"":""Female"",""Age"":""17""}",24796
 62198,fixed_location_delay,0,9,practice_rdk,1,3389.36,NULL,NULL,NULL,NULL,NULL,82029,0,0.8,0.5,0.2,NULL,24796
 62198,fixed_location_delay,0,11,rdk,NULL,2669.265,0,0.8,88,26608,1,84704,0,0.8,0.5,0.2,NULL,24796
@@ -11079,7 +11079,7 @@
 62198,fixed_location_delay,29,797,rdk,NULL,562.65,0,0.2,88,2794,1,537772,0,0.8,0.5,0.2,NULL,24796
 62198,fixed_location_delay,29,799,select_rdk,0,681.555,NULL,NULL,NULL,NULL,NULL,538456,0,0.8,0.5,0.2,NULL,24796
 62198,fixed_location_delay,29,801,rdk,NULL,496.11,0,0,88,1548,1,538954,0,0.8,0.5,0.2,NULL,24796
-62198,fixed_location_delay,NULL,805,demographics,NULL,2699.605,NULL,NULL,NULL,NULL,NULL,542742,0,0.8,0.5,0.2,"{""Email"":""""}",24796
+62198,fixed_location_delay,NULL,805,demographics,NULL,2699.605,NULL,NULL,NULL,NULL,NULL,542742,0,0.8,0.5,0.2,,24796
 49783,fixed_location_delay,NULL,4,demographics,NULL,5741.885,NULL,NULL,NULL,NULL,NULL,33379,0.8,0,0.2,0.5,"{""Gender"":""Male"",""Age"":""18""}",26362
 49783,fixed_location_delay,0,9,practice_rdk,0,4703.58,NULL,NULL,NULL,NULL,NULL,80474,0.8,0,0.2,0.5,NULL,26362
 49783,fixed_location_delay,0,11,rdk,NULL,3616.53,180,0.8,88,25293,,84100,0.8,0,0.2,0.5,NULL,26362
@@ -11420,7 +11420,7 @@
 49783,fixed_location_delay,29,802,rdk,NULL,835.725,0,0.2,88,3154,1,644869,0.8,0,0.2,0.5,NULL,26362
 49783,fixed_location_delay,29,804,select_rdk,1,519.41,NULL,NULL,NULL,NULL,NULL,645403,0.8,0,0.2,0.5,NULL,26362
 49783,fixed_location_delay,29,806,rdk,NULL,758.23,0,0,88,1792,1,646174,0.8,0,0.2,0.5,NULL,26362
-49783,fixed_location_delay,NULL,810,demographics,NULL,65373.425,NULL,NULL,NULL,NULL,NULL,714504,0.8,0,0.2,0.5,"{""Email"":""isaac.holberton@student.unimelb.edu.au""}",26362
+49783,fixed_location_delay,NULL,810,demographics,NULL,65373.425,NULL,NULL,NULL,NULL,NULL,714504,0.8,0,0.2,0.5,,26362
 40962,fixed_location_delay,NULL,4,demographics,NULL,5703,NULL,NULL,NULL,NULL,NULL,44308,0.8,0.5,0,0.2,"{""Gender"":""female"",""Age"":""19""}",26219
 40962,fixed_location_delay,0,9,practice_rdk,0,1668,NULL,NULL,NULL,NULL,NULL,49321,0.8,0.5,0,0.2,NULL,26219
 40962,fixed_location_delay,0,11,rdk,NULL,1923,180,0.8,90,28327,1,51250,0.8,0.5,0,0.2,NULL,26219
@@ -11748,7 +11748,7 @@
 40962,fixed_location_delay,29,776,rdk,NULL,206,0,0.2,88,3514,1,454800,0.8,0.5,0,0.2,NULL,26219
 40962,fixed_location_delay,29,778,select_rdk,2,593,NULL,NULL,NULL,NULL,NULL,455395,0.8,0.5,0,0.2,NULL,26219
 40962,fixed_location_delay,29,780,rdk,NULL,113,0,0,88,2712,1,455512,0.8,0.5,0,0.2,NULL,26219
-40962,fixed_location_delay,NULL,784,demographics,NULL,17053,NULL,NULL,NULL,NULL,NULL,474661,0.8,0.5,0,0.2,"{""Email"":""smochizuki@student.unimelb.edu.au""}",26219
+40962,fixed_location_delay,NULL,784,demographics,NULL,17053,NULL,NULL,NULL,NULL,NULL,474661,0.8,0.5,0,0.2,,26219
 34016,fixed_location_delay,NULL,4,demographics,NULL,7591.135,NULL,NULL,NULL,NULL,NULL,47522,0.5,0.8,0.2,0,"{""Gender"":""female"",""Age"":""18""}",25199
 34016,fixed_location_delay,0,9,practice_rdk,1,4709.75,NULL,NULL,NULL,NULL,NULL,64052,0.5,0.8,0.2,0,NULL,25199
 34016,fixed_location_delay,0,11,rdk,NULL,2950.125,180,0.8,90,25286,1,67011,0.5,0.8,0.2,0,NULL,25199
@@ -12065,7 +12065,7 @@
 34016,fixed_location_delay,29,756,select_rdk,3,1319.59,NULL,NULL,NULL,NULL,NULL,541538,0.5,0.8,0.2,0,NULL,25199
 34016,fixed_location_delay,29,758,rdk,NULL,723.94,180,0,90,1740,1,542265,0.5,0.8,0.2,0,NULL,25199
 34016,fixed_location_delay,29,760,select_rdk,NULL,NULL,NULL,NULL,NULL,NULL,NULL,543291,0.5,0.8,0.2,0,NULL,25199
-34016,fixed_location_delay,NULL,764,demographics,NULL,19068,NULL,NULL,NULL,NULL,NULL,563618,0.5,0.8,0.2,0,"{""Email"":""huijiap@student.unimelb.edu.au""}",25199
+34016,fixed_location_delay,NULL,764,demographics,NULL,19068,NULL,NULL,NULL,NULL,NULL,563618,0.5,0.8,0.2,0,,25199
 52937,fixed_location_delay,NULL,4,demographics,NULL,5665.875,NULL,NULL,NULL,NULL,NULL,85706,0.8,0,0.5,0.2,"{""Gender"":""female"",""Age"":""19""}",26296
 52937,fixed_location_delay,0,9,practice_rdk,0,2819.87,NULL,NULL,NULL,NULL,NULL,148112,0.8,0,0.5,0.2,NULL,26296
 52937,fixed_location_delay,0,11,rdk,NULL,1451.795,0,0.8,90,27176,,149576,0.8,0,0.5,0.2,NULL,26296
@@ -12424,7 +12424,7 @@
 52937,fixed_location_delay,29,837,select_rdk,1,927.88,NULL,NULL,NULL,NULL,NULL,595660,0.8,0,0.5,0.2,NULL,26296
 52937,fixed_location_delay,29,839,rdk,NULL,920.21,0,0,90,1295,,596584,0.8,0,0.5,0.2,NULL,26296
 52937,fixed_location_delay,29,841,rdk,NULL,-1,0,0,-1,373,,597467,0.8,0,0.5,0.2,NULL,26296
-52937,fixed_location_delay,NULL,845,demographics,NULL,11290.515,NULL,NULL,NULL,NULL,NULL,611871,0.8,0,0.5,0.2,"{""Email"":""lashen@student.unimelb.edu.au""}",26296
+52937,fixed_location_delay,NULL,845,demographics,NULL,11290.515,NULL,NULL,NULL,NULL,NULL,611871,0.8,0,0.5,0.2,,26296
 11660,fixed_location_delay,NULL,4,demographics,NULL,6085.71,NULL,NULL,NULL,NULL,NULL,20918,0,0.8,0.2,0.5,"{""Gender"":""female"",""Age"":""19""}",25962
 11660,fixed_location_delay,0,9,practice_rdk,1,1969.62,NULL,NULL,NULL,NULL,NULL,51650,0,0.8,0.2,0.5,NULL,25962
 11660,fixed_location_delay,0,11,rdk,NULL,1520.305,180,0.8,90,28026,1,53177,0,0.8,0.2,0.5,NULL,25962
@@ -12796,7 +12796,7 @@
 11660,fixed_location_delay,29,863,select_rdk,0,500.43,NULL,NULL,NULL,NULL,NULL,4884421,0,0.8,0.2,0.5,NULL,25962
 11660,fixed_location_delay,29,865,rdk,NULL,395.28,0,0,90,1468,,4884819,0,0.8,0.2,0.5,NULL,25962
 11660,fixed_location_delay,29,867,rdk,NULL,310.86,0,0,88,1072,1,4885633,0,0.8,0.2,0.5,NULL,25962
-11660,fixed_location_delay,NULL,871,demographics,NULL,2391.575,NULL,NULL,NULL,NULL,NULL,4889331,0,0.8,0.2,0.5,"{""Email"":""""}",25962
+11660,fixed_location_delay,NULL,871,demographics,NULL,2391.575,NULL,NULL,NULL,NULL,NULL,4889331,0,0.8,0.2,0.5,,25962
 79516,fixed_location_delay,NULL,4,demographics,NULL,9320.88,NULL,NULL,NULL,NULL,NULL,76899,0.8,0,0.2,0.5,"{""Gender"":""Female"",""Age"":""18""}",25406
 79516,fixed_location_delay,0,9,practice_rdk,0,4501.47,NULL,NULL,NULL,NULL,NULL,120936,0.8,0,0.2,0.5,NULL,25406
 79516,fixed_location_delay,0,11,rdk,NULL,2972.915,180,0.8,88,25494,,123920,0.8,0,0.2,0.5,NULL,25406
@@ -13098,7 +13098,7 @@
 79516,fixed_location_delay,29,723,rdk,NULL,625.3800001,180,0.2,90,3615,1,904439,0.8,0,0.2,0.5,NULL,25406
 79516,fixed_location_delay,29,725,select_rdk,1,471.0899997,NULL,NULL,NULL,NULL,NULL,904914,0.8,0,0.2,0.5,NULL,25406
 79516,fixed_location_delay,29,727,rdk,NULL,903.9950003,0,0,88,2516,1,905822,0.8,0,0.2,0.5,NULL,25406
-79516,fixed_location_delay,NULL,731,demographics,NULL,3427.595,NULL,NULL,NULL,NULL,NULL,912941,0.8,0,0.2,0.5,"{""Email"":""""}",25406
+79516,fixed_location_delay,NULL,731,demographics,NULL,3427.595,NULL,NULL,NULL,NULL,NULL,912941,0.8,0,0.2,0.5,,25406
 39219,fixed_location_delay,NULL,4,demographics,NULL,7760.1,NULL,NULL,NULL,NULL,NULL,23815,0.2,0.8,0.5,0,"{""Gender"":""female"",""Age"":""19""}",25363
 39219,fixed_location_delay,0,9,practice_rdk,1,4991.11,NULL,NULL,NULL,NULL,NULL,36957,0.2,0.8,0.5,0,NULL,25363
 39219,fixed_location_delay,0,11,rdk,NULL,5166.335,0,0.8,88,25000,1,42135,0.2,0.8,0.5,0,NULL,25363
@@ -13403,7 +13403,7 @@
 14880,fixed_location_delay,29,713,select_rdk,1,1366.845,NULL,NULL,NULL,NULL,NULL,553844,0,0.5,0.2,0.8,NULL,25363
 14880,fixed_location_delay,29,715,rdk,NULL,460.9049999,0,0.5,88,1005,1,554311,0,0.5,0.2,0.8,NULL,25363
 14880,fixed_location_delay,29,717,select_rdk,NULL,NULL,NULL,NULL,NULL,NULL,NULL,554859,0,0.5,0.2,0.8,NULL,25363
-14880,fixed_location_delay,NULL,721,demographics,NULL,5603.075,NULL,NULL,NULL,NULL,NULL,562736,0,0.5,0.2,0.8,"{""Email"":""""}",25363
+14880,fixed_location_delay,NULL,721,demographics,NULL,5603.075,NULL,NULL,NULL,NULL,NULL,562736,0,0.5,0.2,0.8,,25363
 19255,fixed_location_delay,NULL,4,demographics,NULL,4800.725,NULL,NULL,NULL,NULL,NULL,54252,0,0.5,0.8,0.2,"{""Gender"":""Female"",""Age"":""18""}",26195
 19255,fixed_location_delay,0,9,practice_rdk,2,4574.79,NULL,NULL,NULL,NULL,NULL,93143,0,0.5,0.8,0.2,NULL,26195
 19255,fixed_location_delay,0,11,rdk,NULL,2304.165,0,0.8,88,25422,1,95454,0,0.5,0.8,0.2,NULL,26195
@@ -13753,7 +13753,7 @@
 19255,fixed_location_delay,29,819,rdk,NULL,585.295,180,0.2,90,3433,1,503456,0,0.5,0.8,0.2,NULL,26195
 19255,fixed_location_delay,29,821,select_rdk,0,441.16,NULL,NULL,NULL,NULL,NULL,503902,0,0.5,0.8,0.2,NULL,26195
 19255,fixed_location_delay,29,823,rdk,NULL,428.075,0,0,88,2404,1,504333,0,0.5,0.8,0.2,NULL,26195
-19255,fixed_location_delay,NULL,827,demographics,NULL,1587.38,NULL,NULL,NULL,NULL,NULL,508515,0,0.5,0.8,0.2,"{""Email"":""""}",26195
+19255,fixed_location_delay,NULL,827,demographics,NULL,1587.38,NULL,NULL,NULL,NULL,NULL,508515,0,0.5,0.8,0.2,,26195
 7949,fixed_location_delay,NULL,4,demographics,NULL,10357.04,NULL,NULL,NULL,NULL,NULL,77712,0.8,0,0.5,0.2,"{""Gender"":""Female"",""Age"":""18""}",25088
 7949,fixed_location_delay,0,9,practice_rdk,0,3944.975,NULL,NULL,NULL,NULL,NULL,120327,0.8,0,0.5,0.2,NULL,25088
 7949,fixed_location_delay,0,11,rdk,NULL,1645.885,180,0.8,90,26052,1,121981,0.8,0,0.5,0.2,NULL,25088
@@ -14107,7 +14107,7 @@
 7949,fixed_location_delay,29,827,rdk,NULL,920.5149999,0,0.2,90,2010,,596330,0.8,0,0.5,0.2,NULL,25088
 7949,fixed_location_delay,29,829,rdk,NULL,730.35,0,0.2,90,1088,,597564,0.8,0,0.5,0.2,NULL,25088
 7949,fixed_location_delay,29,831,rdk,NULL,-1,180,0.2,-1,356,,598429,0.8,0,0.5,0.2,NULL,25088
-7949,fixed_location_delay,NULL,835,demographics,NULL,18002.065,NULL,NULL,NULL,NULL,NULL,619476,0.8,0,0.5,0.2,"{""Email"":""ebrinkerritc@student.unimelb.edu.au""}",25088
+7949,fixed_location_delay,NULL,835,demographics,NULL,18002.065,NULL,NULL,NULL,NULL,NULL,619476,0.8,0,0.5,0.2,,25088
 72425,fixed_location_delay,NULL,4,demographics,NULL,6972.695,NULL,NULL,NULL,NULL,NULL,25376,0.5,0.2,0.8,0,"{""Gender"":""female"",""Age"":""19""}",26002
 72425,fixed_location_delay,0,9,practice_rdk,0,6115.28,NULL,NULL,NULL,NULL,NULL,63187,0.5,0.2,0.8,0,NULL,26002
 72425,fixed_location_delay,0,11,rdk,NULL,3430.97,180,0.5,90,23881,1,66631,0.5,0.2,0.8,0,NULL,26002
@@ -14446,7 +14446,7 @@
 72425,fixed_location_delay,29,797,rdk,NULL,701.935,0,0.5,88,2707,1,577136,0.5,0.2,0.8,0,NULL,26002
 72425,fixed_location_delay,29,799,select_rdk,3,808.6099999,NULL,NULL,NULL,NULL,NULL,577954,0.5,0.2,0.8,0,NULL,26002
 72425,fixed_location_delay,29,801,rdk,NULL,373.1449998,180,0,90,1184,1,578334,0.5,0.2,0.8,0,NULL,26002
-72425,fixed_location_delay,NULL,805,demographics,NULL,5726.38,NULL,NULL,NULL,NULL,NULL,586678,0.5,0.2,0.8,0,"{""Email"":""dnhart@student.unimelb.edu.au""}",26002
+72425,fixed_location_delay,NULL,805,demographics,NULL,5726.38,NULL,NULL,NULL,NULL,NULL,586678,0.5,0.2,0.8,0,,26002
 47194,fixed_location_delay,NULL,4,demographics,NULL,7913.525,NULL,NULL,NULL,NULL,NULL,109674,0.5,0.2,0,0.8,"{""Gender"":""female"",""Age"":""19""}",24576
 47194,fixed_location_delay,0,9,practice_rdk,3,3575.575,NULL,NULL,NULL,NULL,NULL,180716,0.5,0.2,0,0.8,NULL,24576
 47194,fixed_location_delay,0,11,rdk,NULL,1942.425,180,0.8,88,26419,,182668,0.5,0.2,0,0.8,NULL,24576
@@ -14780,7 +14780,7 @@
 47194,fixed_location_delay,29,787,rdk,NULL,624.44,180,0.5,90,2076,1,672263,0.5,0.2,0,0.8,NULL,24576
 47194,fixed_location_delay,29,789,select_rdk,1,1186.605,NULL,NULL,NULL,NULL,NULL,673474,0.5,0.2,0,0.8,NULL,24576
 47194,fixed_location_delay,29,791,rdk,NULL,-1,0,0.2,-1,240,,673725,0.5,0.2,0,0.8,NULL,24576
-47194,fixed_location_delay,NULL,795,demographics,NULL,15214.675,NULL,NULL,NULL,NULL,NULL,691853,0.5,0.2,0,0.8,"{""Email"":""bertij@student.unimelb.edu.au""}",24576
+47194,fixed_location_delay,NULL,795,demographics,NULL,15214.675,NULL,NULL,NULL,NULL,NULL,691853,0.5,0.2,0,0.8,,24576
 30489,fixed_location_delay,NULL,4,demographics,NULL,5305.945,NULL,NULL,NULL,NULL,NULL,803358,0.2,0,0.8,0.5,"{""Gender"":""Male"",""Age"":""18""}",26471
 30489,fixed_location_delay,0,9,practice_rdk,2,4303.215,NULL,NULL,NULL,NULL,NULL,852679,0.2,0,0.8,0.5,NULL,26471
 30489,fixed_location_delay,0,11,rdk,NULL,3924.075,0,0.8,88,25695,1,856609,0.2,0,0.8,0.5,NULL,26471
@@ -15131,7 +15131,7 @@
 30489,fixed_location_delay,29,821,rdk,NULL,1128.885,180,0.2,90,3655,1,1311603,0.2,0,0.8,0.5,NULL,26471
 30489,fixed_location_delay,29,823,select_rdk,1,458.345,NULL,NULL,NULL,NULL,NULL,1312064,0.2,0,0.8,0.5,NULL,26471
 30489,fixed_location_delay,29,825,rdk,NULL,1070.23,180,0,90,2065,1,1313137,0.2,0,0.8,0.5,NULL,26471
-30489,fixed_location_delay,NULL,829,demographics,NULL,4472.465,NULL,NULL,NULL,NULL,NULL,1319642,0.2,0,0.8,0.5,"{""Email"":""""}",26471
+30489,fixed_location_delay,NULL,829,demographics,NULL,4472.465,NULL,NULL,NULL,NULL,NULL,1319642,0.2,0,0.8,0.5,,26471
 98122,fixed_location_delay,NULL,4,demographics,NULL,7185,NULL,NULL,NULL,NULL,NULL,65590,0.5,0.8,0.2,0,"{""Gender"":""Female"",""Age"":""20""}",25595
 98122,fixed_location_delay,0,9,practice_rdk,1,2800,NULL,NULL,NULL,NULL,NULL,108683,0.5,0.8,0.2,0,NULL,25595
 98122,fixed_location_delay,0,11,rdk,NULL,1624,180,0.8,90,27198,1,110314,0.5,0.8,0.2,0,NULL,25595
@@ -15484,7 +15484,7 @@
 98122,fixed_location_delay,29,825,rdk,NULL,712,180,0.2,90,3308,1,503838,0.5,0.8,0.2,0,NULL,25595
 98122,fixed_location_delay,29,827,select_rdk,3,513,NULL,NULL,NULL,NULL,NULL,504353,0.5,0.8,0.2,0,NULL,25595
 98122,fixed_location_delay,29,829,rdk,NULL,754,180,0,90,2081,1,505110,0.5,0.8,0.2,0,NULL,25595
-98122,fixed_location_delay,NULL,833,demographics,NULL,3136,NULL,NULL,NULL,NULL,NULL,510209,0.5,0.8,0.2,0,"{""Email"":""""}",25595
+98122,fixed_location_delay,NULL,833,demographics,NULL,3136,NULL,NULL,NULL,NULL,NULL,510209,0.5,0.8,0.2,0,,25595
 99088,fixed_location_delay,NULL,4,demographics,NULL,5690.75,NULL,NULL,NULL,NULL,NULL,16224,0.5,0.8,0,0.2,"{""Gender"":""Female"",""Age"":""18""}",26304
 99088,fixed_location_delay,0,9,practice_rdk,1,3197.57,NULL,NULL,NULL,NULL,NULL,62386,0.5,0.8,0,0.2,NULL,26304
 99088,fixed_location_delay,0,11,rdk,NULL,1586.29,180,0.8,90,26800,1,63980,0.5,0.8,0,0.2,NULL,26304
@@ -15829,7 +15829,7 @@
 99088,fixed_location_delay,29,809,rdk,NULL,570.07,180,0.2,90,3444,1,504412,0.5,0.8,0,0.2,NULL,26304
 99088,fixed_location_delay,29,811,select_rdk,2,646.71,NULL,NULL,NULL,NULL,NULL,505063,0.5,0.8,0,0.2,NULL,26304
 99088,fixed_location_delay,29,813,rdk,NULL,297.31,180,0,90,2225,1,505364,0.5,0.8,0,0.2,NULL,26304
-99088,fixed_location_delay,NULL,817,demographics,NULL,10674.505,NULL,NULL,NULL,NULL,NULL,518185,0.5,0.8,0,0.2,"{""Email"":""""}",26304
+99088,fixed_location_delay,NULL,817,demographics,NULL,10674.505,NULL,NULL,NULL,NULL,NULL,518185,0.5,0.8,0,0.2,,26304
 45746,fixed_location_delay,NULL,4,demographics,NULL,8215.73,NULL,NULL,NULL,NULL,NULL,53264,0,0.8,0.5,0.2,"{""Gender"":""Female"",""Age"":""18""}",26304
 80967,fixed_location_delay,NULL,4,demographics,NULL,4822.075,NULL,NULL,NULL,NULL,NULL,14200,0.8,0,0.2,0.5,"{""Gender"":""Female"",""Age"":""18""}",26304
 80967,fixed_location_delay,0,9,practice_rdk,1,3882.665,NULL,NULL,NULL,NULL,NULL,26532,0.8,0,0.2,0.5,NULL,26304
@@ -16198,7 +16198,7 @@
 80967,fixed_location_delay,29,855,rdk,NULL,307.82,0,0.2,88,1256,1,455307,0.8,0,0.2,0.5,NULL,26304
 80967,fixed_location_delay,29,857,select_rdk,1,628.145,NULL,NULL,NULL,NULL,NULL,455937,0.8,0,0.2,0.5,NULL,26304
 80967,fixed_location_delay,29,859,rdk,NULL,-1,0,0,-1,317,,456257,0.8,0,0.2,0.5,NULL,26304
-80967,fixed_location_delay,NULL,863,demographics,NULL,9739.73,NULL,NULL,NULL,NULL,NULL,468732,0.8,0,0.2,0.5,"{""Email"":""acugley@student.unimelb.edu.au""}",26304
+80967,fixed_location_delay,NULL,863,demographics,NULL,9739.73,NULL,NULL,NULL,NULL,NULL,468732,0.8,0,0.2,0.5,,26304
 42386,fixed_location_delay,NULL,4,demographics,NULL,7985.16,NULL,NULL,NULL,NULL,NULL,108387,0.2,0.8,0.5,0,"{""Gender"":""Female"",""Age"":""19""}",24878
 42386,fixed_location_delay,0,9,practice_rdk,1,7426.635,NULL,NULL,NULL,NULL,NULL,361896,0.2,0.8,0.5,0,NULL,24878
 42386,fixed_location_delay,0,11,rdk,NULL,5367.54,180,0.8,90,22567,1,367277,0.2,0.8,0.5,0,NULL,24878
@@ -16531,7 +16531,7 @@
 42386,fixed_location_delay,29,785,rdk,NULL,525.76,180,0.2,90,3262,1,827062,0.2,0.8,0.5,0,NULL,24878
 42386,fixed_location_delay,29,787,select_rdk,3,521.915,NULL,NULL,NULL,NULL,NULL,827593,0.2,0.8,0.5,0,NULL,24878
 42386,fixed_location_delay,29,789,rdk,NULL,706.35,0,0,88,2208,1,828302,0.2,0.8,0.5,0,NULL,24878
-42386,fixed_location_delay,NULL,793,demographics,NULL,28146.51,NULL,NULL,NULL,NULL,NULL,865595,0.2,0.8,0.5,0,"{""Email"":""mmbotros@student.unimelb.edu.au""}",24878
+42386,fixed_location_delay,NULL,793,demographics,NULL,28146.51,NULL,NULL,NULL,NULL,NULL,865595,0.2,0.8,0.5,0,,24878
 16010,fixed_location_delay,NULL,4,demographics,NULL,10852,NULL,NULL,NULL,NULL,NULL,221127,0.5,0,0.8,0.2,"{""Gender"":""Female"",""Age"":""19""}",26423
 16010,fixed_location_delay,0,9,practice_rdk,2,12118,NULL,NULL,NULL,NULL,NULL,312769,0.5,0,0.8,0.2,NULL,26423
 16010,fixed_location_delay,0,11,rdk,NULL,1862,180,0.8,90,17882,1,314637,0.5,0,0.8,0.2,NULL,26423
@@ -16860,7 +16860,7 @@
 16010,fixed_location_delay,29,777,rdk,NULL,669,180,0.5,90,2444,1,749438,0.5,0,0.8,0.2,NULL,26423
 16010,fixed_location_delay,29,779,select_rdk,2,342,NULL,NULL,NULL,NULL,NULL,749782,0.5,0,0.8,0.2,NULL,26423
 16010,fixed_location_delay,29,781,rdk,NULL,637,180,0.8,90,1432,1,750422,0.5,0,0.8,0.2,NULL,26423
-16010,fixed_location_delay,NULL,785,demographics,NULL,24017,NULL,NULL,NULL,NULL,NULL,777351,0.5,0,0.8,0.2,"{""Email"":""wolw@student.unimelb.edu.au""}",26423
+16010,fixed_location_delay,NULL,785,demographics,NULL,24017,NULL,NULL,NULL,NULL,NULL,777351,0.5,0,0.8,0.2,,26423
 88403,fixed_location_delay,NULL,4,demographics,NULL,7598.595,NULL,NULL,NULL,NULL,NULL,20425,0.8,0,0.5,0.2,"{""Gender"":""female"",""Age"":""19""}",26432
 19614,fixed_location_delay,NULL,4,demographics,NULL,5165,NULL,NULL,NULL,NULL,NULL,77342,0.5,0,0.2,0.8,"{""Gender"":""Female"",""Age"":""19 ""}",25582
 19614,fixed_location_delay,0,9,practice_rdk,0,4358,NULL,NULL,NULL,NULL,NULL,153653,0.5,0,0.2,0.8,NULL,25582
@@ -17218,7 +17218,7 @@
 19614,fixed_location_delay,29,833,select_rdk,1,366,NULL,NULL,NULL,NULL,NULL,677684,0.5,0,0.2,0.8,NULL,25582
 19614,fixed_location_delay,29,835,rdk,NULL,946,0,0,90,2669,,678634,0.5,0,0.2,0.8,NULL,25582
 19614,fixed_location_delay,29,837,rdk,NULL,779,0,0,88,1720,1,679917,0.5,0,0.2,0.8,NULL,25582
-19614,fixed_location_delay,NULL,841,demographics,NULL,2038,NULL,NULL,NULL,NULL,NULL,683942,0.5,0,0.2,0.8,"{""Email"":""""}",25582
+19614,fixed_location_delay,NULL,841,demographics,NULL,2038,NULL,NULL,NULL,NULL,NULL,683942,0.5,0,0.2,0.8,,25582
 8526,fixed_location_delay,NULL,4,demographics,NULL,7465,NULL,NULL,NULL,NULL,NULL,26284,0,0.8,0.2,0.5,"{""Gender"":""Female"",""Age"":""19""}",24905
 8526,fixed_location_delay,0,9,practice_rdk,1,7158,NULL,NULL,NULL,NULL,NULL,65291,0,0.8,0.2,0.5,NULL,24905
 8526,fixed_location_delay,0,11,rdk,NULL,1576,0,0.8,88,22838,1,66881,0,0.8,0.2,0.5,NULL,24905
@@ -17556,7 +17556,7 @@
 8526,fixed_location_delay,29,795,select_rdk,0,387,NULL,NULL,NULL,NULL,NULL,391143,0,0.8,0.2,0.5,NULL,24905
 8526,fixed_location_delay,29,797,rdk,NULL,860,0,0,90,1975,,392009,0,0.8,0.2,0.5,NULL,24905
 8526,fixed_location_delay,29,799,rdk,NULL,-1,180,0,-1,1111,,393642,0,0.8,0.2,0.5,NULL,24905
-8526,fixed_location_delay,NULL,803,demographics,NULL,2600,NULL,NULL,NULL,NULL,NULL,399327,0,0.8,0.2,0.5,"{""Email"":""sppol@student.unimelb.edu.au""}",24905
+8526,fixed_location_delay,NULL,803,demographics,NULL,2600,NULL,NULL,NULL,NULL,NULL,399327,0,0.8,0.2,0.5,,24905
 98649,fixed_location_delay,NULL,4,demographics,NULL,7429,NULL,NULL,NULL,NULL,NULL,114665,0.2,0.5,0.8,0,"{""Gender"":""Female"",""Age"":""20""}",24898
 98649,fixed_location_delay,0,9,practice_rdk,2,3496,NULL,NULL,NULL,NULL,NULL,159254,0.2,0.5,0.8,0,NULL,24898
 98649,fixed_location_delay,0,11,rdk,NULL,2491,180,0.8,90,26502,1,161752,0.2,0.5,0.8,0,NULL,24898
@@ -17892,7 +17892,7 @@
 98649,fixed_location_delay,29,791,rdk,NULL,755,0,0.2,88,2841,1,618798,0.2,0.5,0.8,0,NULL,24898
 98649,fixed_location_delay,29,793,select_rdk,3,698,NULL,NULL,NULL,NULL,NULL,619497,0.2,0.5,0.8,0,NULL,24898
 98649,fixed_location_delay,29,795,rdk,NULL,798,0,0,88,1386,1,620296,0.2,0.5,0.8,0,NULL,24898
-98649,fixed_location_delay,NULL,799,demographics,NULL,10330,NULL,NULL,NULL,NULL,NULL,633075,0.2,0.5,0.8,0,"{""Email"":""abartos@student.unimelb.edu.au""}",24898
+98649,fixed_location_delay,NULL,799,demographics,NULL,10330,NULL,NULL,NULL,NULL,NULL,633075,0.2,0.5,0.8,0,,24898
 6131,fixed_location_delay,NULL,4,demographics,NULL,10165.635,NULL,NULL,NULL,NULL,NULL,64825,0.2,0,0.5,0.8,"{""Gender"":""Female"",""Age"":""18""}",26206
 6131,fixed_location_delay,0,9,practice_rdk,3,5732.26,NULL,NULL,NULL,NULL,NULL,87137,0.2,0,0.5,0.8,NULL,26206
 6131,fixed_location_delay,0,11,rdk,NULL,1233.44,0,0.8,90,24264,,88376,0.2,0,0.5,0.8,NULL,26206
@@ -18276,7 +18276,7 @@
 6131,fixed_location_delay,29,891,rdk,NULL,296.3400001,0,0.5,88,2972,1,570251,0.2,0,0.5,0.8,NULL,26206
 6131,fixed_location_delay,29,893,select_rdk,3,899.425,NULL,NULL,NULL,NULL,NULL,571153,0.2,0,0.5,0.8,NULL,26206
 6131,fixed_location_delay,29,895,rdk,NULL,319.7349999,0,0.8,88,1774,1,571475,0.2,0,0.5,0.8,NULL,26206
-6131,fixed_location_delay,NULL,899,demographics,NULL,26424.135,NULL,NULL,NULL,NULL,NULL,599377,0.2,0,0.5,0.8,"{""Email"":""yww10@student.unimelb.edu.au""}",26206
+6131,fixed_location_delay,NULL,899,demographics,NULL,26424.135,NULL,NULL,NULL,NULL,NULL,599377,0.2,0,0.5,0.8,,26206
 73004,fixed_location_delay,NULL,4,demographics,NULL,57755.08,NULL,NULL,NULL,NULL,NULL,109216,0.8,0.5,0,0.2,"{""Gender"":""Female"",""Age"":""19""}",26230
 73004,fixed_location_delay,0,9,practice_rdk,0,4968.91,NULL,NULL,NULL,NULL,NULL,192434,0.8,0.5,0,0.2,NULL,26230
 73004,fixed_location_delay,0,11,rdk,NULL,3227.125,180,0.8,90,25028,1,195669,0.8,0.5,0,0.2,NULL,26230
@@ -18585,4 +18585,4 @@
 73004,fixed_location_delay,29,737,select_rdk,3,1640.33,NULL,NULL,NULL,NULL,NULL,816247,0.8,0.5,0,0.2,NULL,26230
 73004,fixed_location_delay,29,739,rdk,NULL,605.1800001,0,0.2,88,1342,1,816858,0.8,0.5,0,0.2,NULL,26230
 73004,fixed_location_delay,29,741,select_rdk,NULL,NULL,NULL,NULL,NULL,NULL,NULL,817602,0.8,0.5,0,0.2,NULL,26230
-73004,fixed_location_delay,NULL,745,demographics,NULL,15222.47,NULL,NULL,NULL,NULL,NULL,833853,0.8,0.5,0,0.2,"{""Email"":""wattslg@student.unimelb.edu.au""}",26230
+73004,fixed_location_delay,NULL,745,demographics,NULL,15222.47,NULL,NULL,NULL,NULL,NULL,833853,0.8,0.5,0,0.2,,26230

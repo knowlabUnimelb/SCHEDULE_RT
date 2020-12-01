@@ -1,7 +1,7 @@
 ---
-title: "Experiment 2: 4 RDKs with error delay"
+title: "Experiment 4: Pixel Brightness with error delay"
 author: "knowlabUnimelb"
-date: "2020-11-24"
+date: "2020-11-25"
 output: workflowr::wflow_html
 editor_options:
   chunk_output_type: console
@@ -36,29 +36,23 @@ library(jpeg)
 
 ```{r load_data, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
 # Notes: 
-# Uniqueid 25363 attempted the experiment three times, only finishing it the third time
-# Somehow, the demographic line did not record on their third attempt; this fouls up the analysis which expects it
-# I've added this line to the data. This can be safely accomplished because the uniqueid's are tied to their SONA account and the same sex and gender were already entered twice for the prior attempts
+# odd problme with uniqueid 26323 so remove it
+
 
 #define working directories
 inputdir <- "data"
 
 # Reading data and variable names 
-fixed_datafilename = "exp2_fixed_rdk_delay_data.csv"
-random_datafilename = "exp2_random_rdk_delay_data.csv"
+fixed_datafilename = "exp4_fixed_pix_data.csv"
 
-colfile       <- read.csv(paste(inputdir,"data_dictionary.csv",sep="/"), stringsAsFactors = FALSE)
+colfile       <- read.csv(paste(inputdir,"data_dictionary_pixel.csv",sep="/"), stringsAsFactors = FALSE)
 fixed_datafn  <- paste(inputdir,fixed_datafilename,sep="/") 
-random_datafn <- paste(inputdir,random_datafilename,sep="/") 
 fixd_rawdata  <- read.csv(fixed_datafn, header = FALSE, col.names = colfile$Column, stringsAsFactors = FALSE) # Add column labels to data
-rand_rawdata    <- read.csv(random_datafn, header = FALSE, col.names = colfile$Column, stringsAsFactors = FALSE) # Add column labels to data
 
 # Handful of subjects who partially completed the experiment without an id, remove them
 fixd_rawdata$uniqueid = as.integer(fixd_rawdata$uniqueid)
-rand_rawdata$uniqueid = as.integer(rand_rawdata$uniqueid)
-
 fixd_rawdata = fixd_rawdata[!is.na(fixd_rawdata$uniqueid), ]
-rand_rawdata = rand_rawdata[!is.na(rand_rawdata$uniqueid), ]
+fixd_rawdata = fixd_rawdata[fixd_rawdata$uniqueid != 26323, ]
 
 # Most columns need to be read in as characters to deal with the issue that there are missing NULL values, fix those here to avoid headaches later
 fixd_rawdata$condition = as.factor(fixd_rawdata$condition)
@@ -67,9 +61,9 @@ fixd_rawdata$trial_number = as.integer(fixd_rawdata$trial_number)
 fixd_rawdata$trial_event = as.factor(fixd_rawdata$trial_event)
 fixd_rawdata$button_pressed = as.integer(fixd_rawdata$button_pressed)
 fixd_rawdata$rt = as.numeric(fixd_rawdata$rt) # -1's are rdks that were not completed, time outs
-fixd_rawdata$dot_direction = as.integer(fixd_rawdata$dot_direction)
-fixd_rawdata$dot_coherence = as.numeric(fixd_rawdata$dot_coherence)
-fixd_rawdata$key_press = as.integer(fixd_rawdata$key_press) # -1's are rdks that were not completed, time outs
+fixd_rawdata$darkness = as.integer(fixd_rawdata$darkness)
+fixd_rawdata$dot_difficulty = as.numeric(fixd_rawdata$dot_difficulty)
+fixd_rawdata$response = as.integer(fixd_rawdata$response) # -1's are patches that were not completed, time outs
 fixd_rawdata$trial_duration = as.numeric(fixd_rawdata$trial_duration)
 fixd_rawdata$correct[fixd_rawdata$correct == ""] = "0" # Incorrect trials were recorded as ""
 fixd_rawdata$correct = as.numeric(fixd_rawdata$correct)
@@ -79,30 +73,13 @@ fixd_rawdata$patch_1 = as.numeric(fixd_rawdata$patch_1)
 fixd_rawdata$patch_2 = as.numeric(fixd_rawdata$patch_2)
 fixd_rawdata$patch_3 = as.numeric(fixd_rawdata$patch_3)
 
-rand_rawdata$condition = as.factor(rand_rawdata$condition)
-levels(rand_rawdata$condition) = c("random")
-rand_rawdata$trial_number = as.integer(rand_rawdata$trial_number)
-rand_rawdata$trial_event = as.factor(rand_rawdata$trial_event)
-rand_rawdata$button_pressed = as.integer(rand_rawdata$button_pressed)
-rand_rawdata$rt = as.numeric(rand_rawdata$rt) # -1's are rdks that were not completed, time outs
-rand_rawdata$dot_direction = as.integer(rand_rawdata$dot_direction)
-rand_rawdata$dot_coherence = as.numeric(rand_rawdata$dot_coherence)
-rand_rawdata$key_press = as.integer(rand_rawdata$key_press) # -1's are rdks that were not completed, time outs
-rand_rawdata$trial_duration = as.numeric(rand_rawdata$trial_duration)
-rand_rawdata$correct[rand_rawdata$correct == ""] = "0" # Incorrect trials were recorded as ""
-rand_rawdata$correct = as.numeric(rand_rawdata$correct)
-rand_rawdata$time_elapsed = as.numeric(rand_rawdata$time_elapsed)
-rand_rawdata$patch_0 = as.numeric(rand_rawdata$patch_0)
-rand_rawdata$patch_1 = as.numeric(rand_rawdata$patch_1)
-rand_rawdata$patch_2 = as.numeric(rand_rawdata$patch_2)
-rand_rawdata$patch_3 = as.numeric(rand_rawdata$patch_3)
+# Remove trials with rt recorded as NA
+fixd_rawdata = fixd_rawdata[!is.na(fixd_rawdata$rt), ]
 
 # Summary data
 fixedLoggedSubjects  = unique(fixd_rawdata$uniqueid)  # Unique subject numbers
 nFixedLoggedSubjects = length(fixedLoggedSubjects) # Number of subjects who logged into the website using the link
 
-randomLoggedSubjects  = unique(rand_rawdata$uniqueid)   # Unique subject numbers
-nRandomLoggedSubjects = length(randomLoggedSubjects) # Number of subjects who logged into the website using the link
 
 ```
 
@@ -135,14 +112,13 @@ cleanUpData = function(rawdata, nTotalTrials){
 }
 
 fd = cleanUpData(fixd_rawdata, nTotalTrials)
-rd = cleanUpData(rand_rawdata, nTotalTrials)
+
 
 ```
 
 ```{r add_phase, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
 
 # Add in phase column which indicattzes whether current trials are practice or experiment
-# Somehow, the demographic row for subject 25363 was removed
 add_phase_col = function(data){
   data$data$phase = rep(NA, nrow(data$data))
   for (i in 1:data$nSubjects){
@@ -159,7 +135,6 @@ add_phase_col = function(data){
 }
 
 fd = add_phase_col(fd)
-rd = add_phase_col(rd)
 
 ```
 
@@ -168,13 +143,13 @@ rd = add_phase_col(rd)
 # Need to extract emails for sending results from all datasets
 # trial_event = email
 
-data = rbind(fd$data, rd$data)
+data = fd$data
 
 demographics = data$responses[data$trial_event == "demographics"]
 #emails = demographics[grep("Email", demographics)]
 #colon_loc = gregexpr(pattern = ":", emails)
 
-nSubjects = fd$nSubjects+rd$nSubjects
+nSubjects = fd$nSubjects
 #full_email_list = rep(NA, nSubjects)
 #for (i in 1:nSubjects){
 #  if (!is.na(emails[i])){
@@ -230,23 +205,16 @@ processDemographics = function(data, nSubjects){
 
 fixedDemo = processDemographics(fd$data, fd$nSubjects)
 names(fixedDemo) = c("nFemales", "nMales", "nOthers", "meanAge", "stdAge", "ages")
-randDemo = processDemographics(rd$data, rd$nSubjects)
-names(randDemo) = c("nFemales", "nMales", "nOthers", "meanAge", "stdAge", "ages")
+
 
 ```
-In Experiment 1, where there was no time penalty applied for making an incorrect RDK judgment, it was possible for subjects to adopt a "fast guess" strategy, particularly when responding to the hardest RDK's. Although our analysis of RT and reward rate suggested that this was not the case, we sought to further mitigate against this strategy by imposing a 500 msec time penalty after an error response. Experiment 2 thus acts as a conceptual replication of Experiment 1 but with an additional error penalty. 
+[Insert Brief Overview]
 
 # Method
 
 ## Participants
 
-We tested `r fd$nSubjects + rd$nSubjects` participants (`r fixedDemo$nFemales+randDemo$nFemales` F, `r fixedDemo$nMales+randDemo$nMales` M, `r fixedDemo$nOthers+randDemo$nOthers` Undeclared). Participants were recruited through the Melbourne School of Psychological Sciences Research Experience Pool (Mean age = `r round(mean(c(fixedDemo$ages, randDemo$ages), na.rm=TRUE),2) `, range = `r min(c(fixedDemo$ages, randDemo$ages), na.rm=TRUE) ` - `r max(c(fixedDemo$ages, randDemo$ages), na.rm=TRUE)`) and  were reimbursed with credit toward completion of a first year psychology subject. Datasets from `r fd$nRepeats + rd$nRepeats` subjects were excluded for completing the experiment twice; i.e., only the first of the datasets for these subjects was retained.
-
-`r paste(toupper(substring(english(fd$nSubjects), 1, 1)), substring(english(fd$nSubjects), 2), sep="")` were assigned to the _Fixed Difficulty_ condition. In this condition, the location of easy, medium, hard, and very hard random dot kinematograms (RDK's) was held constant across trials. 
-
-`r paste(toupper(substring(english(rd$nSubjects), 1, 1)), substring(english(rd$nSubjects), 2), sep="")` were assigned to the _Random Difficulty_ condition. In this condition, the location of easy, medium, hard, and very hard random dot kinematograms (RDK's) were randomized from trial to trial. 
-
-The Fixed Difficulty experiment was completed before the Random Difficulty experiment. Participants only completed one of these.
+We tested `r fd$nSubjects` participants (`r fixedDemo$nFemales` F, `r fixedDemo$nMales` M, `r fixedDemo$nOthers` Undeclared). Participants were recruited through the Melbourne School of Psychological Sciences Research Experience Pool (Mean age = `r round(mean(fixedDemo$ages, na.rm=TRUE),2) `, range = `r min(fixedDemo$ages, na.rm=TRUE) ` - `r max(fixedDemo$ages, na.rm=TRUE)`) and  were reimbursed with credit toward completion of a first year psychology subject. Datasets from `r fd$nRepeats` subjects were excluded for completing the experiment twice; i.e., only the first of the datasets for these subjects was retained. One participant was removed prior to data analysis due to errors in the trial numbering in their datafile.
 
 
 ## Design
@@ -260,7 +228,10 @@ The design of the experiment was identical to Experiment 1, with the sole except
 _Data Cleaning_
 
 ```{r analyse_RDK_difficulty, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
-rdk = data[data$trial_event == "rdk", ]
+
+# Note: data analyisis was written for rdk task so maintain that variable name but note that it refers to pixel task here
+
+rdk = data[data$trial_event == "subtask", ]
 
 # Make phase a factor
 rdk$phase = as.factor(rdk$phase)
@@ -285,7 +256,7 @@ rdk = rdk[rdk$rt < 3000, ]
 ```
 
 ```{r identify_nonlearners, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
-rdk.easyacc = aggregate(rdk$correct[rdk$dot_coherence == .8], by=list("condition" = rdk$condition[rdk$dot_coherence == .8], "phase" = rdk$phase[rdk$dot_coherence == .8], "subject" = rdk$uniqueid[rdk$dot_coherence == .8]), FUN=mean)
+rdk.easyacc = aggregate(rdk$correct[rdk$dot_difficulty == 1], by=list("condition" = rdk$condition[rdk$dot_difficulty == 1], "phase" = rdk$phase[rdk$dot_difficulty == 1], "subject" = rdk$uniqueid[rdk$dot_difficulty == 1]), FUN=mean)
 
 nonlearners = unique(rdk.easyacc$subject[rdk.easyacc$x < .4])
 nNonlearners = length(nonlearners)
@@ -297,12 +268,11 @@ n = distinct(as.data.frame(cbind("condition" = data$condition, "subject" = data$
 
 # Update subjects counts
 nRemainingFixed = n$n[n$condition == 1]
-nRemainingRandom = n$n[n$condition == 2]
 
 
 ```
 
-`r nNonlearners` subjects had less than chance accuracy on the easiest RDK; we removed these participants from further anlaysis leaving `r nRemainingFixed` and `r nRemainingRandom` in the fixed and random location conditions, respectively.
+`r nNonlearners` subjects had less than chance accuracy on the easiest RDK; we removed these participants from further anlaysis leaving `r nRemainingFixed`.
 
 ```{r task_completion, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
 tcdata = aggregate(rdk$trial_event[rdk$correct == 1], by=list("condition" = rdk$condition[rdk$correct == 1], "trial" = rdk$trial_number[rdk$correct == 1], "phase" = rdk$phase[rdk$correct == 1], "subject" = rdk$uniqueid[rdk$correct == 1]), FUN=length)
@@ -329,37 +299,33 @@ kable(avgCompletions, caption="Average number of correctly completed tasks in ea
 
 ```{r task_completion_anova, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
 
-tc.aov = aov(x ~ condition + phase + condition:phase, data = tcdata)
-tc.ml0 = lm(x ~ condition + phase + condition:phase, data = tcdata)
-tc.ml1 = lmer(x ~ condition + phase + condition:phase + (1|subject), data = tcdata)
-tc.ml2 = lmer(x ~ condition + phase + condition:phase + (1+phase|subject), data = tcdata)
+tc.aov = aov(x ~ phase, data = tcdata)
+tc.ml0 = lm(x ~ phase, data = tcdata)
+tc.ml1 = lmer(x ~ phase + (1|subject), data = tcdata)
 
 compare.1 = anova(tc.ml1, tc.ml0, test="chisq")
-compare.2 = anova(tc.ml2, tc.ml1, test="chisq")
 
-# Comparison indicates that tc.ml2 is the preferred model on a BIC basis
+# <!-- There were fewer tasks completed under a deadline than without a deadline ($\beta_{deadline}$ = `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "phasedeadline", colnames(tc.ml2.summary$coefficients) == "Estimate"]), 2)`, SE =  `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "phasedeadline", colnames(tc.ml2.summary$coefficients) == "Std. Error"]), 2)`).[^1] There was no difference between conditions, ($\beta_{condition}$ = `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom", colnames(tc.ml2.summary$coefficients) == "Estimate"]), 2)`, SE =  `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom", colnames(tc.ml2.summary$coefficients) == "Std. Error"]), 2)`). As shown in the table, there was an interaction between deadline and location condition ($\beta_{condition \times deadline}$= `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom:phasedeadline", colnames(tc.ml2.summary$coefficients) == "Estimate"]), 2)`, SE =  `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom:phasedeadline", colnames(tc.ml2.summary$coefficients) == "Std. Error"]), 2)`), with deadline affecting the number of completed tasks in the random condition more than in the fixed condition. [^2]
+# 
+# [^1]: Throughout, we infer significance by examining whether 2 \(\times\) SE includes 0.
+# 
+# [^2]: We compared three models: (1) a standard linear regression model with location condition, deadline, and their interaction as factors (BIC = `r round(compare.1$BIC[1], 2)`) ; (2) a multilevel regression model with an additional random intercept for each subject (BIC = `r round(compare.1$BIC[2], 2)`); and (3) a multilevel regression with a random intercept and random deadline coefficient for each subject (BIC = `r round(compare.2$BIC[2], 2)`). The third model was preferred on a BIC basis; hence, we report the details of that model only. --> 
 
-tc.ml2.summary = summary(tc.ml2)
 
 ```
 
-There were fewer tasks completed under a deadline than without a deadline ($\beta_{deadline}$ = `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "phasedeadline", colnames(tc.ml2.summary$coefficients) == "Estimate"]), 2)`, SE =  `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "phasedeadline", colnames(tc.ml2.summary$coefficients) == "Std. Error"]), 2)`).[^1] There was no difference between conditions, ($\beta_{condition}$ = `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom", colnames(tc.ml2.summary$coefficients) == "Estimate"]), 2)`, SE =  `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom", colnames(tc.ml2.summary$coefficients) == "Std. Error"]), 2)`). As shown in the table, there was an interaction between deadline and location condition ($\beta_{condition \times deadline}$= `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom:phasedeadline", colnames(tc.ml2.summary$coefficients) == "Estimate"]), 2)`, SE =  `r round(abs(tc.ml2.summary$coefficients[rownames(tc.ml2.summary$coefficients) == "conditionrandom:phasedeadline", colnames(tc.ml2.summary$coefficients) == "Std. Error"]), 2)`), with deadline affecting the number of completed tasks in the random condition more than in the fixed condition. [^2]
-
-[^1]: Throughout, we infer significance by examining whether 2 \(\times\) SE includes 0.
-
-[^2]: We compared three models: (1) a standard linear regression model with location condition, deadline, and their interaction as factors (BIC = `r round(compare.1$BIC[1], 2)`) ; (2) a multilevel regression model with an additional random intercept for each subject (BIC = `r round(compare.1$BIC[2], 2)`); and (3) a multilevel regression with a random intercept and random deadline coefficient for each subject (BIC = `r round(compare.2$BIC[2], 2)`). The third model was preferred on a BIC basis; hence, we report the details of that model only.
 
 ## RDK performance
 
 ```{r rdk_anova, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
-aov.acc.data = aggregate(list("accuracy" = rdk$correct), by = list("subject" = rdk$uniqueid, "condition" = rdk$condition, "phase" = rdk$phase, "difficulty" = rdk$dot_coherence), FUN = function(x) mean(x, na.rm=TRUE))
+aov.acc.data = aggregate(list("accuracy" = rdk$correct), by = list("subject" = rdk$uniqueid, "condition" = rdk$condition, "phase" = rdk$phase, "difficulty" = rdk$dot_difficulty), FUN = function(x) mean(x, na.rm=TRUE))
 
-aov.rt.data = aggregate(list("rt" = rdk$rt), by = list("subject" = rdk$subject, "condition" = rdk$condition, "phase" = rdk$phase, "difficulty" = rdk$dot_coherence), FUN = function(x) mean(x, na.rm=TRUE))
+aov.rt.data = aggregate(list("rt" = rdk$rt), by = list("subject" = rdk$subject, "condition" = rdk$condition, "phase" = rdk$phase, "difficulty" = rdk$dot_difficulty), FUN = function(x) mean(x, na.rm=TRUE))
 
 # Note that RT is computed by averaging every attempt
 # Another way to compute RT is by summing over incorrect attempts until the RDK is responded to correctly
 
-rdk.sumrt = aggregate(list("sumrt" = rdk$rt), by = list("subject"=rdk$subject, "condition"=rdk$condition, "phase"=rdk$phase, "difficulty"=rdk$dot_coherence, "trial"=rdk$trial_number), FUN = function(x) tail(cumsum(x), n=1)+((length(x)-1) * 500))
+rdk.sumrt = aggregate(list("sumrt" = rdk$rt), by = list("subject"=rdk$subject, "condition"=rdk$condition, "phase"=rdk$phase, "difficulty"=rdk$dot_difficulty, "trial"=rdk$trial_number), FUN = function(x) tail(cumsum(x), n=1)+((length(x)-1) * 500))
 
 rdk.sumrt = rdk.sumrt[rdk.sumrt$sumrt <= 6000, ]
 
@@ -368,22 +334,22 @@ aov.sumrt.data = aggregate(list("rt" = rdk.sumrt$sumrt), by = list("subject" = r
 #anova.acc = glm(accuracy ~ condition + phase + difficulty + condition:phase:difficulty, aov.acc.data, family = "gaussian")
 #anova.rt = glm(rt ~ condition + phase + difficulty + condition:phase:difficulty, aov.rt.data, family = "gaussian")
 
-anova.acc = anova_test(data = aov.acc.data, dv = accuracy, wid = subject, within = c(phase, difficulty), between = condition)
-anova.rt = anova_test(data = aov.rt.data, dv = rt, wid = subject, within = c(phase, difficulty), between = condition)
-anova.sumrt = anova_test(data = aov.sumrt.data, dv = rt, wid = subject, within = c(phase, difficulty), between = condition)
+anova.acc = anova_test(data = aov.acc.data, dv = accuracy, wid = subject, within = c(phase, difficulty))
+anova.rt = anova_test(data = aov.rt.data, dv = rt, wid = subject, within = c(phase, difficulty))
+anova.sumrt = anova_test(data = aov.sumrt.data, dv = rt, wid = subject, within = c(phase, difficulty))
 
 ```
 
 * What was the average completion time and accuracy of the easy, medium, hard, and very hard tasks? 
 
-RTs became shorter and more accurate as the difficulty of the RDK became easier. As expected, the RTs were shorter under a deadline than without a deadline. For the first plot, showing the average of each attempt on each RDK, we first removed trials with RTs greater than 3000 msec (N = `r nlongrts.no_deadline + nlongrts.deadline`). 
+<!-- RTs became shorter and more accurate as the difficulty of the RDK became easier. As expected, the RTs were shorter under a deadline than without a deadline. For the first plot, showing the average of each attempt on each RDK, we first removed trials with RTs greater than 3000 msec (N = `r nlongrts.no_deadline + nlongrts.deadline`). -->
 
 ```{r difficulty_plot, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
 # Difficulty plot
-rdk$dot_coherence = as.factor(rdk$dot_coherence)
-levels(rdk$dot_coherence) = c("very hard", "hard", "medium", "easy")
+rdk$dot_difficulty = as.factor(rdk$dot_difficulty)
+levels(rdk$dot_difficulty) = c("easy", "medium", "hard", "very hard")
 
-diff_plot <- rdk %>% ggplot(aes(x=dot_coherence, y=rt, fill=dot_coherence)) + geom_violin(adjust = 1.5, trim = TRUE) + facet_wrap(~phase) + labs(y="RT (msec)", x = "Difficulty")
+diff_plot <- rdk %>% ggplot(aes(x=dot_difficulty, y=rt, fill=dot_difficulty)) + geom_violin(adjust = 1.5, trim = TRUE) + facet_wrap(~phase) + labs(y="RT (msec)", x = "Difficulty")
 
 print(diff_plot + ggtitle("Response times as a function of difficulty"))
 ```
@@ -393,7 +359,7 @@ For the second plot, showing the time to complete an RDK as the cumulative sum a
 ```{r difficulty_sum_plot, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
 # RT summed over additional attempts
 rdk.sumrt$difficulty = as.factor(rdk.sumrt$difficulty)
-levels(rdk.sumrt$difficulty) = c("very hard", "hard", "medium", "easy")
+levels(rdk.sumrt$difficulty) = c("easy", "medium", "hard", "very hard")
 
 sumdiff_plot <- rdk.sumrt %>% ggplot(aes(x=difficulty, y=sumrt, fill=difficulty)) + geom_violin(adjust = 1.5, trim = TRUE) + facet_wrap(~phase) + labs(y="RT (msec)", x = "Difficulty")
 
@@ -406,15 +372,15 @@ We further broke down RTs by condition, deadline, and difficulty.
 ```{r difficulty_data, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
 
 # Find average rdk accuracy and rt in each codnition, phase, and coherence level
-difficulty = aggregate(list("accuracy" = rdk$correct, "rt" = rdk$rt), by = list("difficulty" =        rdk$dot_coherence, "phase" = rdk$phase, "condition" = rdk$condition), FUN = function(x) mean(x, na.rm = TRUE))
+difficulty = aggregate(list("accuracy" = rdk$correct, "rt" = rdk$rt), by = list("difficulty" =        rdk$dot_difficulty, "phase" = rdk$phase), FUN = function(x) mean(x, na.rm = TRUE))
 
-sum_difficulty = aggregate(list("sumrt" = rdk.sumrt$sumrt), by = list("difficulty" = rdk.sumrt$difficulty, "phase" = rdk.sumrt$phase, "condition" = rdk.sumrt$condition), FUN = function(x) mean(x, na.rm = TRUE))
+sum_difficulty = aggregate(list("sumrt" = rdk.sumrt$sumrt), by = list("difficulty" = rdk.sumrt$difficulty, "phase" = rdk.sumrt$phase), FUN = function(x) mean(x, na.rm = TRUE))
                 
-diffsd = aggregate(list("accuracy" = rdk$correct, "rt" = rdk$rt), by = list("difficulty" =        rdk$dot_coherence, "phase" = rdk$phase, "condition" = rdk$condition), FUN = function(x) sd(x, na.rm = TRUE))
+diffsd = aggregate(list("accuracy" = rdk$correct, "rt" = rdk$rt), by = list("difficulty" =  rdk$dot_difficulty, "phase" = rdk$phase), FUN = function(x) sd(x, na.rm = TRUE))
 
-sum_diffsd = aggregate(list("sumrt" = rdk.sumrt$sumrt), by = list("difficulty" =  rdk.sumrt$difficulty, "phase" = rdk.sumrt$phase, "condition" = rdk.sumrt$condition), FUN = function(x) sd(x, na.rm = TRUE))
+sum_diffsd = aggregate(list("sumrt" = rdk.sumrt$sumrt), by = list("difficulty" =  rdk.sumrt$difficulty, "phase" = rdk.sumrt$phase), FUN = function(x) sd(x, na.rm = TRUE))
 
-ncounts = rdk %>% count(condition, phase, dot_coherence)
+ncounts = rdk %>% count(phase, dot_difficulty)
 difficulty$n = ncounts$n
 difficulty$accuracy = round(difficulty$accuracy, 2)
 difficulty$rt = round(difficulty$rt, 2)
@@ -428,29 +394,29 @@ difficulty$se.sumrt = sum_diffsd$sumrt/sqrt(difficulty$n)
 difficulty$se.sumrt = round(difficulty$se.sumrt, 2)
 
 # Get reward rate standard error
-rrdata = aggregate(list("accuracy" = rdk$correct), by = list("difficulty" =        rdk$dot_coherence, "phase" = rdk$phase, "condition" = rdk$condition, "subject"=rdk$subject), FUN = function(x) mean(x, na.rm = TRUE))
-rrdata_sumrt = aggregate(list("sumrt" = rdk.sumrt$sumrt), by = list("difficulty" = rdk.sumrt$difficulty, "phase" = rdk.sumrt$phase, "condition" = rdk.sumrt$condition, "subject"=rdk.sumrt$subject), FUN = function(x) mean(x, na.rm = TRUE))
+rrdata = aggregate(list("accuracy" = rdk$correct), by = list("difficulty" =        rdk$dot_difficulty, "phase" = rdk$phase, "subject"=rdk$subject), FUN = function(x) mean(x, na.rm = TRUE))
+rrdata_sumrt = aggregate(list("sumrt" = rdk.sumrt$sumrt), by = list("difficulty" = rdk.sumrt$difficulty, "phase" = rdk.sumrt$phase,  "subject"=rdk.sumrt$subject), FUN = function(x) mean(x, na.rm = TRUE))
 
 
 rrdata$sumrt = rrdata_sumrt$sumrt
 rrdata$rewardRate = rrdata$accuracy/(rrdata$sumrt/1000)
 
-subRewardRate = aggregate(list("rr" = rrdata$rewardRate), by = list("difficulty" =  rrdata$difficulty, "phase" = rrdata$phase, "condition" = rrdata$condition), FUN = function(x) mean(x, na.rm = TRUE))
+subRewardRate = aggregate(list("rr" = rrdata$rewardRate), by = list("difficulty" =  rrdata$difficulty, "phase" = rrdata$phase), FUN = function(x) mean(x, na.rm = TRUE))
 
-subRewardRate.se = aggregate(list("rr" = rrdata$rewardRate), by = list("difficulty" =  rrdata$difficulty, "phase" = rrdata$phase, "condition" = rrdata$condition), FUN = function(x) sd(x, na.rm = TRUE))
+subRewardRate.se = aggregate(list("rr" = rrdata$rewardRate), by = list("difficulty" =  rrdata$difficulty, "phase" = rrdata$phase), FUN = function(x) sd(x, na.rm = TRUE))
 
 difficulty$rewardRate = subRewardRate$rr
 difficulty$SE.rewardRate = subRewardRate.se$rr/sqrt(difficulty$n)
 
 
 difficulty$difficulty = as.factor(difficulty$difficulty)
-levels(difficulty$difficulty) = c("Very Hard", "Hard", "Medium", "Easy")
+levels(difficulty$difficulty) = c("Easy", "Medium", "Hard", "Very Hard")
 ```
 
 
 ```{r difficulty_table, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
 # Create the table
-difficulty = difficulty[c("condition", "phase", "difficulty", "n", "accuracy", "se.acc", "rt", "se.rt", "sumrt", "se.sumrt")]
+difficulty = difficulty[c("phase", "difficulty", "n", "accuracy", "se.acc", "rt", "se.rt", "sumrt", "se.sumrt")]
 colnames(difficulty)[colnames(difficulty) == "accuracy"] = "Mean.Correct"
 colnames(difficulty)[colnames(difficulty) == "se.acc"] = "SE.Correct"
 colnames(difficulty)[colnames(difficulty) == "rt"] = "Mean.RT"
@@ -465,11 +431,11 @@ knitr::kable(difficulty, caption="Mean accuracy, RT, and RT summed across attemp
 # aggregate(rdk$correct, by=list(rdk$difficulty), FUN=mean)
 ```
 
-Statistical analysis, using a 2 condition $\times$ 2 phase $\times$ 4 difficulty between-within ANOVA, of the effect of these factors on accuracy confirmed the effect of difficulty, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "difficulty"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "difficulty"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "difficulty"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "difficulty"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "difficulty"], 2)`. RDK responses in the fixed condition were more accurate than RDK responses in the random condition, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "condition"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "condition"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "condition"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "condition"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "condition"], 2)`. RDK responses were not more accurate under a deadline then under no deadline, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "phase"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "phase"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "phase"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "phase"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "phase"], 2)`. Finally, unlike Experiment 1, there was no phase $\times$ difficulty interaction, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "phase:difficulty"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "phase:difficulty"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "phase:difficulty"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "phase:difficulty"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "phase:difficulty"], 2)` reflecting a greater increase from easy to very hard when there was no deadline compared to when there was a deadline.
+<!-- Statistical analysis, using a 2 condition $\times$ 2 phase $\times$ 4 difficulty between-within ANOVA, of the effect of these factors on accuracy confirmed the effect of difficulty, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "difficulty"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "difficulty"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "difficulty"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "difficulty"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "difficulty"], 2)`. RDK responses in the fixed condition were more accurate than RDK responses in the random condition, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "condition"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "condition"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "condition"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "condition"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "condition"], 2)`. RDK responses were not more accurate under a deadline then under no deadline, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "phase"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "phase"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "phase"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "phase"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "phase"], 2)`. Finally, unlike Experiment 1, there was no phase $\times$ difficulty interaction, F(`r anova.acc$ANOVA$DFn[anova.acc$ANOVA$Effect == "phase:difficulty"]`, `r anova.acc$ANOVA$DFd[anova.acc$ANOVA$Effect == "phase:difficulty"]`) = `r round(anova.acc$ANOVA$F[anova.acc$ANOVA$Effect == "phase:difficulty"], 2)`, p = `r round(anova.acc$ANOVA$p[anova.acc$ANOVA$Effect == "phase:difficulty"],2)`, $\eta^2$ = `r round(anova.acc$ANOVA$ges[anova.acc$ANOVA$Effect == "phase:difficulty"], 2)` reflecting a greater increase from easy to very hard when there was no deadline compared to when there was a deadline.
 
 RTs were shorter under a deadline, F(`r anova.rt$ANOVA$DFn[anova.rt$ANOVA$Effect == "phase"]`, `r anova.rt$ANOVA$DFd[anova.rt$ANOVA$Effect == "phase"]`) = `r round(anova.rt$ANOVA$F[anova.rt$ANOVA$Effect == "phase"], 2)`, p = `r round(anova.rt$ANOVA$p[anova.rt$ANOVA$Effect == "phase"],2)`, $\eta^2$ = `r round(anova.rt$ANOVA$ges[anova.rt$ANOVA$Effect == "phase"], 2)`, and that RTs became shorter as the RDK's became easier, F(`r anova.rt$ANOVA$DFn[anova.rt$ANOVA$Effect == "difficulty"]`, `r anova.rt$ANOVA$DFd[anova.rt$ANOVA$Effect == "difficulty"]`) = `r round(anova.rt$ANOVA$F[anova.rt$ANOVA$Effect == "difficulty"], 2)`, p = `r round(anova.rt$ANOVA$p[anova.rt$ANOVA$Effect == "difficulty"],2)`, $\eta^2$ = `r round(anova.rt$ANOVA$ges[anova.rt$ANOVA$Effect == "difficulty"], 2)`. There was again an interaction between phase and difficulty, F(`r anova.rt$ANOVA$DFn[anova.rt$ANOVA$Effect == "phase:difficulty"]`, `r anova.rt$ANOVA$DFd[anova.rt$ANOVA$Effect == "phase:difficulty"]`) = `r round(anova.rt$ANOVA$F[anova.rt$ANOVA$Effect == "phase:difficulty"], 2)`, p = `r round(anova.rt$ANOVA$p[anova.rt$ANOVA$Effect == "phase:difficulty"],2)`, $\eta^2$ = `r round(anova.rt$ANOVA$ges[anova.rt$ANOVA$Effect == "phase:difficulty"], 2)` indicating that RT decreased more with increasing dot coherence when there was no deadline compared to when there was a deadline. The pattern of these results replicated Experiment 1. 
 
-In analysing sumRT, we confirmed that sumRTs were shorter under a deadline, F(`r anova.sumrt$ANOVA$DFn[anova.sumrt$ANOVA$Effect == "phase"]`, `r anova.sumrt$ANOVA$DFd[anova.sumrt$ANOVA$Effect == "phase"]`) = `r round(anova.sumrt$ANOVA$F[anova.sumrt$ANOVA$Effect == "phase"], 2)`, p = `r round(anova.sumrt$ANOVA$p[anova.sumrt$ANOVA$Effect == "phase"],2)`, $\eta^2$ = `r round(anova.sumrt$ANOVA$ges[anova.sumrt$ANOVA$Effect == "phase"], 2)`, and that RTs became shorter as the RDK's became easier, F(`r anova.sumrt$ANOVA$DFn[anova.sumrt$ANOVA$Effect == "difficulty"]`, `r anova.sumrt$ANOVA$DFd[anova.sumrt$ANOVA$Effect == "difficulty"]`) = `r round(anova.sumrt$ANOVA$F[anova.sumrt$ANOVA$Effect == "difficulty"], 2)`, p = `r round(anova.sumrt$ANOVA$p[anova.sumrt$ANOVA$Effect == "difficulty"],2)`, $\eta^2$ = `r round(anova.sumrt$ANOVA$ges[anova.sumrt$ANOVA$Effect == "difficulty"], 2)`. There was again an interaction between phase and difficulty, F(`r anova.sumrt$ANOVA$DFn[anova.sumrt$ANOVA$Effect == "phase:difficulty"]`, `r anova.sumrt$ANOVA$DFd[anova.sumrt$ANOVA$Effect == "phase:difficulty"]`) = `r round(anova.sumrt$ANOVA$F[anova.sumrt$ANOVA$Effect == "phase:difficulty"], 2)`, p = `r round(anova.sumrt$ANOVA$p[anova.sumrt$ANOVA$Effect == "phase:difficulty"],2)`, $\eta^2$ = `r round(anova.sumrt$ANOVA$ges[anova.sumrt$ANOVA$Effect == "phase:difficulty"], 2)` indicating that RT decreased more with increasing dot coherence when there was no deadline compared to when there was a deadline. 
+In analysing sumRT, we confirmed that sumRTs were shorter under a deadline, F(`r anova.sumrt$ANOVA$DFn[anova.sumrt$ANOVA$Effect == "phase"]`, `r anova.sumrt$ANOVA$DFd[anova.sumrt$ANOVA$Effect == "phase"]`) = `r round(anova.sumrt$ANOVA$F[anova.sumrt$ANOVA$Effect == "phase"], 2)`, p = `r round(anova.sumrt$ANOVA$p[anova.sumrt$ANOVA$Effect == "phase"],2)`, $\eta^2$ = `r round(anova.sumrt$ANOVA$ges[anova.sumrt$ANOVA$Effect == "phase"], 2)`, and that RTs became shorter as the RDK's became easier, F(`r anova.sumrt$ANOVA$DFn[anova.sumrt$ANOVA$Effect == "difficulty"]`, `r anova.sumrt$ANOVA$DFd[anova.sumrt$ANOVA$Effect == "difficulty"]`) = `r round(anova.sumrt$ANOVA$F[anova.sumrt$ANOVA$Effect == "difficulty"], 2)`, p = `r round(anova.sumrt$ANOVA$p[anova.sumrt$ANOVA$Effect == "difficulty"],2)`, $\eta^2$ = `r round(anova.sumrt$ANOVA$ges[anova.sumrt$ANOVA$Effect == "difficulty"], 2)`. There was again an interaction between phase and difficulty, F(`r anova.sumrt$ANOVA$DFn[anova.sumrt$ANOVA$Effect == "phase:difficulty"]`, `r anova.sumrt$ANOVA$DFd[anova.sumrt$ANOVA$Effect == "phase:difficulty"]`) = `r round(anova.sumrt$ANOVA$F[anova.sumrt$ANOVA$Effect == "phase:difficulty"], 2)`, p = `r round(anova.sumrt$ANOVA$p[anova.sumrt$ANOVA$Effect == "phase:difficulty"],2)`, $\eta^2$ = `r round(anova.sumrt$ANOVA$ges[anova.sumrt$ANOVA$Effect == "phase:difficulty"], 2)` indicating that RT decreased more with increasing dot coherence when there was no deadline compared to when there was a deadline. -->
 
 ## Reward Rate
 
@@ -479,7 +445,7 @@ Inspection of the figure reveals that RR is roughly monotonically increasing whe
 
 
 ```{r rewardRate_plot, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
-rr_plot <- rrdata %>% ggplot(aes(x=difficulty, y=rewardRate, fill=difficulty)) + geom_violin(adjust = 1.5, trim = TRUE) +  stat_summary(fun=mean, geom="point", shape=23, size=2) + facet_wrap(~phase+condition) + labs(y="Reward Rate = p(Correct)/RT(sec)", x = "Difficulty") + lims(y = c(0, 2.5))
+rr_plot <- rrdata %>% ggplot(aes(x=difficulty, y=rewardRate, fill=difficulty)) + geom_violin(adjust = 1.5, trim = TRUE) +  stat_summary(fun=mean, geom="point", shape=23, size=2) + facet_wrap(~phase) + labs(y="Reward Rate = p(Correct)/RT(sec)", x = "Difficulty") + lims(y = c(0, 2.5))
 
 print(rr_plot + ggtitle("Reward Rate as a function of difficulty"))
 
@@ -500,8 +466,8 @@ nperms = nrow(allperms)
 
 # Processing functions
 splitData = function(data){
-  pracdata = data[data$trial_event == "practice_rdk", ]
-  exp_data = data[data$trial_event == "select_rdk", ]
+  pracdata = data[data$trial_event == "practice_pix", ]
+  exp_data = data[data$trial_event == "select_pix", ]
   return(list("practice" = pracdata, "experiment" = exp_data))
 }
 
@@ -536,7 +502,12 @@ get_trial_scores = function(sdata, ntrials, n, nperms, allperms, nSubjects, subj
     for (i in 1:ntrials){
         
         # Get the task selection order for the current trial (may be incomplete if timed out)
-        csel = tdata[tdata$trial_number == i-1, ]$button_pressed
+        # If the subject did not select any task and the task times out, then there won't be an entry in the data file, so make sure there is         some
+        if (nrow(tdata[tdata$trial_number == i-1, ]) > 0){
+          csel = tdata[tdata$trial_number == i-1, ]$button_pressed
+        } else {
+          csel = NA
+        }
         selmat[i, 1:length(csel)] = csel+1 # NULL is coded as option 5
         #selmat[i, selmat[i,] == 5] = NA  # Replace NULL with NA
         
@@ -551,7 +522,13 @@ get_trial_scores = function(sdata, ntrials, n, nperms, allperms, nSubjects, subj
         }
         
         # Get the optimal order
-        order_to_compare = sort(patch_order, decreasing=TRUE, index.return = TRUE)
+        
+        if (i == 24 && j == 16){
+          order_to_compare$x = c(NA, NA, NA, NA)
+          order_to_compare$ix = c(2, 4, 3, 1)
+          } else {
+          order_to_compare = sort(patch_order, decreasing=TRUE, index.return = TRUE)
+        }
         optorder[i, ] = order_to_compare$ix
         
         # compute distances of all permutations to indicated order
@@ -607,12 +584,7 @@ get_trial_scores = function(sdata, ntrials, n, nperms, allperms, nSubjects, subj
 scores = list("fixed" = list("practice" = get_trial_scores(splitData(fd$data)$practice, 10, 
                                                            n, nperms, allperms, fd$nSubjects, fd$subjects), 
                              "experiment" = get_trial_scores(splitData(fd$data)$experiment, 30, 
-                                                           n, nperms, allperms, fd$nSubjects, fd$subjects)), 
-              "random" = list("practice" = get_trial_scores(splitData(rd$data)$practice, 10, 
-                                                           n, nperms, allperms, rd$nSubjects, rd$subjects), 
-                              "experiment" = get_trial_scores(splitData(rd$data)$experiment, 30, 
-                                                           n, nperms, allperms, rd$nSubjects, rd$subjects)))
-
+                                                           n, nperms, allperms, fd$nSubjects, fd$subjects)))
 
 ```
 
@@ -631,53 +603,38 @@ fcon = data.frame(condition = as.factor(rep(1, fd$nSubjects*10)),
                   avg_expFirst10 = matrix(t(scores$fixed$experiment$avg_distances[, 1:10]), 10*nrow(scores$fixed$experiment$max_distances), byrow= FALSE), 
                   avg_expLast10  = matrix(t(scores$fixed$experiment$avg_distances[, 21:30]), 10*nrow(scores$fixed$experiment$max_distances), byrow= FALSE))
 
-rcon = data.frame(condition = as.factor(rep(2, rd$nSubjects*10)), 
-                  subjects = rep(1:rd$nSubjects + 200, each=10), 
-                  trials = rep(1:10, rd$nSubjects), 
-                  max_practice = matrix(t(scores$random$practice$max_distances), 10*nrow(scores$random$practice$max_distances), byrow= FALSE), 
-                  max_expFirst10 = matrix(t(scores$random$experiment$max_distances[, 1:10]), 10*nrow(scores$random$experiment$max_distances), byrow= FALSE), 
-                  max_expLast10 = matrix(t(scores$random$experiment$max_distances[, 21:30]), 10*nrow(scores$random$experiment$max_distances), byrow= FALSE), 
-                  min_practice = matrix(t(scores$random$practice$min_distances), 10*nrow(scores$random$practice$min_distances), byrow= FALSE), 
-                  min_expFirst10 = matrix(t(scores$random$experiment$min_distances[, 1:10]), 10*nrow(scores$random$experiment$min_distances), byrow= FALSE), 
-                  min_expLast10 = matrix(t(scores$random$experiment$min_distances[, 21:30]), 10*nrow(scores$random$experiment$min_distances), byrow= FALSE),                   
-                  avg_practice = matrix(t(scores$random$practice$avg_distances), 10*nrow(scores$random$practice$avg_distances), byrow= FALSE), 
-                  avg_expFirst10 = matrix(t(scores$random$experiment$avg_distances[, 1:10]), 10*nrow(scores$random$experiment$max_distances), byrow= FALSE), 
-                  avg_expLast10  = matrix(t(scores$random$experiment$avg_distances[, 21:30]), 10*nrow(scores$random$experiment$max_distances), byrow= FALSE))
-
-expdata = rbind(fcon, rcon)
+expdata = fcon
 
 # Set up summary data dataframe: maximum partial completion efficiency
-max_a = setNames(aggregate(expdata$max_practice, by=list(expdata$condition, expdata$subject), mean), c("condition", "subject", "avg"))
-max_b = setNames(aggregate(expdata$max_expFirst10, by=list(expdata$condition, expdata$subject), mean), c("condition", "subject", "avg"))
-max_c = setNames(aggregate(expdata$max_expLast10, by=list(expdata$condition, expdata$subject), mean), c("condition", "subject", "avg"))
+max_a = setNames(aggregate(expdata$max_practice, by=list( expdata$subject), mean), c("subject", "avg"))
+max_b = setNames(aggregate(expdata$max_expFirst10, by=list(expdata$subject), mean), c( "subject", "avg"))
+max_c = setNames(aggregate(expdata$max_expLast10, by=list( expdata$subject), mean), c( "subject", "avg"))
 
 avg_maxdata = rbind(cbind(max_a, phase=rep("untimed practice", nrow(max_a))), 
                     cbind(max_b, phase=rep("deadline early", nrow(max_b))), 
                     cbind(max_c, phase=rep("deadline late", nrow(max_c))))
 avg_maxdata$phase = as.factor(avg_maxdata$phase)         # Convert phase to factor
-levels(avg_maxdata$condition) = c("fixed", "random") # Replace condition names
 
 # Set up summary data dataframe: minimum partial completion efficiency
-min_a = setNames(aggregate(expdata$min_practice, by=list(expdata$condition, expdata$subject), mean), c("condition", "subject", "avg"))
-min_b = setNames(aggregate(expdata$min_expFirst10, by=list(expdata$condition, expdata$subject), mean), c("condition", "subject", "avg"))
-min_c = setNames(aggregate(expdata$min_expLast10, by=list(expdata$condition, expdata$subject), mean), c("condition", "subject", "avg"))
+min_a = setNames(aggregate(expdata$min_practice, by=list( expdata$subject), mean), c( "subject", "avg"))
+min_b = setNames(aggregate(expdata$min_expFirst10, by=list( expdata$subject), mean), c( "subject", "avg"))
+min_c = setNames(aggregate(expdata$min_expLast10, by=list( expdata$subject), mean), c("subject", "avg"))
 
 avg_mindata = rbind(cbind(min_a, phase=rep("untimed practice", nrow(min_a))), 
                     cbind(min_b, phase=rep("deadline early", nrow(min_b))), 
                     cbind(min_c, phase=rep("deadline late", nrow(min_c))))
 avg_mindata$phase = as.factor(avg_mindata$phase)         # Convert phase to factor
-levels(avg_mindata$condition) = c("fixed", "random") # Replace condition names
+
 
 # Set up summary data dataframe: avg partial completion efficiency
-avg_a = setNames(aggregate(expdata$avg_practice, by=list(expdata$condition, expdata$subject), mean), c("condition", "subject", "avg"))
-avg_b = setNames(aggregate(expdata$avg_expFirst10, by=list(expdata$condition, expdata$subject), mean), c("condition", "subject", "avg"))
-avg_c = setNames(aggregate(expdata$avg_expLast10, by=list(expdata$condition, expdata$subject), mean), c("condition", "subject", "avg"))
+avg_a = setNames(aggregate(expdata$avg_practice, by=list( expdata$subject), mean), c("subject", "avg"))
+avg_b = setNames(aggregate(expdata$avg_expFirst10, by=list( expdata$subject), mean), c("subject", "avg"))
+avg_c = setNames(aggregate(expdata$avg_expLast10, by=list( expdata$subject), mean), c("subject", "avg"))
 
 avg_avgdata = rbind(cbind(avg_a, phase=rep("untimed practice", nrow(avg_a))), 
                     cbind(avg_b, phase=rep("deadline early", nrow(avg_b))), 
                     cbind(avg_c, phase=rep("deadline late", nrow(avg_c))))
 avg_avgdata$phase = as.factor(avg_avgdata$phase)         # Convert phase to factor
-levels(avg_avgdata$condition) = c("fixed", "random") # Replace condition names
 
 
 # Set up summary data for matches
@@ -685,12 +642,9 @@ set1 = cbind(rep("fixed",fd$nSubjects), rep("untimed" ,fd$nSubjects), scores$fix
 names(set1) = c("condition", "phase", "subjects", "match1", "match2", "match3")
 set2 = cbind(rep("fixed",fd$nSubjects), rep("deadline" ,fd$nSubjects), scores$fixed$experiment$matches)
 names(set2) = c("condition", "phase", "subjects", "match1", "match2", "match3")
-set3 = cbind(rep("random",rd$nSubjects), rep("untimed" ,rd$nSubjects), scores$random$practice$matches)
-names(set3) = c("condition", "phase", "subjects", "match1", "match2", "match3")
-set4 = cbind(rep("random",rd$nSubjects), rep("deadline" ,rd$nSubjects), scores$random$experiment$matches)
-names(set4) = c("condition", "phase", "subjects", "match1", "match2", "match3")
 
-match_mat = rbind(set1, set2, set3, set4)
+
+match_mat = rbind(set1, set2)
 
 ```
 
@@ -707,22 +661,14 @@ The ordering of choices is more optimal when the locations are fixed and subtask
 # Convert to proportions
 fpmat = t(apply(scores$fixed$practice$selection_counts, 1, function(x) x/sum(x)))
 femat = t(apply(scores$fixed$experiment$selection_counts, 1, function(x) x/sum(x)))
-rpmat = t(apply(scores$random$practice$selection_counts, 1, function(x) x/sum(x)))
-remat = t(apply(scores$random$experiment$selection_counts, 1, function(x) x/sum(x)))
 
 fpmelt = melt(fpmat)
 femelt = melt(femat)
-rpmelt = melt(rpmat)
-remelt = melt(remat)
 names(fpmelt) = c("Difficulty", "Order", "value")
 names(femelt) = c("Difficulty", "Order", "value")
-names(rpmelt) = c("Difficulty", "Order", "value")
-names(remelt) = c("Difficulty", "Order", "value")
 
 hm = rbind(cbind("condition" = rep("Fixed No Deadline", nrow(fpmelt)), fpmelt), 
-           cbind("condition" = rep("Fixed Deadline", nrow(fpmelt)), femelt),
-           cbind("condition" = rep("Random No Deadline", nrow(fpmelt)), rpmelt),
-           cbind("condition" = rep("Random Deadline", nrow(fpmelt)), remelt))
+           cbind("condition" = rep("Fixed Deadline", nrow(fpmelt)), femelt))
 
 hmplot = ggplot(hm, aes(x=Difficulty, y=Order)) +
           geom_tile(aes(fill=value)) +
@@ -761,11 +707,11 @@ print(match_plot + ggtitle("Optimally Ordered Responses"))
 The following figures compare max_distance, min_distance, and avg_distance between the fixed difficulty and random difficulty conditions as a function of deadline condition and phase. For each of these measures, lower values reflect respones which are closer to optimal.
 
 ```{r plotData, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
-max_plot <- avg_maxdata %>% ggplot(aes(x=avg, fill=phase)) + geom_histogram(color="white", alpha=0.6, bins = 10, position="identity") + facet_wrap(~condition+phase) + labs(y="Frequency", x = "Max Distance")
+max_plot <- avg_maxdata %>% ggplot(aes(x=avg, fill=phase)) + geom_histogram(color="white", alpha=0.6, bins = 10, position="identity") + facet_wrap(~phase) + labs(y="Frequency", x = "Max Distance")
 
-min_plot <- avg_mindata %>% ggplot(aes(x=avg, fill=phase)) + geom_histogram(color="white", alpha=0.6, bins = 10, position="identity") + facet_wrap(~condition+phase) + labs(y="Frequency", x = "Min Distance")
+min_plot <- avg_mindata %>% ggplot(aes(x=avg, fill=phase)) + geom_histogram(color="white", alpha=0.6, bins = 10, position="identity") + facet_wrap(~phase) + labs(y="Frequency", x = "Min Distance")
 
-avg_plot <- avg_avgdata %>% ggplot(aes(x=avg, fill=phase)) + geom_histogram(color="white", alpha=0.6, bins = 10, position="identity") + facet_wrap(~condition+phase) + labs(y="Frequency", x = "Avg Distance")
+avg_plot <- avg_avgdata %>% ggplot(aes(x=avg, fill=phase)) + geom_histogram(color="white", alpha=0.6, bins = 10, position="identity") + facet_wrap(~phase) + labs(y="Frequency", x = "Avg Distance")
 
 print(max_plot + ggtitle("Max Distance"))
 print(min_plot + ggtitle("Min Distance"))
@@ -814,25 +760,18 @@ print(samp_plot)
 # Note: you don't have to sample for the kstest, you can just use the actual values, but sampling is fine
 # > 1 indicates more optimal than random, < 1 indicates more random than optimal
 
-ks.fixed.phase1 = ks.test(allrand$s, avg_avgdata$avg[avg_avgdata$condition == "fixed" & avg_avgdata$phase == "untimed practice"])$statistic/ks.test(twofix$s, avg_avgdata$avg[avg_avgdata$condition == "fixed" & avg_avgdata$phase == "untimed practice"])$statistic
+ks.fixed.phase1 = ks.test(allrand$s, avg_avgdata$avg[avg_avgdata$phase == "untimed practice"])$statistic/ks.test(twofix$s, avg_avgdata$avg[avg_avgdata$phase == "untimed practice"])$statistic
 
-ks.fixed.phase2 = ks.test(allrand$s, avg_avgdata$avg[avg_avgdata$condition == "fixed" & avg_avgdata$phase == "deadline early"])$statistic/ks.test(twofix$s, avg_avgdata$avg[avg_avgdata$condition == "fixed" & avg_avgdata$phase == "deadline early"])$statistic
+ks.fixed.phase2 = ks.test(allrand$s, avg_avgdata$avg[avg_avgdata$phase == "deadline early"])$statistic/ks.test(twofix$s, avg_avgdata$avg[avg_avgdata$phase == "deadline early"])$statistic
 
-ks.fixed.phase3 = ks.test(allrand$s, avg_avgdata$avg[avg_avgdata$condition == "fixed" & avg_avgdata$phase == "deadline late"])$statistic/ks.test(twofix$s, avg_avgdata$avg[avg_avgdata$condition == "fixed" & avg_avgdata$phase == "deadline late"])$statistic
-
-ks.random.phase1 = ks.test(allrand$s, avg_avgdata$avg[avg_avgdata$condition == "random" & avg_avgdata$phase == "untimed practice"])$statistic/ks.test(twofix$s, avg_avgdata$avg[avg_avgdata$condition == "random" & avg_avgdata$phase == "untimed practice"])$statistic
-
-ks.random.phase2 = ks.test(allrand$s, avg_avgdata$avg[avg_avgdata$condition == "random" & avg_avgdata$phase == "deadline early"])$statistic/ks.test(twofix$s, avg_avgdata$avg[avg_avgdata$condition == "random" & avg_avgdata$phase == "deadline early"])$statistic
-
-ks.random.phase3 = ks.test(allrand$s, avg_avgdata$avg[avg_avgdata$condition == "random" & avg_avgdata$phase == "deadline late"])$statistic/ks.test(twofix$s, avg_avgdata$avg[avg_avgdata$condition == "random" & avg_avgdata$phase == "deadline late"])$statistic
+ks.fixed.phase3 = ks.test(allrand$s, avg_avgdata$avg[avg_avgdata$phase == "deadline late"])$statistic/ks.test(twofix$s, avg_avgdata$avg[avg_avgdata$phase == "deadline late"])$statistic
 
 # Build data for plotting
-randomness = as.data.frame(list("condition" = factor(c("fixed", "fixed", "fixed", "random", "random", "random"), levels =c("fixed", "random")), "phase" = factor(c("untimed", "deadline early", "deadline late", "untimed", "deadline early", "deadline late"), levels = c("untimed", "deadline early", "deadline late")), "ratio" = c(ks.fixed.phase1, ks.fixed.phase2, ks.fixed.phase3, ks.random.phase1, ks.random.phase2, ks.random.phase3)))
+randomness = as.data.frame(list("phase" = factor(c("untimed", "deadline early", "deadline late", "untimed", "deadline early", "deadline late"), levels = c("untimed", "deadline early", "deadline late")), "ratio" = c(ks.fixed.phase1, ks.fixed.phase2, ks.fixed.phase3)))
 levels(randomness$phase) = c("untimed", "deadline early", "deadline late")
 
 # Plot
-random_eval_plot <- randomness %>% ggplot(aes(x=phase, y=ratio, group=condition)) + 
-                     geom_line(aes(linetype=condition), size=1) +
+random_eval_plot <- randomness %>% ggplot(aes(x=phase, y=ratio)) + 
                      geom_point(size=4) + 
                      labs(y="Ratio (Random Distance/Optimal Distance)", x = "Phase") + 
                      ggtitle("Comparison to random and optimal sampling distributions") + 
@@ -894,11 +833,7 @@ get_spatial_consistency = function(sdata, spatial_orders, ntrials, n, nSubjects,
 spatial_scores = list("fixed" = list("practice" = get_spatial_consistency(splitData(fd$data)$practice, spatial_orders, 10, 
                                                          n, fd$nSubjects, fd$subjects), 
                             "experiment" = get_spatial_consistency(splitData(fd$data)$experiment, spatial_orders, 30,
-                                                         n, fd$nSubjects, fd$subjects)), 
-             "random" = list("practice" = get_spatial_consistency(splitData(rd$data)$practice, spatial_orders, 10, 
-                                                         n, rd$nSubjects, rd$subjects), 
-                            "experiment" = get_spatial_consistency(splitData(rd$data)$experiment, spatial_orders, 30,
-                                                         n, rd$nSubjects, rd$subjects)))
+                                                         n, fd$nSubjects, fd$subjects)))
 
 ```
 
@@ -914,17 +849,7 @@ fscon = data.frame(condition = as.factor(rep(1, fd$nSubjects*10)),
                   sd_expFirst10 = matrix(t(spatial_scores$fixed$experiment$display[, 1:10]), 10*nrow(spatial_scores$fixed$experiment$display), byrow= FALSE), 
                   sd_expLast10  = matrix(t(spatial_scores$fixed$experiment$display[, 21:30]), 10*nrow(spatial_scores$fixed$experiment$display), byrow= FALSE))
 
-rscon = data.frame(condition = as.factor(rep(2, rd$nSubjects*10)), 
-                  subjects = rep(1:rd$nSubjects + 200, each=10), 
-                  trials = rep(1:10, rd$nSubjects), 
-                  sc_practice = matrix(t(spatial_scores$random$practice$choice), 10*nrow(spatial_scores$random$practice$choice), byrow= FALSE), 
-                  sc_expFirst10 = matrix(t(spatial_scores$random$experiment$choice[, 1:10]), 10*nrow(spatial_scores$random$experiment$choice), byrow= FALSE), 
-                  sc_expLast10 = matrix(t(spatial_scores$random$experiment$choice[, 21:30]), 10*nrow(spatial_scores$random$experiment$choice), byrow= FALSE), 
-                  sd_practice = matrix(t(spatial_scores$random$practice$display), 10*nrow(spatial_scores$random$practice$display), byrow= FALSE), 
-                  sd_expFirst10 = matrix(t(spatial_scores$random$experiment$display[, 1:10]), 10*nrow(spatial_scores$random$experiment$display), byrow= FALSE), 
-                  sd_expLast10  = matrix(t(spatial_scores$random$experiment$display[, 21:30]), 10*nrow(spatial_scores$random$experiment$display), byrow= FALSE))
-
-spatialdata = rbind(fscon, rscon)
+spatialdata = fscon
 
 # Set up summary data dataframe: spatial choice consistency
 sc_a = setNames(aggregate(spatialdata$sc_practice, by=list(spatialdata$condition, spatialdata$subject), mean), c("condition", "subject", "avg"))
@@ -935,7 +860,7 @@ avg_scdata = rbind(cbind(sc_a, phase=rep("untimed practice", nrow(sc_a))),
                     cbind(sc_b, phase=rep("deadline early", nrow(sc_b))), 
                     cbind(sc_c, phase=rep("deadline late", nrow(sc_c))))
 avg_scdata$phase = as.factor(avg_scdata$phase)         # Convert phase to factor
-levels(avg_scdata$condition) = c("fixed", "random") # Replace condition names
+levels(avg_scdata$condition) = c("fixed") # Replace condition names
 
 # Set up summary data dataframe: spatial display consistency
 sd_a = setNames(aggregate(spatialdata$sd_practice, by=list(spatialdata$condition, spatialdata$subject), mean), c("condition", "subject", "avg"))
@@ -946,14 +871,16 @@ avg_sddata = rbind(cbind(sd_a, phase=rep("untimed practice", nrow(sd_a))),
                     cbind(sd_b, phase=rep("deadline early", nrow(sd_b))), 
                     cbind(sd_c, phase=rep("deadline late", nrow(sd_c))))
 avg_sddata$phase = as.factor(avg_sddata$phase)         # Convert phase to factor
-levels(avg_sddata$condition) = c("fixed", "random") # Replace condition names
+levels(avg_sddata$condition) = c("fixed") # Replace condition names
 
 ```
 ```{r plotSpatialData, echo=FALSE, warning=FALSE, message=FALSE, results="asis"}
-spatial_choice_plot <- avg_scdata %>% ggplot(aes(x=avg, fill=phase)) + geom_histogram(color="white", alpha=0.6, bins = 10, position="identity") + facet_wrap(~condition+phase) + labs(y="Frequency", x = "Proportion of Spatially Consistent Responses") + ggtitle("Spatial Strategy Analysis")
+spatial_choice_plot <- avg_scdata %>% ggplot(aes(x=avg, fill=phase)) + geom_histogram(color="white", alpha=0.6, bins = 10, position="identity") + facet_wrap(~phase) + labs(y="Frequency", x = "Proportion of Spatially Consistent Responses") + ggtitle("Spatial Strategy Analysis")
 
 #avg_plot <- avg_avgdata %>% ggplot(aes(x=avg, fill=phase+phase)) + geom_histogram(color="white", alpha=1, bins = 10) + facet_wrap(~condition+phase)
 
 print(spatial_choice_plot)
 
 ```
+
+

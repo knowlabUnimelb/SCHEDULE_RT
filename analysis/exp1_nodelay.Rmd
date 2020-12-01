@@ -167,17 +167,17 @@ rd = add_phase_col(rd)
 data = rbind(fd$data, rd$data)
 
 demographics = data$responses[data$trial_event == "demographics"]
-emails = demographics[grep("Email", demographics)]
-colon_loc = gregexpr(pattern = ":", emails)
+#emails = demographics[grep("Email", demographics)]
+#colon_loc = gregexpr(pattern = ":", emails)
 
 nSubjects = fd$nSubjects+rd$nSubjects
-full_email_list = rep(NA, nSubjects)
-for (i in 1:nSubjects){
-  if (!is.na(emails[i])){
-    full_email_list[i] = substr(emails[i], colon_loc[[i]][1]+2, nchar(emails[i])-2)
-  }
-}
-email_list = str_sort(full_email_list[full_email_list != "" & !is.na(full_email_list)])
+#full_email_list = rep(NA, nSubjects)
+#for (i in 1:nSubjects){
+#  if (!is.na(emails[i])){
+#    full_email_list[i] = substr(emails[i], colon_loc[[i]][1]+2, nchar(emails[i])-2)
+#  }
+#}
+#email_list = str_sort(full_email_list[full_email_list != "" & !is.na(full_email_list)])
 
 ```
 
