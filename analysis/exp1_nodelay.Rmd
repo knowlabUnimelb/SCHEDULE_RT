@@ -239,6 +239,7 @@ The Fixed Difficulty experiment was completed before the Random Difficulty exper
 
 ```{r getCoherence, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
 coherence_set = sort(unique(c(data$patch_0, data$patch_1, data$patch_2, data$patch_3)), decreasing = TRUE)
+# .8 = Easy, .5 = Medium, .2 = Hard, .0 = Very hard
 ```
 
 In each condition, participants completed multiple trials in which they selected and completed RDK tasks. On each trial, participants were shown a set of four RDKs labelled Easy, Medium, Hard, and Very Hard. The labels corresponded to the cohenrence of the RDK; that is, the proportion of dots moving in a coherent direction was set to 80%, 50%, 20%, and 0% for the Easy, Medium, Hard, and Very Hard locations, respectively. From the set of four RDKs, participants selected and completed one RDK at a time in any order. The goal of each trial was to complete as many as possible before a deadline. If an incorrect RDK response was made, that RDK was restarted at the same coherence but with a resampled direction (so the direction may have changed), and the participant had to respond to the RDK again. A new task could not be selected until the RDK was completed successfully.

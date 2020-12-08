@@ -253,6 +253,7 @@ The Fixed Difficulty experiment was completed before the Random Difficulty exper
 
 ```{r getCoherence, echo=FALSE, warning=FALSE, message=FALSE, results="hide"}
 coherence_set = sort(unique(c(data$patch_0, data$patch_1, data$patch_2, data$patch_3)), decreasing = TRUE)
+# .8 = Easy, .5 = Medium, .2 = Hard, .0 = Very hard
 ```
 
 The design of the experiment was identical to Experiment 1, with the sole exception being that after making an error on an RDK direction judgment, a blank interval was presented for 500 msec before the RDK was resampled, and the RDK trial began again. 
